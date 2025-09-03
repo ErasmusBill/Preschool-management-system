@@ -1,0 +1,115 @@
+{% extends 'school/base.html' %}
+{% load static %}
+
+{% block title %}{{ student.first_name }} {{ student.last_name }} - Student Details{% endblock %}
+
+{% block content %}
+<div class="page-wrapper">
+  <div class="content container-fluid">
+
+    <!-- Page Header -->
+    <div class="page-header">
+      <div class="row">
+        <div class="col-sm-12">
+          <h3 class="page-title">Student Details</h3>
+          <ul class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{% url 'student:student-list' %}">Students</a></li>
+            <li class="breadcrumb-item active">{{ student.first_name }} {{ student.last_name }}</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- Student Card -->
+    <div class="card">
+      <div class="card-body">
+        <div class="row">
+          <div class="col-md-12">
+            <div class="about-info">
+
+              <h4>About Student</h4>
+              <div class="media mt-3">
+                {% if student.student_image %}
+                  <img src="{{ student.student_image.url }}" class="mr-3 rounded" width="150" height="150" alt="{{ student.first_name }}">
+                {% else %}
+                  <img src="{% static 'assets/img/default-avatar.png' %}" class="mr-3 rounded" width="150" height="150" alt="No Image">
+                {% endif %}
+                <div class="media-body">
+                  <ul class="list-unstyled">
+                    <li>
+                      <strong>Full Name:</strong> {{ student.first_name }} {{ student.last_name }}
+                    </li>
+                    <li>
+                      <strong>Student ID:</strong> {{ student.student_id }}
+                    </li>
+                    <li>
+                      <strong>Class:</strong> {{ student.student_class }} - {{ student.section }}
+                    </li>
+                    <li>
+                      <strong>Religion:</strong> {{ student.religion }}
+                    </li>
+                    <li>
+                      <strong>Gender:</strong> {{ student.gender }}
+                    </li>
+                    <li>
+                      <strong>Date of Birth:</strong> {{ student.date_of_birth|date:"F d, Y" }}
+                    </li>
+                    <li>
+                      <strong>Admission Number:</strong> {{ student.admission_number }}
+                    </li>
+                    <li>
+                      <strong>Joining Date:</strong> {{ student.joining_date|date:"F d, Y" }}
+                    </li>
+                    <li>
+                      <strong>Mobile:</strong> {{ student.mobile_number }}
+                    </li>
+                  </ul>
+                </div>
+              </div>
+
+              <!-- Parent Information -->
+              <div class="row mt-4">
+                <div class="col-md-6">
+                  <h5>Father’s Information</h5>
+                  <p><strong>Name:</strong> {{ student.parent.father_name }}</p>
+                  <p><strong>Phone:</strong> {{ student.parent.father_phone }}</p>
+                  <p><strong>Email:</strong> {{ student.parent.father_email }}</p>
+                  <p><strong>Occupation:</strong> {{ student.parent.father_occupation }}</p>
+                </div>
+                <div class="col-md-6">
+                  <h5>Mother’s Information</h5>
+                  <p><strong>Name:</strong> {{ student.parent.mother_name }}</p>
+                  <p><strong>Phone:</strong> {{ student.parent.mother_phone }}</p>
+                  <p><strong>Email:</strong> {{ student.parent.mother_email }}</p>
+                  <p><strong>Occupation:</strong> {{ student.parent.mother_occupation }}</p>
+                </div>
+              </div>
+
+              <!-- Addresses -->
+              <div class="row mt-4">
+                <div class="col-md-6">
+                  <h5>Present Address</h5>
+                  <p>{{ student.parent.present_address }}</p>
+                </div>
+                <div class="col-md-6">
+                  <h5>Permanent Address</h5>
+                  <p>{{ student.parent.permanent_address }}</p>
+                </div>
+              </div>
+
+              <!-- Back Button -->
+              <div class="mt-4">
+                <a href="{% url 'student:student-list' %}" class="btn btn-secondary">Back to Student List</a>
+                <a href="{% url 'student:edit-student' student.student_id %}" class="btn btn-primary">Edit Student</a>
+              </div>
+
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+{% endblock %}

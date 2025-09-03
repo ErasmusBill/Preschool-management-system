@@ -1,0 +1,278 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0">
+  <title>Preskool - Teacher Dashboard</title>
+
+  <link rel="shortcut icon" href="{% static 'assets/img/favicon.png' %}">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap">
+
+  <link rel="stylesheet" href="{% static 'assets/plugins/bootstrap/css/bootstrap.min.css' %}">
+  <link rel="stylesheet" href="{% static 'assets/plugins/fontawesome/css/fontawesome.min.css' %}">
+  <link rel="stylesheet" href="{% static 'assets/plugins/fontawesome/css/all.min.css' %}">
+  <link rel="stylesheet" href="{% static 'assets/plugins/simple-calendar/simple-calendar.css' %}">
+  <link rel="stylesheet" href="{% static 'assets/css/style.css' %}">
+</head>
+<body>
+<div class="main-wrapper">
+
+  <!-- Header -->
+  <div class="header">
+    <div class="header-left">
+      <a href="{% url 'school:dashboard' %}" class="logo">
+        <img src="{% static 'assets/img/logo.png' %}" alt="Logo">
+      </a>
+      <a href="{% url 'school:dashboard' %}" class="logo logo-small">
+        <img src="{% static 'assets/img/logo-small.png' %}" alt="Logo" width="30" height="30">
+      </a>
+    </div>
+
+    <a href="javascript:void(0);" id="toggle_btn"><i class="fas fa-align-left"></i></a>
+
+    <div class="top-nav-search">
+      <form>
+        <input type="text" class="form-control" placeholder="Search here">
+        <button class="btn" type="submit"><i class="fas fa-search"></i></button>
+      </form>
+    </div>
+
+    <a class="mobile_btn" id="mobile_btn"><i class="fas fa-bars"></i></a>
+
+    <!-- User Menu -->
+    <ul class="nav user-menu">
+      <!-- Notifications -->
+      <li class="nav-item dropdown noti-dropdown">
+        <a href="#" class="dropdown-toggle nav-link" data-toggle="dropdown">
+          <i class="far fa-bell"></i> <span class="badge badge-pill">3</span>
+        </a>
+        <div class="dropdown-menu notifications">
+          <div class="topnav-dropdown-header">
+            <span class="notification-title">Notifications</span>
+            <a href="javascript:void(0)" class="clear-noti"> Clear All </a>
+          </div>
+          <div class="noti-content">
+            <ul class="notification-list">
+              <li class="notification-message">
+                <a href="#">
+                  <div class="media">
+                    <span class="avatar avatar-sm">
+                      <img class="avatar-img rounded-circle" src="{% static 'assets/img/profiles/avatar-02.jpg' %}" alt="User Image">
+                    </span>
+                    <div class="media-body">
+                      <p class="noti-details"><span class="noti-title">New Assignment</span> added to <span class="noti-title">Mathematics</span></p>
+                      <p class="noti-time"><span class="notification-time">10 mins ago</span></p>
+                    </div>
+                  </div>
+                </a>
+              </li>
+            </ul>
+          </div>
+          <div class="topnav-dropdown-footer">
+            <a href="#">View all Notifications</a>
+          </div>
+        </div>
+      </li>
+
+      <!-- Profile Dropdown -->
+      <li class="nav-item dropdown has-arrow">
+        <a href="#" class="dropdown-toggle nav-link" data-toggle="dropdown">
+          <span class="user-img">
+            <img class="rounded-circle" src="{% static 'assets/img/profiles/avatar-01.jpg' %}" width="31" alt="{{ user.first_name }}">
+          </span>
+        </a>
+        <div class="dropdown-menu">
+          <div class="user-header">
+            <div class="avatar avatar-sm">
+              <img src="{% static 'assets/img/profiles/avatar-01.jpg' %}" class="avatar-img rounded-circle" alt="User">
+            </div>
+            <div class="user-text">
+              <h6>{{ user.first_name }} {{ user.last_name }}</h6>
+              <p class="text-muted mb-0">{{ user.role|title }}</p>
+            </div>
+          </div>
+          <a class="dropdown-item" href="#">My Profile</a>
+          <a class="dropdown-item" href="#">Inbox</a>
+          <a class="dropdown-item" href="{% url 'home_auth:logout' %}">Logout</a>
+        </div>
+      </li>
+    </ul>
+  </div>
+  <!-- /Header -->
+
+  <!-- Sidebar -->
+  <div class="sidebar" id="sidebar">
+    <div class="sidebar-inner slimscroll">
+      <div id="sidebar-menu" class="sidebar-menu">
+        <ul>
+          <li class="menu-title"><span>Main Menu</span></li>
+          <li class="submenu active">
+            <a href="#"><i class="fas fa-chalkboard-teacher"></i> <span> Teacher Menu</span> <span class="menu-arrow"></span></a>
+            <ul>
+              <li><a href="{% url 'school:dashboard' %}" class="active">Teacher Dashboard</a></li>
+              <li><a href="#">My Classes</a></li>
+              <li><a href="#">Assignments</a></li>
+              <li><a href="#">Students</a></li>
+              <li><a href="#">Reports</a></li>
+            </ul>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <!-- /Sidebar -->
+
+  <!-- Page Content -->
+  <div class="page-wrapper">
+    <div class="content container-fluid">
+
+      <!-- Page Header -->
+      <div class="page-header">
+        <div class="row">
+          <div class="col-sm-12">
+            <h3 class="page-title">Welcome {{ user.first_name }}!</h3>
+            <ul class="breadcrumb">
+              <li class="breadcrumb-item"><a href="{% url 'school:dashboard' %}">Dashboard</a></li>
+              <li class="breadcrumb-item active">Teacher Dashboard</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <!-- /Page Header -->
+
+      <!-- Dashboard Widgets -->
+      <div class="row">
+        <div class="col-xl-3 col-sm-6 col-12 d-flex">
+          <div class="card bg-one w-100">
+            <div class="card-body">
+              <div class="db-widgets d-flex justify-content-between align-items-center">
+                <div class="db-icon"><i class="fas fa-users"></i></div>
+                <div class="db-info">
+                  <h3>120</h3>
+                  <h6>My Students</h6>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-xl-3 col-sm-6 col-12 d-flex">
+          <div class="card bg-two w-100">
+            <div class="card-body">
+              <div class="db-widgets d-flex justify-content-between align-items-center">
+                <div class="db-icon"><i class="fas fa-book"></i></div>
+                <div class="db-info">
+                  <h3>08</h3>
+                  <h6>Active Classes</h6>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-xl-3 col-sm-6 col-12 d-flex">
+          <div class="card bg-three w-100">
+            <div class="card-body">
+              <div class="db-widgets d-flex justify-content-between align-items-center">
+                <div class="db-icon"><i class="fas fa-tasks"></i></div>
+                <div class="db-info">
+                  <h3>15</h3>
+                  <h6>Assignments</h6>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-xl-3 col-sm-6 col-12 d-flex">
+          <div class="card bg-four w-100">
+            <div class="card-body">
+              <div class="db-widgets d-flex justify-content-between align-items-center">
+                <div class="db-icon"><i class="fas fa-calendar-alt"></i></div>
+                <div class="db-info">
+                  <h3>05</h3>
+                  <h6>Upcoming Lessons</h6>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- /Dashboard Widgets -->
+
+      <!-- Upcoming Lessons -->
+      <div class="row">
+        <div class="col-md-6">
+          <div class="card card-table">
+            <div class="card-header">
+              <h4 class="card-title">Upcoming Lessons</h4>
+            </div>
+            <div class="card-body">
+              <div class="table-responsive">
+                <table class="table table-hover table-center mb-0">
+                  <thead>
+                    <tr>
+                      <th>Class</th>
+                      <th>Subject</th>
+                      <th>Date</th>
+                      <th>Time</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td>Class 6A</td>
+                      <td>Mathematics</td>
+                      <td>2025-09-05</td>
+                      <td>09:00 AM</td>
+                    </tr>
+                    <tr>
+                      <td>Class 5B</td>
+                      <td>Science</td>
+                      <td>2025-09-06</td>
+                      <td>11:30 AM</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Calendar -->
+        <div class="col-md-6">
+          <div class="card card-calendar">
+            <div class="card-header">
+              <h4 class="card-title">Calendar</h4>
+            </div>
+            <div class="card-body">
+              <div id="calendar"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- /Upcoming Lessons -->
+
+    </div>
+
+    <footer>
+      <p>Copyright © 2025 Preskool.</p>
+    </footer>
+  </div>
+  <!-- /Page Content -->
+
+</div>
+
+<!-- Scripts -->
+<script src="{% static 'assets/js/jquery-3.6.0.min.js' %}"></script>
+<script src="{% static 'assets/js/popper.min.js' %}"></script>
+<script src="{% static 'assets/plugins/bootstrap/js/bootstrap.min.js' %}"></script>
+<script src="{% static 'assets/plugins/slimscroll/jquery.slimscroll.min.js' %}"></script>
+<script src="{% static 'assets/plugins/apexchart/apexcharts.min.js' %}"></script>
+<script src="{% static 'assets/plugins/apexchart/chart-data.js' %}"></script>
+<script src="{% static 'assets/plugins/simple-calendar/jquery.simple-calendar.js' %}"></script>
+<script src="{% static 'assets/js/calander.js' %}"></script>
+<script src="{% static 'assets/js/circle-progress.min.js' %}"></script>
+<script src="{% static 'assets/js/script.js' %}"></script>
+</body>
+</html>
