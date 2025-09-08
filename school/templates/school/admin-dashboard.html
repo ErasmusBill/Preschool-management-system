@@ -1,0 +1,535 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0">
+  <title>Preskool - Admin Dashboard</title>
+
+  <link rel="shortcut icon" href="{% static 'assets/img/favicon.png' %}">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap">
+
+  <link rel="stylesheet" href="{% static 'assets/plugins/bootstrap/css/bootstrap.min.css' %}">
+  <link rel="stylesheet" href="{% static 'assets/plugins/fontawesome/css/fontawesome.min.css' %}">
+  <link rel="stylesheet" href="{% static 'assets/plugins/fontawesome/css/all.min.css' %}">
+  <link rel="stylesheet" href="{% static 'assets/plugins/simple-calendar/simple-calendar.css' %}">
+  <link rel="stylesheet" href="{% static 'assets/plugins/datatables/datatables.min.css' %}">
+  <link rel="stylesheet" href="{% static 'assets/css/style.css' %}">
+  
+  <style>
+    .admin-stats-card {
+      border-left: 4px solid;
+      transition: transform 0.3s;
+    }
+    .admin-stats-card:hover {
+      transform: translateY(-5px);
+    }
+    .quick-actions .btn {
+      margin: 5px;
+    }
+    .recent-activity .activity-item {
+      border-left: 2px solid #2E37A4;
+      padding-left: 15px;
+      margin-bottom: 20px;
+      position: relative;
+    }
+    .recent-activity .activity-item:before {
+      content: '';
+      position: absolute;
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      background: #2E37A4;
+      left: -7px;
+      top: 5px;
+    }
+    .sidebar-menu li a.active {
+      background-color: #f0f0f0;
+      font-weight: 600;
+    }
+    .error-message {
+      background-color: #f8d7da;
+      color: #721c24;
+      padding: 15px;
+      border-radius: 5px;
+      margin-bottom: 20px;
+    }
+  </style>
+</head>
+<body>
+<div class="main-wrapper">
+
+  <!-- Header -->
+  <div class="header">
+    <div class="header-left">
+      <a href="{% url 'school:dashboard' %}" class="logo">
+        <img src="{% static 'assets/img/logo.png' %}" alt="Logo">
+      </a>
+      <a href="{% url 'school:dashboard' %}" class="logo logo-small">
+        <img src="{% static 'assets/img/logo-small.png' %}" alt="Logo" width="30" height="30">
+      </a>
+    </div>
+
+    <a href="javascript:void(0);" id="toggle_btn"><i class="fas fa-align-left"></i></a>
+
+    <div class="top-nav-search">
+      <form>
+        <input type="text" class="form-control" placeholder="Search here">
+        <button class="btn" type="submit"><i class="fas fa-search"></i></button>
+      </form>
+    </div>
+
+    <a class="mobile_btn" id="mobile_btn"><i class="fas fa-bars"></i></a>
+
+    <!-- User Menu -->
+    <ul class="nav user-menu">
+      <!-- Notifications -->
+      <li class="nav-item dropdown noti-dropdown">
+        <a href="#" class="dropdown-toggle nav-link" data-toggle="dropdown">
+          <i class="far fa-bell"></i> <span class="badge badge-pill">5</span>
+        </a>
+        <div class="dropdown-menu notifications">
+          <div class="topnav-dropdown-header">
+            <span class="notification-title">Notifications</span>
+            <a href="javascript:void(0)" class="clear-noti"> Clear All </a>
+          </div>
+          <div class="noti-content">
+            <ul class="notification-list">
+              <li class="notification-message">
+                <a href="#">
+                  <div class="media">
+                    <span class="avatar avatar-sm">
+                      <img class="avatar-img rounded-circle" src="{% static 'assets/img/profiles/avatar-02.jpg' %}" alt="User Image">
+                    </span>
+                    <div class="media-body">
+                      <p class="noti-details"><span class="noti-title">New Student Registration</span> needs approval</p>
+                      <p class="noti-time"><span class="notification-time">15 mins ago</span></p>
+                    </div>
+                  </div>
+                </a>
+              </li>
+              <li class="notification-message">
+                <a href="#">
+                  <div class="media">
+                    <span class="avatar avatar-sm">
+                      <img class="avatar-img rounded-circle" src="{% static 'assets/img/profiles/avatar-03.jpg' %}" alt="User Image">
+                    </span>
+                    <div class="media-body">
+                      <p class="noti-details"><span class="noti-title">Fee Payment</span> received from John Doe</p>
+                      <p class="noti-time"><span class="notification-time">45 mins ago</span></p>
+                    </div>
+                  </div>
+                </a>
+              </li>
+            </ul>
+          </div>
+          <div class="topnav-dropdown-footer">
+            <a href="#">View all Notifications</a>
+          </div>
+        </div>
+      </li>
+
+      <!-- Profile Dropdown -->
+      <li class="nav-item dropdown has-arrow">
+        <a href="#" class="dropdown-toggle nav-link" data-toggle="dropdown">
+          <span class="user-img">
+            <img class="rounded-circle" src="{% static 'assets/img/profiles/avatar-01.jpg' %}" width="31" alt="{{ user.first_name }}">
+          </span>
+        </a>
+        <div class="dropdown-menu">
+          <div class="user-header">
+            <div class="avatar avatar-sm">
+              <img src="{% static 'assets/img/profiles/avatar-01.jpg' %}" class="avatar-img rounded-circle" alt="User">
+            </div>
+            <div class="user-text">
+              <h6>{{ user.first_name }} {{ user.last_name }}</h6>
+              <p class="text-muted mb-0">Administrator</p>
+            </div>
+          </div>
+          <a class="dropdown-item" href="#">My Profile</a>
+          <a class="dropdown-item" href="#">System Settings</a>
+          <a class="dropdown-item" href="{% url 'home_auth:logout' %}">Logout</a>
+        </div>
+      </li>
+    </ul>
+  </div>
+  <!-- /Header -->
+
+  <!-- Sidebar -->
+  <div class="sidebar" id="sidebar">
+    <div class="sidebar-inner slimscroll">
+      <div id="sidebar-menu" class="sidebar-menu">
+        <ul>
+          <li class="menu-title"><span>Main Menu</span></li>
+          <li class="submenu active">
+            <a href="#"><i class="fas fa-user-cog"></i> <span> Admin Menu</span> <span class="menu-arrow"></span></a>
+            <ul>
+              <li><a href="{% url 'school:dashboard' %}" class="active">Admin Dashboard</a></li>
+              <li><a href="{% url 'student:student-list' %}">Student Management</a></li>
+              <li><a href="{% url 'teacher:list-teachers' %}">Teacher Management</a></li>
+              <li><a href="#">Class Management</a></li>
+              <li><a href="#">Attendance</a></li>
+              <li><a href="#">Grades & Reports</a></li>
+            </ul>
+          </li>
+          <li class="menu-title"><span>Quick Access</span></li>
+          <li>
+            <a href="{% url 'student:add-student' %}"><i class="fas fa-user-plus"></i> <span>Add Student</span></a>
+          </li>
+          <li>
+            <a href="{% url 'teacher:add-teacher' %}"><i class="fas fa-chalkboard-teacher"></i> <span>Add Teacher</span></a>
+          </li>
+          <li>
+            <a href="#"><i class="fas fa-money-bill-wave"></i> <span>Finance</span></a>
+          </li>
+          <li>
+            <a href="#"><i class="fas fa-cog"></i> <span>Settings</span></a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <!-- /Sidebar -->
+
+  <!-- Page Content -->
+  <div class="page-wrapper">
+    <div class="content container-fluid">
+
+      <!-- Page Header -->
+      <div class="page-header">
+        <div class="row">
+          <div class="col-sm-12">
+            <h3 class="page-title">Welcome Administrator!</h3>
+            <ul class="breadcrumb">
+              <li class="breadcrumb-item"><a href="{% url 'school:dashboard' %}">Dashboard</a></li>
+              <li class="breadcrumb-item active">Admin Dashboard</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <!-- /Page Header -->
+
+      <!-- Error Message (for debugging) -->
+      <div class="row">
+        <div class="col-md-12">
+          <div class="error-message">
+            <h4>URL Configuration Issue Detected</h4>
+            <p>The error occurred because Django couldn't find a matching URL pattern for: <code>http://127.0.0.1:8000/teacher/list/teacher-details.html</code></p>
+            <p>Make sure your URL patterns are correctly configured as shown in the instructions below.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Dashboard Widgets -->
+      <div class="row">
+        <div class="col-xl-3 col-sm-6 col-12 d-flex">
+          <div class="card bg-one w-100 admin-stats-card" style="border-left-color: #2E37A4;">
+            <div class="card-body">
+              <div class="db-widgets d-flex justify-content-between align-items-center">
+                <div class="db-icon"><i class="fas fa-user-graduate"></i></div>
+                <div class="db-info">
+                  <h3>850</h3>
+                  <h6>Total Students</h6>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-xl-3 col-sm-6 col-12 d-flex">
+          <div class="card bg-two w-100 admin-stats-card" style="border-left-color: #FF5B37;">
+            <div class="card-body">
+              <div class="db-widgets d-flex justify-content-between align-items-center">
+                <div class="db-icon"><i class="fas fa-chalkboard-teacher"></i></div>
+                <div class="db-info">
+                  <h3>42</h3>
+                  <h6>Total Teachers</h6>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-xl-3 col-sm-6 col-12 d-flex">
+          <div class="card bg-three w-100 admin-stats-card" style="border-left-color: #00D3C7;">
+            <div class="card-body">
+              <div class="db-widgets d-flex justify-content-between align-items-center">
+                <div class="db-icon"><i class="fas fa-building"></i></div>
+                <div class="db-info">
+                  <h3>24</h3>
+                  <h6>Total Classes</h6>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-xl-3 col-sm-6 col-12 d-flex">
+          <div class="card bg-four w-100 admin-stats-card" style="border-left-color: #FF227D;">
+            <div class="card-body">
+              <div class="db-widgets d-flex justify-content-between align-items-center">
+                <div class="db-icon"><i class="fas fa-dollar-sign"></i></div>
+                <div class="db-info">
+                  <h3>92%</h3>
+                  <h6>Fees Collection</h6>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- /Dashboard Widgets -->
+
+      <div class="row">
+        <!-- Quick Actions -->
+        <div class="col-md-6">
+          <div class="card">
+            <div class="card-header">
+              <h4 class="card-title">Quick Actions</h4>
+            </div>
+            <div class="card-body">
+              <div class="row quick-actions text-center">
+                <div class="col-4 col-md-3">
+                  <a href="{% url 'student:add-student' %}" class="btn btn-primary btn-circle btn-lg"><i class="fas fa-user-plus"></i></a>
+                  <p>Add Student</p>
+                </div>
+                <div class="col-4 col-md-3">
+                  <a href="{% url 'teacher:add-teacher' %}" class="btn btn-info btn-circle btn-lg"><i class="fas fa-chalkboard-teacher"></i></a>
+                  <p>Add Teacher</p>
+                </div>
+                <div class="col-4 col-md-3">
+                  <a href="#" class="btn btn-success btn-circle btn-lg"><i class="fas fa-money-bill-wave"></i></a>
+                  <p>Collect Fees</p>
+                </div>
+                <div class="col-4 col-md-3">
+                  <a href="#" class="btn btn-warning btn-circle btn-lg"><i class="fas fa-book"></i></a>
+                  <p>Add Course</p>
+                </div>
+                <div class="col-4 col-md-3">
+                  <a href="#" class="btn btn-secondary btn-circle btn-lg"><i class="fas fa-bell"></i></a>
+                  <p>Send Notice</p>
+                </div>
+                <div class="col-4 col-md-3">
+                  <a href="#" class="btn btn-danger btn-circle btn-lg"><i class="fas fa-cog"></i></a>
+                  <p>Settings</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- /Quick Actions -->
+
+        <!-- Recent Activity -->
+        <div class="col-md-6">
+          <div class="card">
+            <div class="card-header">
+              <h4 class="card-title">Recent Activity</h4>
+            </div>
+            <div class="card-body recent-activity">
+              <div class="activity-item">
+                <h6>New student registered</h6>
+                <p>Emily Johnson registered for Grade 5</p>
+                <small class="text-muted">10 minutes ago</small>
+              </div>
+              <div class="activity-item">
+                <h6>Fee payment received</h6>
+                <p>Michael Smith paid the quarterly fee of $250</p>
+                <small class="text-muted">45 minutes ago</small>
+              </div>
+              <div class="activity-item">
+                <h6>Teacher assigned to class</h6>
+                <p>Mr. Anderson assigned to Class 9-B for Mathematics</p>
+                <small class="text-muted">2 hours ago</small>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- /Recent Activity -->
+      </div>
+
+      <div class="row">
+        <!-- Recent Students -->
+        <div class="col-md-6">
+          <div class="card card-table">
+            <div class="card-header">
+              <h4 class="card-title">Recently Added Students</h4>
+            </div>
+            <div class="card-body">
+              <div class="table-responsive">
+                <table class="table table-hover table-center mb-0">
+                  <thead>
+                    <tr>
+                      <th>Name</th>
+                      <th>Class</th>
+                      <th>Action</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td>Emily Johnson</td>
+                      <td>Class 5-A</td>
+                      <td><a href="#" class="btn btn-sm btn-primary">View</a></td>
+                    </tr>
+                    <tr>
+                      <td>Michael Smith</td>
+                      <td>Class 8-B</td>
+                      <td><a href="#" class="btn btn-sm btn-primary">View</a></td>
+                    </tr>
+                    <tr>
+                      <td>Sarah Williams</td>
+                      <td>Class 10-A</td>
+                      <td><a href="#" class="btn btn-sm btn-primary">View</a></td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+            <div class="card-footer">
+              <a href="{% url 'student:student-list' %}" class="btn btn-primary btn-sm">View All Students</a>
+            </div>
+          </div>
+        </div>
+        <!-- /Recent Students -->
+
+        <!-- Recent Teachers -->
+        <div class="col-md-6">
+          <div class="card card-table">
+            <div class="card-header">
+              <h4 class="card-title">Recently Added Teachers</h4>
+            </div>
+            <div class="card-body">
+              <div class="table-responsive">
+                <table class="table table-hover table-center mb-0">
+                  <thead>
+                    <tr>
+                      <th>Name</th>
+                      <th>Subject</th>
+                      <th>Action</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td>Mr. Anderson</td>
+                      <td>Mathematics</td>
+                      <td><a href="#" class="btn btn-sm btn-primary">View</a></td>
+                    </tr>
+                    <tr>
+                      <td>Ms. Parker</td>
+                      <td>Science</td>
+                      <td><a href="#" class="btn btn-sm btn-primary">View</a></td>
+                    </tr>
+                    <tr>
+                      <td>Dr. Roberts</td>
+                      <td>English</td>
+                      <td><a href="#" class="btn btn-sm btn-primary">View</a></td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+            <div class="card-footer">
+              <a href="{% url 'teacher:list-teachers' %}" class="btn btn-primary btn-sm">View All Teachers</a>
+            </div>
+          </div>
+        </div>
+        <!-- /Recent Teachers -->
+      </div>
+
+      <!-- Calendar -->
+      <div class="row">
+        <div class="col-md-12">
+          <div class="card card-calendar">
+            <div class="card-header">
+              <h4 class="card-title">School Calendar</h4>
+            </div>
+            <div class="card-body">
+              <div id="calendar"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- /Calendar -->
+
+      <!-- URL Configuration Instructions -->
+      <div class="row">
+        <div class="col-md-12">
+          <div class="card">
+            <div class="card-header">
+              <h4 class="card-title">How to Fix Your URL Configuration</h4>
+            </div>
+            <div class="card-body">
+              <p>The error you're seeing suggests there's an issue with your URL configuration. Here's how to fix it:</p>
+              
+              <h5>1. Update your main urls.py file:</h5>
+              <pre>
+from django.contrib import admin
+from django.urls import path, include
+
+urlpatterns = [
+    path('admin/', admin.site.urls),
+    path('', include('school.urls')),
+    path('auth/', include('home_auth.urls')),
+    path('student/', include('student.urls')),
+    path('teacher/', include('teacher.urls')),
+]
+              </pre>
+              
+              <h5>2. Update your teacher/urls.py file:</h5>
+              <pre>
+from django.urls import path
+from . import views
+
+app_name = "teacher"
+
+urlpatterns = [
+    path("add/", views.add_teacher, name="add-teacher"),
+    path("list/", views.list_all_teachers, name="list-teachers"),
+    path("detail/&lt;int:teacher_id&gt;/", views.teacher_detail, name="teacher-detail"),
+    path("delete/&lt;int:teacher_id&gt;/", views.delete_teacher, name="delete-teacher")
+]
+              </pre>
+              
+              <h5>3. Make sure your views are correctly handling the URL parameters:</h5>
+              <pre>
+def teacher_detail(request, teacher_id):
+    # Your view logic here
+    pass
+              </pre>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <footer>
+      <p>Copyright © 2025 Preskool.</p>
+    </footer>
+  </div>
+  <!-- /Page Content -->
+
+</div>
+
+<!-- Scripts -->
+<script src="{% static 'assets/js/jquery-3.6.0.min.js' %}"></script>
+<script src="{% static 'assets/js/popper.min.js' %}"></script>
+<script src="{% static 'assets/plugins/bootstrap/js/bootstrap.min.js' %}"></script>
+<script src="{% static 'assets/plugins/slimscroll/jquery.slimscroll.min.js' %}"></script>
+<script src="{% static 'assets/plugins/apexchart/apexcharts.min.js' %}"></script>
+<script src="{% static 'assets/plugins/apexchart/chart-data.js' %}"></script>
+<script src="{% static 'assets/plugins/simple-calendar/jquery.simple-calendar.js' %}"></script>
+<script src="{% static 'assets/plugins/datatables/datatables.min.js' %}"></script>
+<script src="{% static 'assets/js/calander.js' %}"></script>
+<script src="{% static 'assets/js/circle-progress.min.js' %}"></script>
+<script src="{% static 'assets/js/script.js' %}"></script>
+
+<script>
+  $(document).ready(function() {
+    // Initialize DataTables if needed
+    $('table').DataTable();
+    
+    // You can add more admin-specific JavaScript functionality here
+  });
+</script>
+</body>
+</html>

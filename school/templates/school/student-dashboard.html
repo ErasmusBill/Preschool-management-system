@@ -1,3 +1,4 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -12,17 +13,17 @@
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap">
 
   <!-- Bootstrap -->
-  <link rel="stylesheet" href="assets/plugins/bootstrap/css/bootstrap.min.css">
+  <link rel="stylesheet" href="{% static 'assets/plugins/bootstrap/css/bootstrap.min.css' %}">
 
   <!-- Fontawesome -->
-  <link rel="stylesheet" href="assets/plugins/fontawesome/css/fontawesome.min.css">
-  <link rel="stylesheet" href="assets/plugins/fontawesome/css/all.min.css">
+  <link rel="stylesheet" href="{% static 'assets/plugins/fontawesome/css/fontawesome.min.css' %}">
+  <link rel="stylesheet" href="{% static 'assets/plugins/fontawesome/css/all.min.css' %}">
 
   <!-- Plugins -->
-  <link rel="stylesheet" href="assets/plugins/simple-calendar/simple-calendar.css">
+  <link rel="stylesheet" href="{% static 'assets/plugins/simple-calendar/simple-calendar.css' %}">
 
   <!-- Main CSS -->
-  <link rel="stylesheet" href="assets/css/style.css">
+  <link rel="stylesheet" href="{% static 'assets/css/style.css' %}">
 </head>
 <body>
 <div class="main-wrapper">
@@ -31,10 +32,10 @@
   <div class="header">
     <div class="header-left">
       <a href="index.html" class="logo">
-        <img src="assets/img/logo.png" alt="Logo">
+        <img src="{% static 'assets/img/logo.png' %}" alt="Logo">
       </a>
       <a href="index.html" class="logo logo-small">
-        <img src="assets/img/logo-small.png" alt="Logo" width="30" height="30">
+        <img src="{% static 'assets/img/logo-small.png' %}" alt="Logo" width="30" height="30">
       </a>
     </div>
 
@@ -67,7 +68,7 @@
                 <a href="#">
                   <div class="media">
                     <span class="avatar avatar-sm">
-                      <img class="avatar-img rounded-circle" src="assets/img/profiles/avatar-02.jpg" alt="User">
+                      <img class="avatar-img rounded-circle" src="{% static 'assets/img/profiles/avatar-02.jpg' %}" alt="User">
                     </span>
                     <div class="media-body">
                       <p class="noti-details"><span class="noti-title">Carlson Tech</span> approved <span class="noti-title">your estimate</span></p>
@@ -88,12 +89,12 @@
       <!-- Profile Dropdown -->
       <li class="nav-item dropdown has-arrow">
         <a href="#" class="dropdown-toggle nav-link" data-toggle="dropdown">
-          <span class="user-img"><img class="rounded-circle" src="assets/img/profiles/avatar-01.jpg" width="31" alt="User"></span>
+          <span class="user-img"><img class="rounded-circle" src="{% static 'assets/img/profiles/avatar-01.jpg' %}" width="31" alt="User"></span>
         </a>
         <div class="dropdown-menu">
           <div class="user-header">
             <div class="avatar avatar-sm">
-              <img src="assets/img/profiles/avatar-01.jpg" class="avatar-img rounded-circle" alt="User">
+              <img src="{% static 'assets/img/profiles/avatar-01.jpg' %}" class="avatar-img rounded-circle" alt="User">
             </div>
             <div class="user-text">
               <h6>Ryan Taylor</h6>
@@ -102,7 +103,7 @@
           </div>
           <a class="dropdown-item" href="profile.html">My Profile</a>
           <a class="dropdown-item" href="inbox.html">Inbox</a>
-          <a class="dropdown-item" href="login.html">Logout</a>
+          <a class="dropdown-item" href="{% url 'home_auth:logout' %}">Logout</a>
         </div>
       </li>
     </ul>
@@ -138,7 +139,7 @@
       <div class="page-header">
         <div class="row">
           <div class="col-sm-12">
-            <h3 class="page-title">Welcome Bruklin!</h3>
+            <h3 class="page-title">{{ student.first_name }}</h3>
             <ul class="breadcrumb">
               <li class="breadcrumb-item"><a href="index.html">Dashboard</a></li>
               <li class="breadcrumb-item active">Student Dashboard</li>
@@ -182,15 +183,15 @@
 </div>
 
 <!-- Scripts -->
-<script src="assets/js/jquery-3.6.0.min.js"></script>
-<script src="assets/js/popper.min.js"></script>
-<script src="assets/plugins/bootstrap/js/bootstrap.min.js"></script>
-<script src="assets/plugins/slimscroll/jquery.slimscroll.min.js"></script>
-<script src="assets/plugins/apexchart/apexcharts.min.js"></script>
-<script src="assets/plugins/apexchart/chart-data.js"></script>
-<script src="assets/plugins/simple-calendar/jquery.simple-calendar.js"></script>
-<script src="assets/js/calander.js"></script>
-<script src="assets/js/circle-progress.min.js"></script>
-<script src="assets/js/script.js"></script>
+<script src="{% static 'assets/js/jquery-3.6.0.min.js' %}"></script>
+<script src="{% static 'assets/js/popper.min.js' %}"></script>
+<script src="{% static 'assets/plugins/bootstrap/js/bootstrap.min.js' %}"></script>
+<script src="{% static 'assets/plugins/slimscroll/jquery.slimscroll.min.js' %}"></script>
+<script src="{% static 'assets/plugins/apexchart/apexcharts.min.js' %}"></script>
+<script src="{% static 'assets/plugins/apexchart/chart-data.js' %}"></script>
+<script src="{% static 'assets/plugins/simple-calendar/jquery.simple-calendar.js' %}"></script>
+<script src="{% static 'assets/js/calander.js' %}"></script>
+<script src="{% static 'assets/js/circle-progress.min.js' %}"></script>
+<script src="{% static 'assets/js/script.js' %}"></script>
 </body>
 </html>

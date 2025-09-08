@@ -11,6 +11,10 @@ from datetime import datetime
 # Create your views here.
 
 def add_student(request):
+    # if not request.user.is_authenticated or request.user.role != "admin":
+    #     messages.error(request, "You are not authorized to perform this action")
+    #     return redirect("school:index")
+
     if request.method == 'POST':
         first_name = request.POST.get('first_name')
         last_name = request.POST.get('last_name')
@@ -89,11 +93,19 @@ def add_student(request):
 
 
 def student_list(request):
+    # if not request.user.is_authenticated or request.user.role != "admin":
+    #     messages.error(request, "You are not authorized to perform this action")
+    #     return redirect("school:index")
+
     students = Student.objects.all()
     return render(request, 'student/students.html', {'students': students})
 
 
 def edit_student(request, student_id):
+    # if not request.user.is_authenticated or request.user.role != "admin":
+    #     messages.error(request, "You are not authorized to perform this action")
+    #     return redirect("school:index")
+
     student = get_object_or_404(Student, student_id=student_id)
     parent = getattr(student, 'parent', None)
 
@@ -151,6 +163,10 @@ def student_detail(request, student_id):
 
 
 def delete_student(request, student_id):
+    if not request.user.is_authenticated or request.user.role != "admin":
+        messages.error(request, "You are not authorized to perform this action")
+        return redirect("school:index")
+
     if request.method == "POST":
         student = get_object_or_404(Student, student_id=student_id)
         student_name = f"{student.first_name} {student.last_name}"

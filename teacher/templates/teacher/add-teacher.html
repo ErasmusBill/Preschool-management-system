@@ -1,0 +1,174 @@
+{% extends 'school/base.html' %}
+{% load static %}
+
+{% block title %}Add Teacher{% endblock %}
+
+{% block content %}
+<div class="page-wrapper">
+    <div class="content container-fluid">
+
+        <div class="page-header">
+            <div class="row align-items-center">
+                <div class="col">
+                    <h3 class="page-title">Add Teachers</h3>
+                    <ul class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="{% url 'teacher:list-teachers' %}">Teachers</a></li>
+                        <li class="breadcrumb-item active">Add Teachers</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="card">
+                    <div class="card-body">
+                        <form method="POST" action="{% url 'teacher:add-teacher' %}">
+                            {% csrf_token %}
+                            <div class="row">
+                                <div class="col-12">
+                                    <h5 class="form-title"><span>Basic Details</span></h5>
+                                </div>
+
+                                <div class="col-12 col-sm-6">
+                                    <div class="form-group">
+                                        <label>First Name</label>
+                                        <input type="text" name="first_name" value="{{ form_data.first_name|default:'' }}" class="form-control">
+                                    </div>
+                                </div>
+
+                                <div class="col-12 col-sm-6">
+                                    <div class="form-group">
+                                        <label>Last Name</label>
+                                        <input type="text" name="last_name" value="{{ form_data.last_name|default:'' }}" class="form-control">
+                                    </div>
+                                </div>
+
+                                <div class="col-12 col-sm-6">
+                                    <div class="form-group">
+                                        <label>Gender</label>
+                                        <select class="form-control" name="gender">
+                                            <option value="Male" {% if form_data.gender == "Male" %}selected{% endif %}>Male</option>
+                                            <option value="Female" {% if form_data.gender == "Female" %}selected{% endif %}>Female</option>
+                                            <option value="Others" {% if form_data.gender == "Others" %}selected{% endif %}>Others</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="col-12 col-sm-6">
+                                    <div class="form-group">
+                                        <label>Date of Birth</label>
+                                        <input type="date" name="date_of_birth" value="{{ form_data.date_of_birth|default:'' }}" class="form-control">
+                                    </div>
+                                </div>
+
+                                <div class="col-12 col-sm-6">
+                                    <div class="form-group">
+                                        <label>Mobile</label>
+                                        <input type="text" name="mobile" value="{{ form_data.mobile|default:'' }}" class="form-control">
+                                    </div>
+                                </div>
+
+                                <div class="col-12 col-sm-6">
+                                    <div class="form-group">
+                                        <label>Joining Date</label>
+                                        <input type="date" name="joining_date" value="{{ form_data.joining_date|default:'' }}" class="form-control">
+                                    </div>
+                                </div>
+
+                                <div class="col-12 col-sm-6">
+                                    <div class="form-group">
+                                        <label>Qualification</label>
+                                        <input type="text" name="qualification" value="{{ form_data.qualification|default:'' }}" class="form-control">
+                                    </div>
+                                </div>
+
+                                <div class="col-12 col-sm-6">
+                                    <div class="form-group">
+                                        <label>Experience</label>
+                                        <input type="text" name="experience" value="{{ form_data.experience|default:'' }}" class="form-control">
+                                    </div>
+                                </div>
+
+                                <div class="col-12 col-sm-6">
+                                    <div class="form-group">
+                                        <label>Department</label>
+                                        <select name="department" class="form-control">
+                                            {% for dept in departments %}
+                                                <option value="{{ dept.id }}" {% if form_data.department == dept.id|stringformat:"s" %}selected{% endif %}>{{ dept.name }}</option>
+                                            {% endfor %}
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="col-12">
+                                    <h5 class="form-title"><span>Login Details</span></h5>
+                                </div>
+
+                                <div class="col-12 col-sm-6">
+                                    <div class="form-group">
+                                        <label>Email</label>
+                                        <input type="email" name="email" value="{{ form_data.email|default:'' }}" class="form-control">
+                                    </div>
+                                </div>
+
+                                <div class="col-12 col-sm-6">
+                                    <div class="form-group">
+                                        <label>Password</label>
+                                        <input type="password" name="password" class="form-control">
+                                    </div>
+                                </div>
+
+                                <div class="col-12 col-sm-6">
+                                    <div class="form-group">
+                                        <label>Repeat Password</label>
+                                        <input type="password" name="repeat_password" class="form-control">
+                                    </div>
+                                </div>
+
+                                <div class="col-12">
+                                    <h5 class="form-title"><span>Address</span></h5>
+                                </div>
+
+                                <div class="col-12">
+                                    <div class="form-group">
+                                        <label>Address</label>
+                                        <input type="text" name="address" value="{{ form_data.address|default:'' }}" class="form-control">
+                                    </div>
+                                </div>
+
+                                <div class="col-12 col-sm-6">
+                                    <div class="form-group">
+                                        <label>City</label>
+                                        <input type="text" name="city" value="{{ form_data.city|default:'' }}" class="form-control">
+                                    </div>
+                                </div>
+
+                                <div class="col-12 col-sm-6">
+                                    <div class="form-group">
+                                        <label>Zip Code</label>
+                                        <input type="text" name="zipcode" value="{{ form_data.zipcode|default:'' }}" class="form-control">
+                                    </div>
+                                </div>
+
+                                <div class="col-12 col-sm-6">
+                                    <div class="form-group">
+                                        <label>Country</label>
+                                        <input type="text" name="country" value="{{ form_data.country|default:'' }}" class="form-control">
+                                    </div>
+                                </div>
+
+                                <div class="col-12">
+                                    <button type="submit" class="btn btn-primary">Submit</button>
+                                </div>
+
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+{% endblock %}
