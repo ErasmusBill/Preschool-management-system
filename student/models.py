@@ -2,7 +2,6 @@ from django.db import models
 from django.core.exceptions import ValidationError
 from datetime import datetime
 from django.utils import timezone
-from student.models import __str__
 # Create your models here.
 
 class Parent(models.Model):
@@ -41,6 +40,7 @@ class Student(models.Model):
     admission_number = models.CharField(max_length=20, unique=True)
     section = models.CharField(max_length=50)
     joining_date = models.DateField(auto_now_add=True)
+    fees = models.ForeignKey('finance.Fees', on_delete=models.SET_NULL, blank=True, null=True, related_name='students_with_fees')
     mobile_number = models.CharField(max_length=15)
     student_image = models.ImageField(upload_to='student_images/', null=True, blank=True)
     

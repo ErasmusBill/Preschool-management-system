@@ -1,21 +1,21 @@
-from django.http import HttpResponse, HttpResponseForbidden
-from django.shortcuts import render,redirect,get_object_or_404
+from django.http import HttpResponseForbidden
+from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
-from .models import Student,Parent
+from django.core.mail import send_mail
+from django.conf import settings
+from datetime import datetime
+
+from .models import Student, Parent
 from school.views import create_notification
 
 
-from datetime import datetime
-
-
-# Create your views here.
-
 def add_student(request):
-    # if not request.user.is_authenticated or request.user.role != "admin":
-    #     messages.error(request, "You are not authorized to perform this action")
-    #     return redirect("school:index")
-
+    """
+    Add a new student and parent information.
+    Sends an email notification to parents after successful addition.
+    """
     if request.method == 'POST':
+        # student info
         first_name = request.POST.get('first_name')
         last_name = request.POST.get('last_name')
         student_id = request.POST.get('student_id')
@@ -29,7 +29,7 @@ def add_student(request):
         mobile_number = request.POST.get('mobile_number')
         joining_date = request.POST.get('joining_date')
 
-        # parent/guardian information
+        # parent info
         father_name = request.POST.get('father_name')
         father_phone = request.POST.get('father_phone')
         father_occupation = request.POST.get('father_occupation')
@@ -41,7 +41,7 @@ def add_student(request):
         present_address = request.POST.get('present_address')
         permanent_address = request.POST.get('permanent_address')
 
-       
+        # validate required fields
         if not all([
             first_name, last_name, student_id, gender, date_of_birth,
             student_class, admission_number, section, student_image,
@@ -83,8 +83,25 @@ def add_student(request):
             parent=parent
         )
 
-
+        # notify admins (in-app notification)
         create_notification(request.user, f'New student {first_name} {last_name} added.')
+
+      
+        subject = "New Student Enrollment Confirmation"
+        message = (
+            f"Dear {father_name} and {mother_name},\n\n"
+            f"Your child {first_name} {last_name} has been successfully enrolled "
+            f"in class {student_class}, section {section}.\n\n"
+            f"Admission Number: {admission_number}\n"
+            f"Joining Date: {joining_date}\n\n"
+            "Thank you for choosing our school.\n\nBest regards,\nSchool Administration"
+        )
+        recipient_list = [father_email, mother_email]
+
+        try:
+            send_mail(subject, message, settings.DEFAULT_FROM_EMAIL, recipient_list)
+        except Exception as e:
+            messages.warning(request, f"Student added, but email could not be sent. Error: {e}")
 
         messages.success(request, f'Student {first_name} {last_name} added successfully.')
         return redirect('student:student-list')
@@ -93,23 +110,18 @@ def add_student(request):
 
 
 def student_list(request):
-    # if not request.user.is_authenticated or request.user.role != "admin":
-    #     messages.error(request, "You are not authorized to perform this action")
-    #     return redirect("school:index")
-
+    """List all students."""
     students = Student.objects.all()
     return render(request, 'student/students.html', {'students': students})
 
 
 def edit_student(request, student_id):
-    # if not request.user.is_authenticated or request.user.role != "admin":
-    #     messages.error(request, "You are not authorized to perform this action")
-    #     return redirect("school:index")
-
+    """Edit existing student and parent information."""
     student = get_object_or_404(Student, student_id=student_id)
     parent = getattr(student, 'parent', None)
 
     if request.method == 'POST':
+        # update student info
         student.first_name = request.POST.get('first_name')
         student.last_name = request.POST.get('last_name')
         student.student_id = request.POST.get('student_id')
@@ -120,20 +132,21 @@ def edit_student(request, student_id):
         student.section = request.POST.get('section')
         student.mobile_number = request.POST.get('mobile_number')
 
-     
-        date_of_birth = request.POST.get('date_of_birth')
-        if date_of_birth:
-            student.date_of_birth = datetime.strptime(date_of_birth, "%Y-%m-%d").date()
+        
+        dob = request.POST.get('date_of_birth')
+        if dob:
+            student.date_of_birth = datetime.strptime(dob, "%Y-%m-%d").date()
 
-        joining_date = request.POST.get('joining_date')
-        if joining_date:
-            student.joining_date = datetime.strptime(joining_date, "%Y-%m-%d").date()
+        join_date = request.POST.get('joining_date')
+        if join_date:
+            student.joining_date = datetime.strptime(join_date, "%Y-%m-%d").date()
 
+        
         student_image = request.FILES.get('student_image')
         if student_image:
             student.student_image = student_image
 
-   
+      
         if parent:
             parent.father_name = request.POST.get('father_name')
             parent.father_phone = request.POST.get('father_phone')
@@ -150,7 +163,6 @@ def edit_student(request, student_id):
         student.save()
 
         create_notification(request.user, f'Student {student.first_name} {student.last_name} updated.')
-
         messages.success(request, f"Student {student.first_name} {student.last_name} updated successfully.")
         return redirect('student:student-list')
 
@@ -158,11 +170,13 @@ def edit_student(request, student_id):
 
 
 def student_detail(request, student_id):
+    """View detailed information about a student."""
     student = get_object_or_404(Student, student_id=student_id)
     return render(request, 'student/student-details.html', {'student': student})
 
 
 def delete_student(request, student_id):
+    """Delete a student record."""
     if not request.user.is_authenticated or request.user.role != "admin":
         messages.error(request, "You are not authorized to perform this action")
         return redirect("school:index")
@@ -172,9 +186,7 @@ def delete_student(request, student_id):
         student_name = f"{student.first_name} {student.last_name}"
         student.delete()
 
-
         create_notification(request.user, f'Student {student_name} deleted.')
-
         messages.success(request, f'Student {student_name} deleted successfully.')
         return redirect('student:student-list')
 

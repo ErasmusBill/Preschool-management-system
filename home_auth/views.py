@@ -1,7 +1,9 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import get_object_or_404, render, redirect
 from django.contrib import messages
-from django.contrib.auth import authenticate, login as auth_login, logout as auth_logout
+from django.contrib.auth import authenticate, login as auth_login, logout as auth_logout,update_session_auth_hash
+from django.contrib.auth.decorators import login_required
 from django.conf import settings
+from django.template.context_processors import request
 
 from home_auth.models import CustomUser, PasswordResetRequest
 
@@ -140,3 +142,40 @@ def logout_view(request):
     auth_logout(request)
     messages.success(request, "You have been logged out")
     return redirect("home_auth:login")
+
+@login_required
+def change_password(request, user_id):
+    user: CustomUser = get_object_or_404(CustomUser, id=user_id)
+
+   
+    if request.user != user and not request.user.is_superuser:
+        messages.error(request, "You are not authorized to perform this action")
+        return redirect("school:dashboard")
+
+    if request.method == "POST":
+        current_password = request.POST.get("current_password")
+        new_password = request.POST.get("new_password")
+        confirm_password = request.POST.get("repeat_password")
+
+        if not all([current_password, new_password, confirm_password]):
+            messages.error(request, "All fields are required")
+            return redirect("home_auth:change-password", user_id=user.id)
+
+        if new_password != confirm_password:
+            messages.error(request, "New password does not match with confirm password")
+            return redirect("home_auth:change-password", user_id=user.id)
+
+        if not user.check_password(current_password):
+            messages.error(request, "You entered an incorrect current password")
+            return redirect("home_auth:change-password", user_id=user.id)
+
+        user.set_password(new_password)
+        user.save()
+
+        
+        update_session_auth_hash(request, user)
+
+        messages.success(request, "You have successfully changed your password")
+        return redirect("school:dashboard")
+
+    return render(request, "home_auth/change_password.html", {"user": user})

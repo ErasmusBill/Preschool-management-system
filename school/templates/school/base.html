@@ -152,7 +152,6 @@
                               <li><a href="{% url 'student:student-detail' student.student_id %}">Student View</a></li>
                               <li><a href="{% url 'student:edit-student' student.student_id %}">Student Edit</a></li>
                            {% endif %}
-
                         </ul>
                      </li>
                      <li class="submenu">
@@ -160,10 +159,10 @@
                         <ul>
                            <li><a href="{% url 'teacher:list-teachers' %}">Teacher List</a></li>
                            <li><a href="{% url 'teacher:add-teacher' %}">Teacher Add</a></li>
-                              {% if teacher %}
-                                    <li><a href="{% url 'teacher:teacher-detail' teacher.id %}">Teacher View</a></li>
-                                    <li><a href="{% url 'teacher:delete-teacher' teacher.id %}">Teacher Edit</a></li>
-                              {% endif %}
+                           {% if teacher %}
+                              <li><a href="{% url 'teacher:teacher-detail' teacher.id %}">Teacher View</a></li>
+                              <li><a href="{% url 'teacher:delete-teacher' teacher.id %}">Teacher Edit</a></li>
+                           {% endif %}
                         </ul>
                      </li>
                      <li class="submenu">
@@ -192,19 +191,19 @@
                      <li class="submenu">
                         <a href="#"><i class="fas fa-file-invoice-dollar"></i> <span> Accounts</span> <span class="menu-arrow"></span></a>
                         <ul>
-                           <li><a href="fees-collections.html">Fees Collection</a></li>
-                           <li><a href="expenses.html">Expenses</a></li>
-                           <li><a href="salary.html">Salary</a></li>
-                           <li><a href="add-fees-collection.html">Add Fees</a></li>
-                           <li><a href="add-expenses.html">Add Expenses</a></li>
-                           <li><a href="add-salary.html">Add Salary</a></li>
+                           <li><a href="{% url 'finance:list-fees' %}">Fees Collection</a></li>
+                           {% comment %} <li><a href="{% url 'finance:expenses' %}">Expenses</a></li>
+                           <li><a href="{% url 'finance:salary' %}">Salary</a></li> {% endcomment %}
+                           <li><a href="{% url 'finance:add-fees' %}">Add Fees</a></li>
+                           {% comment %} <li><a href="{% url 'finance:add-expenses' %}">Add Expenses</a></li>
+                           <li><a href="{% url 'finance:add-salary' %}">Add Salary</a></li> {% endcomment %}
                         </ul>
                      </li>
                      <li>
                         <a href="holiday.html"><i class="fas fa-holly-berry"></i> <span>Holiday</span></a>
                      </li>
                      <li>
-                        <a href="fees.html"><i class="fas fa-comment-dollar"></i> <span>Fees</span></a>
+                        <a href="{% url 'finance:list-fees' %}"><i class="fas fa-comment-dollar"></i> <span>Fees</span></a>
                      </li>
                      <li>
                         <a href="exam.html"><i class="fas fa-clipboard-list"></i> <span>Exam list</span></a>
@@ -266,7 +265,7 @@
                         <a href="#"><i class="fas fa-table"></i> <span> Tables </span> <span class="menu-arrow"></span></a>
                         <ul>
                            <li><a href="tables-basic.html">Basic Tables </a></li>
-                           <li><a href="data-tables.html">Data Table </a></li>
+                           <li><a href="data-tables.html">Data Table</a></li>
                         </ul>
                      </li>
                      <li class="submenu">

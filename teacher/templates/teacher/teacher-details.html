@@ -1,511 +1,882 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
-
-<!-- Mirrored from preschool.dreamguystech.com/html-template/teacher-details.html by HTTrack Website Copier/3.x [XR&CO'2014], Thu, 28 Oct 2021 11:11:50 GMT -->
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0">
-<title>Preskool - Teacher Details</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0">
+    <title>Preskool - Teacher Details</title>
 
-<link rel="shortcut icon" href="assets/img/favicon.png">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,500;0,600;0,700;1,400&amp;display=swap">
+    <link rel="shortcut icon" href="{% static 'assets/img/favicon.png' %}">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,500;0,600;0,700;1,400&amp;display=swap">
+    <link rel="stylesheet" href="{% static 'assets/plugins/bootstrap/css/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{% static 'assets/plugins/fontawesome/css/fontawesome.min.css' %}">
+    <link rel="stylesheet" href="{% static 'assets/plugins/fontawesome/css/all.min.css' %}">
+    <link rel="stylesheet" href="{% static 'assets/css/style.css' %}">
 
-<link rel="stylesheet" href="assets/plugins/bootstrap/css/bootstrap.min.css">
-
-<link rel="stylesheet" href="assets/plugins/fontawesome/css/fontawesome.min.css">
-<link rel="stylesheet" href="assets/plugins/fontawesome/css/all.min.css">
-
-<link rel="stylesheet" href="assets/plugins/datatables/datatables.min.css">
-
-<link rel="stylesheet" href="assets/css/style.css">
+    <style>
+        .teacher-profile-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px 15px;
+            border-radius: 10px;
+            margin-bottom: 30px;
+        }
+        
+        @media (min-width: 768px) {
+            .teacher-profile-header {
+                padding: 30px 20px;
+            }
+        }
+        
+        .profile-img-container {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        
+        .profile-img {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 4px solid rgba(255,255,255,0.3);
+            margin: 0 auto;
+        }
+        
+        @media (min-width: 768px) {
+            .profile-img {
+                width: 150px;
+                height: 150px;
+                border: 5px solid rgba(255,255,255,0.3);
+            }
+        }
+        
+        .profile-info {
+            text-align: center;
+        }
+        
+        @media (min-width: 768px) {
+            .profile-info {
+                text-align: left;
+            }
+        }
+        
+        .profile-info h2 {
+            font-size: 1.5rem;
+            margin-bottom: 10px;
+        }
+        
+        @media (min-width: 768px) {
+            .profile-info h2 {
+                font-size: 2rem;
+            }
+        }
+        
+        .profile-stats {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 20px;
+            flex-wrap: wrap;
+        }
+        
+        @media (min-width: 576px) {
+            .profile-stats {
+                gap: 15px;
+            }
+        }
+        
+        @media (min-width: 768px) {
+            .profile-stats {
+                justify-content: flex-start;
+                gap: 20px;
+            }
+        }
+        
+        .stat-box {
+            background: rgba(255,255,255,0.2);
+            padding: 10px 8px;
+            border-radius: 8px;
+            text-align: center;
+            min-width: 80px;
+            flex: 1;
+            max-width: 100px;
+        }
+        
+        @media (min-width: 576px) {
+            .stat-box {
+                padding: 12px 10px;
+                min-width: 100px;
+                max-width: 120px;
+                flex: none;
+            }
+        }
+        
+        @media (min-width: 768px) {
+            .stat-box {
+                padding: 15px;
+                min-width: 120px;
+                border-radius: 10px;
+            }
+        }
+        
+        .stat-number {
+            font-size: 18px;
+            font-weight: bold;
+            display: block;
+        }
+        
+        @media (min-width: 768px) {
+            .stat-number {
+                font-size: 24px;
+            }
+        }
+        
+        .stat-label {
+            font-size: 12px;
+            opacity: 0.9;
+        }
+        
+        @media (min-width: 768px) {
+            .stat-label {
+                font-size: 14px;
+            }
+        }
+        
+        .info-card {
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            margin-bottom: 25px;
+            border: none;
+        }
+        
+        .info-card .card-header {
+            background-color: #f8f9fa;
+            border-bottom: 1px solid #e9ecef;
+            font-weight: 600;
+            padding: 12px 15px;
+            border-radius: 10px 10px 0 0 !important;
+            font-size: 14px;
+        }
+        
+        @media (min-width: 768px) {
+            .info-card .card-header {
+                padding: 15px 20px;
+                font-size: 16px;
+            }
+        }
+        
+        .info-card .card-body {
+            padding: 15px;
+        }
+        
+        @media (min-width: 768px) {
+            .info-card .card-body {
+                padding: 20px;
+            }
+        }
+        
+        .info-item {
+            display: flex;
+            flex-direction: column;
+            margin-bottom: 15px;
+            padding: 8px 0;
+            border-bottom: 1px solid #f1f1f1;
+        }
+        
+        @media (min-width: 576px) {
+            .info-item {
+                flex-direction: row;
+                padding: 10px 0;
+            }
+        }
+        
+        .info-item:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+        }
+        
+        .info-label {
+            min-width: 100%;
+            font-weight: 600;
+            color: #495057;
+            font-size: 14px;
+            margin-bottom: 4px;
+        }
+        
+        @media (min-width: 576px) {
+            .info-label {
+                min-width: 140px;
+                margin-bottom: 0;
+                font-size: 15px;
+            }
+        }
+        
+        @media (min-width: 768px) {
+            .info-label {
+                min-width: 150px;
+                font-size: 16px;
+            }
+        }
+        
+        .info-value {
+            color: #6c757d;
+            font-size: 14px;
+        }
+        
+        @media (min-width: 768px) {
+            .info-value {
+                font-size: 15px;
+            }
+        }
+        
+        .badge-custom {
+            padding: 4px 8px;
+            border-radius: 15px;
+            font-weight: 500;
+            font-size: 11px;
+            margin: 2px;
+        }
+        
+        @media (min-width: 768px) {
+            .badge-custom {
+                padding: 6px 12px;
+                border-radius: 20px;
+                font-size: 12px;
+            }
+        }
+        
+        .action-buttons {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            margin-top: 15px;
+        }
+        
+        @media (min-width: 576px) {
+            .action-buttons {
+                flex-direction: row;
+                gap: 10px;
+                margin-top: 20px;
+            }
+        }
+        
+        .action-buttons .btn {
+            font-size: 13px;
+            padding: 8px 12px;
+        }
+        
+        @media (min-width: 768px) {
+            .action-buttons .btn {
+                font-size: 14px;
+                padding: 10px 16px;
+            }
+        }
+        
+        .social-links {
+            display: flex;
+            gap: 8px;
+            margin-top: 15px;
+            justify-content: center;
+        }
+        
+        @media (min-width: 576px) {
+            .social-links {
+                justify-content: flex-start;
+                gap: 10px;
+            }
+        }
+        
+        .social-links a {
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #f8f9fa;
+            color: #495057;
+            transition: all 0.3s ease;
+            font-size: 14px;
+        }
+        
+        @media (min-width: 768px) {
+            .social-links a {
+                width: 40px;
+                height: 40px;
+                font-size: 16px;
+            }
+        }
+        
+        .social-links a:hover {
+            background: #667eea;
+            color: white;
+            transform: translateY(-2px);
+        }
+        
+        .skill-meter {
+            height: 6px;
+            border-radius: 3px;
+            background: #e9ecef;
+            overflow: hidden;
+            margin-top: 5px;
+        }
+        
+        @media (min-width: 768px) {
+            .skill-meter {
+                height: 8px;
+                border-radius: 4px;
+            }
+        }
+        
+        .skill-progress {
+            height: 100%;
+            border-radius: 3px;
+        }
+        
+        @media (min-width: 768px) {
+            .skill-progress {
+                border-radius: 4px;
+            }
+        }
+        
+        /* Page header responsive */
+        .page-header {
+            margin-bottom: 20px;
+        }
+        
+        .page-header .col-auto {
+            margin-top: 15px;
+        }
+        
+        @media (min-width: 768px) {
+            .page-header .col-auto {
+                margin-top: 0;
+            }
+        }
+        
+        .page-title {
+            font-size: 1.5rem;
+            margin-bottom: 5px;
+        }
+        
+        @media (min-width: 768px) {
+            .page-title {
+                font-size: 1.75rem;
+            }
+        }
+        
+        .breadcrumb {
+            font-size: 13px;
+        }
+        
+        @media (min-width: 768px) {
+            .breadcrumb {
+                font-size: 14px;
+            }
+        }
+        
+        /* Sidebar adjustments for mobile */
+        @media (max-width: 767.98px) {
+            .main-wrapper .page-wrapper {
+                margin-left: 0;
+            }
+            
+            .sidebar {
+                margin-left: -250px;
+            }
+            
+            .sidebar.sidebar-open {
+                margin-left: 0;
+            }
+        }
+        
+        /* Card spacing for mobile */
+        @media (max-width: 575.98px) {
+            .col-md-6 {
+                margin-bottom: 0;
+            }
+            
+            .info-card {
+                margin-bottom: 20px;
+            }
+        }
+        
+        /* Header improvements for mobile */
+        .header .top-nav-search {
+            display: none;
+        }
+        
+        @media (min-width: 768px) {
+            .header .top-nav-search {
+                display: block;
+            }
+        }
+        
+        /* Notification dropdown adjustments */
+        @media (max-width: 575.98px) {
+            .notifications {
+                left: -200px !important;
+                width: 300px;
+            }
+        }
+        
+        /* User menu adjustments */
+        @media (max-width: 575.98px) {
+            .nav-item.dropdown .dropdown-menu {
+                left: -150px !important;
+            }
+        }
+        
+        /* Content padding adjustments */
+        .content {
+            padding: 15px !important;
+        }
+        
+        @media (min-width: 768px) {
+            .content {
+                padding: 30px !important;
+            }
+        }
+        
+        /* Table responsive for classes and subjects */
+        .table-responsive {
+            border: none;
+        }
+        
+        /* Footer adjustments */
+        footer {
+            text-align: center;
+            padding: 15px;
+            font-size: 13px;
+        }
+        
+        @media (min-width: 768px) {
+            footer {
+                font-size: 14px;
+            }
+        }
+        
+        /* Profile header layout adjustments */
+        @media (max-width: 767.98px) {
+            .teacher-profile-header .row {
+                text-align: center;
+            }
+            
+            .teacher-profile-header .col-md-8 {
+                margin-top: 15px;
+            }
+        }
+        
+        /* Badge wrapping */
+        .info-value .badge-custom {
+            display: inline-block;
+            margin: 1px 2px;
+        }
+        
+        /* Long text handling */
+        .info-value {
+            word-break: break-word;
+            line-height: 1.4;
+        }
+        
+        /* Email and phone links */
+        .info-value a {
+            color: #667eea;
+            text-decoration: none;
+        }
+        
+        .info-value a:hover {
+            text-decoration: underline;
+        }
+    </style>
 </head>
 <body>
 
 <div class="main-wrapper">
+    <!-- Header -->
+    <div class="header">
+        <div class="header-left">
+            <a href="{% url 'school:dashboard' %}" class="logo">
+                <img src="{% static 'assets/img/logo.png' %}" alt="Logo">
+            </a>
+            <a href="{% url 'school:dashboard' %}" class="logo logo-small">
+                <img src="{% static 'assets/img/logo-small.png' %}" alt="Logo" width="30" height="30">
+            </a>
+        </div>
 
-<div class="header">
+        <a href="javascript:void(0);" id="toggle_btn">
+            <i class="fas fa-align-left"></i>
+        </a>
 
-<div class="header-left">
-<a href="index.html" class="logo">
-<img src="assets/img/logo.png" alt="Logo">
-</a>
-<a href="index.html" class="logo logo-small">
-<img src="assets/img/logo-small.png" alt="Logo" width="30" height="30">
-</a>
-</div>
+        <div class="top-nav-search">
+            <form>
+                <input type="text" class="form-control" placeholder="Search here">
+                <button class="btn" type="submit"><i class="fas fa-search"></i></button>
+            </form>
+        </div>
 
-<a href="javascript:void(0);" id="toggle_btn">
-<i class="fas fa-align-left"></i>
-</a>
+        <a class="mobile_btn" id="mobile_btn">
+            <i class="fas fa-bars"></i>
+        </a>
 
-<div class="top-nav-search">
-<form>
-<input type="text" class="form-control" placeholder="Search here">
-<button class="btn" type="submit"><i class="fas fa-search"></i></button>
-</form>
-</div>
+        <ul class="nav user-menu">
+            <li class="nav-item dropdown noti-dropdown">
+                <a href="#" class="dropdown-toggle nav-link" data-toggle="dropdown">
+                    <i class="far fa-bell"></i> <span class="badge badge-pill">3</span>
+                </a>
+                <div class="dropdown-menu notifications">
+                    <div class="topnav-dropdown-header">
+                        <span class="notification-title">Notifications</span>
+                        <a href="javascript:void(0)" class="clear-noti"> Clear All </a>
+                    </div>
+                    <div class="noti-content">
+                        <ul class="notification-list">
+                            <li class="notification-message">
+                                <a href="#">
+                                    <div class="media">
+                                        <span class="avatar avatar-sm">
+                                            {% if teacher.image %}
+                                                <img class="avatar-img rounded-circle" alt="Teacher Image" src="{{ teacher.image.url }}">
+                                            {% else %}
+                                                <img class="avatar-img rounded-circle" alt="Default" src="{% static 'assets/img/user.jpg' %}">
+                                            {% endif %}
+                                        </span>
+                                        <div class="media-body">
+                                            <p class="noti-details"><span class="noti-title">Carlson Tech</span> has approved <span class="noti-title">your estimate</span></p>
+                                            <p class="noti-time"><span class="notification-time">4 mins ago</span></p>
+                                        </div>
+                                    </div>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="topnav-dropdown-footer">
+                        <a href="#">View all Notifications</a>
+                    </div>
+                </div>
+            </li>
 
+            <li class="nav-item dropdown has-arrow">
+                <a href="#" class="dropdown-toggle nav-link" data-toggle="dropdown">
+                    <span class="user-img">
+                        {% if request.user.teacher and request.user.teacher.image %}
+                            <img class="rounded-circle" src="{{ request.user.teacher.image.url }}" width="31" alt="{{ request.user.get_full_name }}">
+                        {% else %}
+                            <img class="rounded-circle" src="{% static 'assets/img/profiles/avatar-01.jpg' %}" width="31" alt="{{ request.user.get_full_name }}">
+                        {% endif %}
+                    </span>
+                </a>
+                <div class="dropdown-menu">
+                    <div class="user-header">
+                        <div class="avatar avatar-sm">
+                            {% if request.user.teacher and request.user.teacher.image %}
+                                <img src="{{ request.user.teacher.image.url }}" alt="User Image" class="avatar-img rounded-circle">
+                            {% else %}
+                                <img src="{% static 'assets/img/profiles/avatar-01.jpg' %}" alt="User Image" class="avatar-img rounded-circle">
+                            {% endif %}
+                        </div>
+                        <div class="user-text">
+                            <h6>{{ request.user.get_full_name }}</h6>
+                            <p class="text-muted mb-0">{{ request.user.get_role_display }}</p>
+                        </div>
+                    </div>
+                    <a class="dropdown-item" href="{% url 'home_auth:logout' %}">Logout</a>
+                </div>
+            </li>
+        </ul>
+    </div>
+    <!-- /Header -->
 
-<a class="mobile_btn" id="mobile_btn">
-<i class="fas fa-bars"></i>
-</a>
+    <!-- Sidebar -->
+    <div class="sidebar" id="sidebar">
+        <div class="sidebar-inner slimscroll">
+            <div id="sidebar-menu" class="sidebar-menu">
+                <ul>
+                    <li class="menu-title">
+                        <span>Main Menu</span>
+                    </li>
+                    <li class="submenu">
+                        <a href="#"><i class="fas fa-user-graduate"></i> <span> Dashboard</span> <span class="menu-arrow"></span></a>
+                        <ul>
+                            <li><a href="{% url 'school:dashboard' %}">Admin Dashboard</a></li>
+                            <li><a href="{% url 'school:dashboard' %}">Teacher Dashboard</a></li>
+                            <li><a href="{% url 'school:dashboard' %}">Student Dashboard</a></li>
+                        </ul>
+                    </li>
+                    <li class="submenu">
+                        <a href="#"><i class="fas fa-user-graduate"></i> <span> Students</span> <span class="menu-arrow"></span></a>
+                        <ul>
+                            <li><a href="{% url 'student:student-list' %}">Student List</a></li>
+                            <li><a href="{% url 'student:add-student' %}">Student Add</a></li>
+                        </ul>
+                    </li>
+                    <li class="submenu active">
+                        <a href="#"><i class="fas fa-chalkboard-teacher"></i> <span> Teachers</span> <span class="menu-arrow"></span></a>
+                        <ul>
+                            <li><a href="{% url 'teacher:list-teachers' %}">Teacher List</a></li>
+                            <li><a href="{% url 'teacher:add-teacher' %}">Teacher Add</a></li>
+                        </ul>
+                    </li>
+                    <li class="submenu">
+                        <a href="#"><i class="fas fa-building"></i> <span> Departments</span> <span class="menu-arrow"></span></a>
+                        <ul>
+                            <li><a href="{% url 'department:list-department' %}">Department List</a></li>
+                            <li><a href="{% url 'department:add-department' %}">Department Add</a></li>
+                        </ul>
+                    </li>
+                    <li class="menu-title">
+                        <span>Management</span>
+                    </li>
+                    <li>
+                        <a href="#"><i class="fas fa-clipboard-list"></i> <span>Exam list</span></a>
+                    </li>
+                    <li>
+                        <a href="#"><i class="fas fa-calendar-day"></i> <span>Events</span></a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <!-- /Sidebar -->
 
+    <!-- Page Wrapper -->
+    <div class="page-wrapper">
+        <div class="content container-fluid">
+            <!-- Page Header -->
+            <div class="page-header">
+                <div class="row align-items-center">
+                    <div class="col-12 col-md">
+                        <h3 class="page-title">Teacher Details</h3>
+                        <ul class="breadcrumb">
+                            <li class="breadcrumb-item"><a href="{% url 'teacher:list-teachers' %}">Teachers</a></li>
+                            <li class="breadcrumb-item active">{{ teacher.user.get_full_name }}</li>
+                        </ul>
+                    </div>
+                    <div class="col-12 col-md-auto">
+                        <div class="action-buttons">
+                            <a href="{% url 'teacher:edit-teacher' teacher.id %}" class="btn btn-primary">
+                                <i class="fas fa-edit"></i> Edit Profile
+                            </a>
+                            <a href="{% url 'teacher:list-teachers' %}" class="btn btn-secondary">
+                                <i class="fas fa-arrow-left"></i> Back to List
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- /Page Header -->
 
-<ul class="nav user-menu">
+            <!-- Teacher Profile Header -->
+            <div class="teacher-profile-header">
+                <div class="row align-items-center">
+                    <div class="col-12 col-md-4">
+                        <div class="profile-img-container">
+                            {% if teacher.image %}
+                                <img src="{{ teacher.image.url }}" class="profile-img" alt="{{ teacher.user.get_full_name }}">
+                            {% else %}
+                                <img src="{% static 'assets/img/user.jpg' %}" class="profile-img" alt="{{ teacher.user.get_full_name }}">
+                            {% endif %}
+                        </div>
+                    </div>
+                    <div class="col-12 col-md-8">
+                        <div class="profile-info">
+                            <h2>{{ teacher.user.get_full_name }}</h2>
+                            <p class="mb-2">{{ teacher.department_id.name }} Department</p>
+                            <p class="mb-0">{{ teacher.qualification }}</p>
 
-<li class="nav-item dropdown noti-dropdown">
-<a href="#" class="dropdown-toggle nav-link" data-toggle="dropdown">
-<i class="far fa-bell"></i> <span class="badge badge-pill">3</span>
-</a>
-<div class="dropdown-menu notifications">
-<div class="topnav-dropdown-header">
-<span class="notification-title">Notifications</span>
-<a href="javascript:void(0)" class="clear-noti"> Clear All </a>
-</div>
-<div class="noti-content">
-<ul class="notification-list">
-<li class="notification-message">
-<a href="#">
-<div class="media">
-<span class="avatar avatar-sm">
-<img class="avatar-img rounded-circle" alt="User Image" src="assets/img/profiles/avatar-02.jpg">
-</span>
-<div class="media-body">
-<p class="noti-details"><span class="noti-title">Carlson Tech</span> has approved <span class="noti-title">your estimate</span></p>
-<p class="noti-time"><span class="notification-time">4 mins ago</span></p>
-</div>
-</div>
-</a>
-</li>
-<li class="notification-message">
-<a href="#">
-<div class="media">
-<span class="avatar avatar-sm">
-<img class="avatar-img rounded-circle" alt="User Image" src="assets/img/profiles/avatar-11.jpg">
-</span>
-<div class="media-body">
-<p class="noti-details"><span class="noti-title">International Software Inc</span> has sent you a invoice in the amount of <span class="noti-title">$218</span></p>
-<p class="noti-time"><span class="notification-time">6 mins ago</span></p>
-</div>
-</div>
-</a>
-</li>
-<li class="notification-message">
-<a href="#">
-<div class="media">
-<span class="avatar avatar-sm">
-<img class="avatar-img rounded-circle" alt="User Image" src="assets/img/profiles/avatar-17.jpg">
-</span>
-<div class="media-body">
-<p class="noti-details"><span class="noti-title">John Hendry</span> sent a cancellation request <span class="noti-title">Apple iPhone XR</span></p>
-<p class="noti-time"><span class="notification-time">8 mins ago</span></p>
-</div>
-</div>
-</a>
-</li>
-<li class="notification-message">
-<a href="#">
-<div class="media">
-<span class="avatar avatar-sm">
-<img class="avatar-img rounded-circle" alt="User Image" src="assets/img/profiles/avatar-13.jpg">
-</span>
-<div class="media-body">
-<p class="noti-details"><span class="noti-title">Mercury Software Inc</span> added a new product <span class="noti-title">Apple MacBook Pro</span></p>
-<p class="noti-time"><span class="notification-time">12 mins ago</span></p>
-</div>
-</div>
-</a>
-</li>
-</ul>
-</div>
-<div class="topnav-dropdown-footer">
-<a href="#">View all Notifications</a>
-</div>
-</div>
-</li>
+                            <div class="profile-stats">
+                                <div class="stat-box">
+                                    <span class="stat-number">{{ teacher.experience }}+</span>
+                                    <span class="stat-label">Years Exp</span>
+                                </div>
+                                <div class="stat-box">
+                                    <span class="stat-number">{% if teacher.class_set.all %}{{ teacher.class_set.all.count }}{% else %}0{% endif %}</span>
+                                    <span class="stat-label">Classes</span>
+                                </div>
+                                <div class="stat-box">
+                                    <span class="stat-number">{% if teacher.subject_set.all %}{{ teacher.subject_set.all.count }}{% else %}0{% endif %}</span>
+                                    <span class="stat-label">Subjects</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- /Teacher Profile Header -->
 
+            <div class="row">
+                <!-- Personal Information -->
+                <div class="col-12 col-lg-6">
+                    <div class="card info-card">
+                        <div class="card-header">
+                            <i class="fas fa-user-circle mr-2"></i> Personal Information
+                        </div>
+                        <div class="card-body">
+                            <div class="info-item">
+                                <span class="info-label">Full Name:</span>
+                                <span class="info-value">{{ teacher.user.get_full_name }}</span>
+                            </div>
+                            <div class="info-item">
+                                <span class="info-label">Gender:</span>
+                                <span class="info-value">{{ teacher.get_gender_display }}</span>
+                            </div>
+                            <div class="info-item">
+                                <span class="info-label">Date of Birth:</span>
+                                <span class="info-value">{{ teacher.date_of_birth }}</span>
+                            </div>
+                            <div class="info-item">
+                                <span class="info-label">Email:</span>
+                                <span class="info-value">
+                                    <a href="mailto:{{ teacher.user.email }}">{{ teacher.user.email }}</a>
+                                </span>
+                            </div>
+                            <div class="info-item">
+                                <span class="info-label">Mobile:</span>
+                                <span class="info-value">
+                                    <a href="tel:{{ teacher.mobile }}">{{ teacher.mobile }}</a>
+                                </span>
+                            </div>
+                            <div class="info-item">
+                                <span class="info-label">Status:</span>
+                                <span class="info-value">
+                                    <span class="badge badge-success badge-custom">Active</span>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
 
-<li class="nav-item dropdown has-arrow">
-<a href="#" class="dropdown-toggle nav-link" data-toggle="dropdown">
-<span class="user-img"><img class="rounded-circle" src="assets/img/profiles/avatar-01.jpg" width="31" alt="Ryan Taylor"></span>
-</a>
-<div class="dropdown-menu">
-<div class="user-header">
-<div class="avatar avatar-sm">
-<img src="assets/img/profiles/avatar-01.jpg" alt="User Image" class="avatar-img rounded-circle">
-</div>
-<div class="user-text">
-<h6>Ryan Taylor</h6>
-<p class="text-muted mb-0">Administrator</p>
-</div>
-</div>
-<a class="dropdown-item" href="profile.html">My Profile</a>
-<a class="dropdown-item" href="inbox.html">Inbox</a>
-<a class="dropdown-item" href="login.html">Logout</a>
-</div>
-</li>
+                <!-- Professional Information -->
+                <div class="col-12 col-lg-6">
+                    <div class="card info-card">
+                        <div class="card-header">
+                            <i class="fas fa-briefcase mr-2"></i> Professional Information
+                        </div>
+                        <div class="card-body">
+                            <div class="info-item">
+                                <span class="info-label">Teacher ID:</span>
+                                <span class="info-value">TCH-{{ teacher.id|stringformat:"04d" }}</span>
+                            </div>
+                            <div class="info-item">
+                                <span class="info-label">Department:</span>
+                                <span class="info-value">{{ teacher.department_id.name }}</span>
+                            </div>
+                            <div class="info-item">
+                                <span class="info-label">Qualification:</span>
+                                <span class="info-value">{{ teacher.qualification }}</span>
+                            </div>
+                            <div class="info-item">
+                                <span class="info-label">Experience:</span>
+                                <span class="info-value">{{ teacher.experience }} years</span>
+                            </div>
+                            <div class="info-item">
+                                <span class="info-label">Joining Date:</span>
+                                <span class="info-value">{{ teacher.joining_date }}</span>
+                            </div>
+                            <div class="info-item">
+                                <span class="info-label">Classes Teaching:</span>
+                                <span class="info-value">
+                                    {% if teacher.class_set.all %}
+                                        {% for class in teacher.class_set.all %}
+                                            <span class="badge badge-primary badge-custom">{{ class.name }}</span>
+                                        {% endfor %}
+                                    {% else %}
+                                        <span class="text-muted">Not assigned to any classes</span>
+                                    {% endif %}
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
 
-</ul>
+                <!-- Address Information -->
+                <div class="col-12 col-lg-6">
+                    <div class="card info-card">
+                        <div class="card-header">
+                            <i class="fas fa-map-marker-alt mr-2"></i> Address Information
+                        </div>
+                        <div class="card-body">
+                            <div class="info-item">
+                                <span class="info-label">Address:</span>
+                                <span class="info-value">{{ teacher.address }}</span>
+                            </div>
+                            <div class="info-item">
+                                <span class="info-label">City:</span>
+                                <span class="info-value">{{ teacher.city }}</span>
+                            </div>
+                            <div class="info-item">
+                                <span class="info-label">Zip Code:</span>
+                                <span class="info-value">{{ teacher.zipcode }}</span>
+                            </div>
+                            <div class="info-item">
+                                <span class="info-label">Country:</span>
+                                <span class="info-value">{{ teacher.country }}</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
 
-</div>
+                <!-- Additional Information -->
+                <div class="col-12 col-lg-6">
+                    <div class="card info-card">
+                        <div class="card-header">
+                            <i class="fas fa-info-circle mr-2"></i> Additional Information
+                        </div>
+                        <div class="card-body">
+                            <div class="info-item">
+                                <span class="info-label">Bio:</span>
+                                <span class="info-value">
+                                    {% if teacher.bio %}
+                                        {{ teacher.bio }}
+                                    {% else %}
+                                        <span class="text-muted">No bio information available</span>
+                                    {% endif %}
+                                </span>
+                            </div>
+                            <div class="info-item">
+                                <span class="info-label">Specialization:</span>
+                                <span class="info-value">
+                                    {% if teacher.specialization %}
+                                        {{ teacher.specialization }}
+                                    {% else %}
+                                        <span class="text-muted">Not specified</span>
+                                    {% endif %}
+                                </span>
+                            </div>
+                            <div class="info-item">
+                                <span class="info-label">Office Hours:</span>
+                                <span class="info-value">
+                                    {% if teacher.office_hours %}
+                                        {{ teacher.office_hours }}
+                                    {% else %}
+                                        <span class="text-muted">Not specified</span>
+                                    {% endif %}
+                                </span>
+                            </div>
+                            <div class="social-links">
+                                <a href="mailto:{{ teacher.user.email }}" title="Email"><i class="fas fa-envelope"></i></a>
+                                <a href="tel:{{ teacher.mobile }}" title="Call"><i class="fas fa-phone"></i></a>
+                                <a href="#" title="Message"><i class="fas fa-comment"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- /Page Wrapper -->
 
-
-<div class="sidebar" id="sidebar">
-<div class="sidebar-inner slimscroll">
-<div id="sidebar-menu" class="sidebar-menu">
-<ul>
-<li class="menu-title">
-<span>Main Menu</span>
-</li>
-<li class="submenu">
-<a href="#"><i class="fas fa-user-graduate"></i> <span> Dashboard</span> <span class="menu-arrow"></span></a>
-<ul>
-<li><a href="index.html">Admin Dashboard</a></li>
-<li><a href="teacher-dashboard.html">Teacher Dashboard</a></li>
-<li><a href="student-dashboard.html">Student Dashboard</a></li>
-</ul>
-</li>
-<li class="submenu">
-<a href="#"><i class="fas fa-user-graduate"></i> <span> Students</span> <span class="menu-arrow"></span></a>
-<ul>
-<li><a href="students.html">Student List</a></li>
-<li><a href="student-details.html">Student View</a></li>
-<li><a href="add-student.html">Student Add</a></li>
-<li><a href="edit-student.html">Student Edit</a></li>
-</ul>
-</li>
-<li class="submenu active">
-<a href="#"><i class="fas fa-chalkboard-teacher"></i> <span> Teachers</span> <span class="menu-arrow"></span></a>
-<ul>
-<li><a href="teachers.html">Teacher List</a></li>
-<li><a href="teacher-details.html" class="active">Teacher View</a></li>
-<li><a href="add-teacher.html">Teacher Add</a></li>
-<li><a href="edit-teacher.html">Teacher Edit</a></li>
-</ul>
-</li>
-<li class="submenu">
-<a href="#"><i class="fas fa-building"></i> <span> Departments</span> <span class="menu-arrow"></span></a>
-<ul>
-<li><a href="departments.html">Department List</a></li>
-<li><a href="add-department.html">Department Add</a></li>
-<li><a href="edit-department.html">Department Edit</a></li>
-</ul>
-</li>
-<li class="submenu">
-<a href="#"><i class="fas fa-book-reader"></i> <span> Subjects</span> <span class="menu-arrow"></span></a>
-<ul>
-<li><a href="subjects.html">Subject List</a></li>
-<li><a href="add-subject.html">Subject Add</a></li>
-<li><a href="edit-subject.html">Subject Edit</a></li>
-</ul>
-</li>
-<li class="menu-title">
-<span>Management</span>
-</li>
-<li class="submenu">
-<a href="#"><i class="fas fa-file-invoice-dollar"></i> <span> Accounts</span> <span class="menu-arrow"></span></a>
-<ul>
-<li><a href="fees-collections.html">Fees Collection</a></li>
-<li><a href="expenses.html">Expenses</a></li>
-<li><a href="salary.html">Salary</a></li>
-<li><a href="add-fees-collection.html">Add Fees</a></li>
-<li><a href="add-expenses.html">Add Expenses</a></li>
-<li><a href="add-salary.html">Add Salary</a></li>
-</ul>
-</li>
-<li>
-<a href="holiday.html"><i class="fas fa-holly-berry"></i> <span>Holiday</span></a>
-</li>
-<li>
-<a href="fees.html"><i class="fas fa-comment-dollar"></i> <span>Fees</span></a>
-</li>
-<li>
-<a href="exam.html"><i class="fas fa-clipboard-list"></i> <span>Exam list</span></a>
-</li>
-<li>
-<a href="event.html"><i class="fas fa-calendar-day"></i> <span>Events</span></a>
-</li>
-<li>
-<a href="time-table.html"><i class="fas fa-table"></i> <span>Time Table</span></a>
-</li>
-<li>
-<a href="library.html"><i class="fas fa-book"></i> <span>Library</span></a>
-</li>
-<li class="menu-title">
-<span>Pages</span>
-</li>
-<li class="submenu">
-<a href="#"><i class="fas fa-shield-alt"></i> <span> Authentication </span> <span class="menu-arrow"></span></a>
-<ul>
-<li><a href="login.html">Login</a></li>
-<li><a href="register.html">Register</a></li>
-<li><a href="forgot-password.html">Forgot Password</a></li>
-<li><a href="error-404.html">Error Page</a></li>
-</ul>
-</li>
-<li>
-<a href="blank-page.html"><i class="fas fa-file"></i> <span>Blank Page</span></a>
-</li>
-<li class="menu-title">
-<span>Others</span>
-</li>
-<li>
-<a href="sports.html"><i class="fas fa-baseball-ball"></i> <span>Sports</span></a>
-</li>
-<li>
-<a href="hostel.html"><i class="fas fa-hotel"></i> <span>Hostel</span></a>
-</li>
-<li>
-<a href="transport.html"><i class="fas fa-bus"></i> <span>Transport</span></a>
-</li>
-<li class="menu-title">
-<span>UI Interface</span>
-</li>
-<li>
-<a href="components.html"><i class="fas fa-vector-square"></i> <span>Components</span></a>
-</li>
-<li class="submenu">
-<a href="#"><i class="fas fa-columns"></i> <span> Forms </span> <span class="menu-arrow"></span></a>
-<ul>
-<li><a href="form-basic-inputs.html">Basic Inputs </a></li>
-<li><a href="form-input-groups.html">Input Groups </a></li>
-<li><a href="form-horizontal.html">Horizontal Form </a></li>
-<li><a href="form-vertical.html"> Vertical Form </a></li>
-<li><a href="form-mask.html"> Form Mask </a></li>
-<li><a href="form-validation.html"> Form Validation </a></li>
-</ul>
-</li>
-<li class="submenu">
-<a href="#"><i class="fas fa-table"></i> <span> Tables </span> <span class="menu-arrow"></span></a>
-<ul>
-<li><a href="tables-basic.html">Basic Tables </a></li>
-<li><a href="data-tables.html">Data Table </a></li>
-</ul>
-</li>
-<li class="submenu">
-<a href="javascript:void(0);"><i class="fas fa-code"></i> <span>Multi Level</span> <span class="menu-arrow"></span></a>
-<ul>
-<li class="submenu">
-<a href="javascript:void(0);"> <span>Level 1</span> <span class="menu-arrow"></span></a>
-<ul>
-<li><a href="javascript:void(0);"><span>Level 2</span></a></li>
-<li class="submenu">
-<a href="javascript:void(0);"> <span> Level 2</span> <span class="menu-arrow"></span></a>
-<ul>
-<li><a href="javascript:void(0);">Level 3</a></li>
-<li><a href="javascript:void(0);">Level 3</a></li>
-</ul>
-</li>
-<li><a href="javascript:void(0);"> <span>Level 2</span></a></li>
-</ul>
-</li>
-<li>
-<a href="javascript:void(0);"> <span>Level 1</span></a>
-</li>
-</ul>
-</li>
-</ul>
-</div>
-</div>
-</div>
-
-
-<div class="page-wrapper">
-<div class="content container-fluid">
-<div class="page-header">
-<div class="row">
-<div class="col-sm-12">
-<h3 class="page-title">Teachers Details</h3>
-<ul class="breadcrumb">
-<li class="breadcrumb-item"><a href="teachers.html">Teachers</a></li>
-<li class="breadcrumb-item active">Teachers Details</li>
-</ul>
-</div>
-</div>
-</div>
-<div class="card">
-<div class="card-body">
-<div class="row">
-<div class="col-md-12">
-<div class="about-info">
-<h4>About Me</h4>
-<div class="media mt-3">
-<img src="assets/img/user.jpg" class="mr-3" alt="...">
-<div class="media-body">
-<ul>
-<li>
-<span class="title-span">Full Name : </span>
-<span class="info-span">Daisy Parks</span>
-</li>
-<li>
-<span class="title-span">Department : </span>
-<span class="info-span">Computer Science</span>
-</li>
-<li>
-<span class="title-span">Mobile : </span>
-<span class="info-span">+91 89657 48512</span>
-</li>
-<li>
-<span class="title-span">Email : </span>
-<span class="info-span"><a href="https://preschool.dreamguystech.com/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="a3c7c2cad0dae3c4cec2cacf8dc0ccce">[email&#160;protected]</a></span>
-</li>
-<li>
-<span class="title-span">Gender : </span>
-<span class="info-span">Male</span>
-</li>
-<li>
-<span class="title-span">DOB : </span>
-<span class="info-span">22 Apr 1995</span>
-</li>
-</ul>
-</div>
-</div>
-<div class="row mt-3">
-<div class="col-md-12">
-<p>Hello I am Daisy Parks. Lorem Ipsum is simply dummy text of the printing and typesetting industry, simply dummy text of the printing and typesetting industry.</p>
-</div>
-</div>
-<div class="row follow-sec">
-<div class="col-md-4 mb-3">
-<div class="blue-box">
-<h3>2850</h3>
-<p>Followers</p>
-</div>
-</div>
-<div class="col-md-4 mb-3">
-<div class="blue-box">
-<h3>2050</h3>
-<p>Following</p>
-</div>
-</div>
-<div class="col-md-4 mb-3">
-<div class="blue-box">
-<h3>2950</h3>
-<p>Friends</p>
-</div>
-</div>
-</div>
-<div class="row mt-2">
-<div class="col-md-12">
-<h5>Permanent Address</h5>
-<p>480, Estern Avenue, Courtage area, New York</p>
-</div>
-</div>
-<div class="row mt-2">
-<div class="col-md-12">
-<h5>Present Address</h5>
-<p>480, Estern Avenue, Courtage area, New York</p>
-</div>
-</div>
-</div>
-</div>
-</div>
-<div class="row mt-2">
-<div class="col-md-12">
-<div class="skill-info">
-<h4>Skills</h4>
-<p>Lorem Ipsum is simply dummy text of the printing and typesetting industry, simply dummy text of the printing and typesetting industry</p>
-<ul>
-<li>
-<label>Lorem Ipsum is simply</label>
-<div class="progress">
-<div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100" style="width: 75%"></div>
-</div>
-</li>
-<li>
-<label>Lorem Ipsum is simply</label>
-<div class="progress">
-<div class="progress-bar progress-bar-striped progress-bar-animated bg-success" role="progressbar" aria-valuenow="69" aria-valuemin="0" aria-valuemax="100" style="width: 69%"></div>
-</div>
-</li>
-<li>
-<label>Lorem Ipsum is simply</label>
-<div class="progress">
-<div class="progress-bar progress-bar-striped progress-bar-animated bg-info" role="progressbar" aria-valuenow="86" aria-valuemin="0" aria-valuemax="100" style="width: 86%"></div>
-</div>
-</li>
-<li>
-<label>Lorem Ipsum is simply</label>
-<div class="progress">
-<div class="progress-bar progress-bar-striped progress-bar-animated bg-warning" role="progressbar" aria-valuenow="65" aria-valuemin="0" aria-valuemax="100" style="width: 65%"></div>
-</div>
-</li>
-</ul>
-<div class="row mt-3">
-<div class="col-md-12">
-<h5>Education</h5>
-<p class="mt-3">Secondary Schooling at xyz school of secondary education, Mumbai.</p>
-<p>Higher Secondary Schooling at xyz school of higher secondary education, Mumbai.</p>
-<p>Bachelor of Science at Abc College of Art and Science, Chennai.</p>
-<p>Master of Science at Cdm College of Engineering and Technology, Pune.</p>
-</div>
-</div>
-<div class="row mt-3">
-<div class="col-md-12">
-<h5>Certificates</h5>
-<p class="mt-3">1st Prise in Running Competition.</p>
-<p>Lorem Ipsum is simply dummy text.</p>
-<p>Won overall star student in higher secondary education.</p>
-<p>Lorem Ipsum is simply dummy text.</p>
-</div>
-</div>
-</div>
-</div>
-</div>
-<div class="row mt-2">
-<div class="col-md-12">
-<div class="skill-info">
-<h4>Settings</h4>
-<form>
-<div class="row mt-3">
-<div class="col-12 col-sm-6">
-<div class="form-group">
-<label>Username</label>
-<input type="text" class="form-control">
-</div>
-</div>
-<div class="col-12 col-sm-6">
-<div class="form-group">
-<label>Current Password</label>
-<input type="password" class="form-control">
-</div>
-</div>
-<div class="col-12 col-sm-6">
-<div class="form-group">
-<label>New Password</label>
-<input type="password" class="form-control">
-</div>
-</div>
-<div class="col-12">
-<button type="submit" class="btn btn-primary">Submit</button>
-</div>
-</div>
-</form>
-</div>
-</div>
-</div>
-</div>
-</div>
+    <footer>
+        <p>Copyright © {% now "Y" %} Dreamguys. All rights reserved.</p>
+    </footer>
 </div>
 
-<footer>
-<p>Copyright © 2020 Dreamguys.</p>
-</footer>
+<!-- Scripts -->
+<script src="{% static 'assets/js/jquery-3.6.0.min.js' %}"></script>
+<script src="{% static 'assets/js/popper.min.js' %}"></script>
+<script src="{% static 'assets/plugins/bootstrap/js/bootstrap.min.js' %}"></script>
+<script src="{% static 'assets/plugins/slimscroll/jquery.slimscroll.min.js' %}"></script>
+<script src="{% static 'assets/js/script.js' %}"></script>
 
-</div>
-
-</div>
-
-
-<script data-cfasync="false" src="../cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script src="assets/js/jquery-3.6.0.min.js"></script>
-
-<script src="assets/js/popper.min.js"></script>
-<script src="assets/plugins/bootstrap/js/bootstrap.min.js"></script>
-
-<script src="assets/plugins/slimscroll/jquery.slimscroll.min.js"></script>
-
-<script src="assets/js/script.js"></script>
 </body>
-
-<!-- Mirrored from preschool.dreamguystech.com/html-template/teacher-details.html by HTTrack Website Copier/3.x [XR&CO'2014], Thu, 28 Oct 2021 11:11:50 GMT -->
 </html>

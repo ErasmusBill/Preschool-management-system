@@ -9,4 +9,5 @@ urlpatterns = [
     path('logout/', views.logout_view, name='logout'),
     path('reset-password/<str:token>/', views.reset_password_view, name='reset-password'),
     path('forgot-password/', views.forgot_password_view, name='forgot-password'),
+    path('change-password',views.change_password, name="chage-password")
 ]

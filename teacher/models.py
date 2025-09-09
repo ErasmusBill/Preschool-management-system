@@ -35,11 +35,8 @@ class Teacher(models.Model):
     zipcode = models.CharField(max_length=250)
     country = models.CharField(max_length=250)
     joining_date = models.DateField()
-    image = models.ImageField(upload_to="teachers/") 
+    image = models.ImageField(upload_to="teachers/", blank=True) 
     
-    
-   
-
     def __str__(self) -> str:
         return self.user.first_name
 

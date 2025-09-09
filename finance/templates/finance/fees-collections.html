@@ -1,0 +1,180 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0">
+  <title>Preskool - Fees Collections</title>
+
+  <!-- Favicon -->
+  <link rel="shortcut icon" href="{% static 'assets/img/favicon.png' %}">
+
+  <!-- Google Fonts -->
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap">
+
+  <!-- CSS Files -->
+  <link rel="stylesheet" href="{% static 'assets/plugins/bootstrap/css/bootstrap.min.css' %}">
+  <link rel="stylesheet" href="{% static 'assets/plugins/fontawesome/css/fontawesome.min.css' %}">
+  <link rel="stylesheet" href="{% static 'assets/plugins/fontawesome/css/all.min.css' %}">
+  <link rel="stylesheet" href="{% static 'assets/plugins/datatables/datatables.min.css' %}">
+  <link rel="stylesheet" href="{% static 'assets/css/style.css' %}">
+</head>
+<body>
+<div class="main-wrapper">
+
+  <!-- Header -->
+  <div class="header">
+    <div class="header-left">
+      <a href="{% url 'school:dashboard' %}" class="logo">
+        <img src="{% static 'assets/img/logo.png' %}" alt="Logo">
+      </a>
+      <a href="{% url 'school:dashboard' %}" class="logo logo-small">
+        <img src="{% static 'assets/img/logo-small.png' %}" alt="Logo" width="30" height="30">
+      </a>
+    </div>
+
+    <a href="javascript:void(0);" id="toggle_btn"><i class="fas fa-align-left"></i></a>
+
+    <div class="top-nav-search">
+      <form>
+        <input type="text" class="form-control" placeholder="Search here">
+        <button class="btn" type="submit"><i class="fas fa-search"></i></button>
+      </form>
+    </div>
+
+    <a class="mobile_btn" id="mobile_btn"><i class="fas fa-bars"></i></a>
+
+    <ul class="nav user-menu">
+      <!-- Notifications and user profile remain unchanged -->
+    </ul>
+  </div>
+  <!-- /Header -->
+
+  <!-- Sidebar -->
+  <div class="sidebar" id="sidebar">
+    <div class="sidebar-inner slimscroll">
+      <div id="sidebar-menu" class="sidebar-menu">
+        <ul>
+          <li class="menu-title"><span>Main Menu</span></li>
+
+          <li class="submenu">
+            <a href="#"><i class="fas fa-user-graduate"></i> <span> Dashboard</span> <span class="menu-arrow"></span></a>
+            <ul>
+              <li><a href="{% url 'school:dashboard' %}">Admin Dashboard</a></li>
+              <li><a href="{% url 'school:dashboard' %}">Teacher Dashboard</a></li>
+              <li><a href="{% url 'school:dashboard' %}">Student Dashboard</a></li>
+            </ul>
+          </li>
+
+          <li class="submenu active">
+            <a href="#"><i class="fas fa-file-invoice-dollar"></i> <span> Accounts</span> <span class="menu-arrow"></span></a>
+            <ul>
+              <li><a href="{% url 'finance:list-fees' %}" class="active">Fees Collection</a></li>
+              {% comment %} <li><a href="{% url 'finance:expenses' %}">Expenses</a></li>
+              <li><a href="{% url 'finance:salary' %}">Salary</a></li> {% endcomment %}
+              <li><a href="{% url 'finance:add-fees' %}">Add Fees</a></li>
+              {% comment %} <li><a href="{% url 'finance:add-expenses' %}">Add Expenses</a></li>
+              <li><a href="{% url 'finance:add-salary' %}">Add Salary</a></li> {% endcomment %}
+            </ul>
+          </li>
+
+          <li>
+            <a href="{% url 'finance:list-fees' %}"><i class="fas fa-comment-dollar"></i> <span>Fees</span></a>
+          </li>
+
+          <!-- Keep other menus unchanged -->
+        </ul>
+      </div>
+    </div>
+  </div>
+  <!-- /Sidebar -->
+
+  <!-- Page Wrapper -->
+  <div class="page-wrapper">
+    <div class="content container-fluid">
+
+      <!-- Page Header -->
+      <div class="page-header">
+        <div class="row align-items-center">
+          <div class="col">
+            <h3 class="page-title">Fees Collections</h3>
+            <ul class="breadcrumb">
+              <li class="breadcrumb-item"><a href="{% url 'school:dashboard' %}">Dashboard</a></li>
+              <li class="breadcrumb-item active">Fees Collections</li>
+            </ul>
+          </div>
+          <div class="col-auto text-right float-right ml-auto">
+            <a href="#" class="btn btn-outline-primary mr-2"><i class="fas fa-download"></i> Download</a>
+            <a href="{% url 'finance:add-fees' %}" class="btn btn-primary"><i class="fas fa-plus"></i></a>
+          </div>
+        </div>
+      </div>
+      <!-- /Page Header -->
+
+      <!-- Fees Table -->
+      <div class="row">
+        <div class="col-sm-12">
+          <div class="card card-table">
+            <div class="card-body">
+              <div class="table-responsive">
+                <table class="table table-hover table-center mb-0 datatable">
+                  <thead>
+                    <tr>
+                      <th>ID</th>
+                      <th>Student Name</th>
+                      <th>Gender</th>
+                      <th>Fees Type</th>
+                      <th>Amount</th>
+                      <th>Paid Date</th>
+                      <th class="text-right">Status</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {% for fee in fees %}
+                      <tr>
+                        <td>{{ fee.id }}</td>
+                        <td>{{ fee.student.first_name }} {{ fee.student.last_name }}</td>
+                        <td>{{ fee.student.gender }}</td>
+                        <td>{{ fee.exams_type }}</td>
+                        <td>${{ fee.amount }}</td>
+                        <td>{{ fee.created_at|date:"M d, Y" }}</td>
+                        <td class="text-right">
+                          <span class="badge badge-success">Paid</span>
+                        </td>
+                      </tr>
+                    {% empty %}
+                      <tr>
+                        <td colspan="7" class="text-center text-muted">No fees records found.</td>
+                      </tr>
+                    {% endfor %}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- /Fees Table -->
+
+    </div>
+
+    <!-- Footer -->
+    <footer>
+      <p>Copyright © 2020 Dreamguys.</p>
+    </footer>
+    <!-- /Footer -->
+
+  </div>
+  <!-- /Page Wrapper -->
+</div>
+
+<!-- JS Files -->
+<script src="{% static 'assets/js/jquery-3.6.0.min.js' %}"></script>
+<script src="{% static 'assets/js/popper.min.js' %}"></script>
+<script src="{% static 'assets/plugins/bootstrap/js/bootstrap.min.js' %}"></script>
+<script src="{% static 'assets/plugins/slimscroll/jquery.slimscroll.min.js' %}"></script>
+<script src="{% static 'assets/plugins/datatables/datatables.min.js' %}"></script>
+<script src="{% static 'assets/js/script.js' %}"></script>
+
+</body>
+</html>

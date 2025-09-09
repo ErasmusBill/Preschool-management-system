@@ -70,7 +70,7 @@ def department_detail(request, department_id):
     #     messages.error(request, "You don't have permission to perform this action")
     #     return redirect("school:index")
 
-    department = get_object_or_404(Department, pk=department_id)
+    department = get_object_or_404(Department, id=department_id)
     return render(request, "department/department-detail.html", {"department": department})
 
 

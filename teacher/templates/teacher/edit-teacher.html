@@ -1,473 +1,509 @@
-<!DOCTYPE html>
-<html lang="en">
+{% extends "school/base.html" %}
+{% load static %}
 
-<!-- Mirrored from preschool.dreamguystech.com/html-template/edit-teacher.html by HTTrack Website Copier/3.x [XR&CO'2014], Thu, 28 Oct 2021 11:11:50 GMT -->
-<head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0">
-<title>Preskool - Teachers</title>
+{% block title %}Preskool - Edit Teacher{% endblock %}
 
-<link rel="shortcut icon" href="assets/img/favicon.png">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,500;0,600;0,700;1,400&amp;display=swap">
-
-<link rel="stylesheet" href="assets/plugins/bootstrap/css/bootstrap.min.css">
-
-<link rel="stylesheet" href="assets/plugins/fontawesome/css/fontawesome.min.css">
-<link rel="stylesheet" href="assets/plugins/fontawesome/css/all.min.css">
-
-<link rel="stylesheet" href="assets/css/style.css">
-</head>
-<body>
-
-<div class="main-wrapper">
-
-<div class="header">
-
-<div class="header-left">
-<a href="index.html" class="logo">
-<img src="assets/img/logo.png" alt="Logo">
-</a>
-<a href="index.html" class="logo logo-small">
-<img src="assets/img/logo-small.png" alt="Logo" width="30" height="30">
-</a>
-</div>
-
-<a href="javascript:void(0);" id="toggle_btn">
-<i class="fas fa-align-left"></i>
-</a>
-
-<div class="top-nav-search">
-<form>
-<input type="text" class="form-control" placeholder="Search here">
-<button class="btn" type="submit"><i class="fas fa-search"></i></button>
-</form>
-</div>
-
-
-<a class="mobile_btn" id="mobile_btn">
-<i class="fas fa-bars"></i>
-</a>
-
-
-<ul class="nav user-menu">
-
-<li class="nav-item dropdown noti-dropdown">
-<a href="#" class="dropdown-toggle nav-link" data-toggle="dropdown">
-<i class="far fa-bell"></i> <span class="badge badge-pill">3</span>
-</a>
-<div class="dropdown-menu notifications">
-<div class="topnav-dropdown-header">
-<span class="notification-title">Notifications</span>
-<a href="javascript:void(0)" class="clear-noti"> Clear All </a>
-</div>
-<div class="noti-content">
-<ul class="notification-list">
-<li class="notification-message">
-<a href="#">
-<div class="media">
-<span class="avatar avatar-sm">
-<img class="avatar-img rounded-circle" alt="User Image" src="assets/img/profiles/avatar-02.jpg">
-</span>
-<div class="media-body">
-<p class="noti-details"><span class="noti-title">Carlson Tech</span> has approved <span class="noti-title">your estimate</span></p>
-<p class="noti-time"><span class="notification-time">4 mins ago</span></p>
-</div>
-</div>
-</a>
-</li>
-<li class="notification-message">
-<a href="#">
-<div class="media">
-<span class="avatar avatar-sm">
-<img class="avatar-img rounded-circle" alt="User Image" src="assets/img/profiles/avatar-11.jpg">
-</span>
-<div class="media-body">
-<p class="noti-details"><span class="noti-title">International Software Inc</span> has sent you a invoice in the amount of <span class="noti-title">$218</span></p>
-<p class="noti-time"><span class="notification-time">6 mins ago</span></p>
-</div>
-</div>
-</a>
-</li>
-<li class="notification-message">
-<a href="#">
-<div class="media">
-<span class="avatar avatar-sm">
-<img class="avatar-img rounded-circle" alt="User Image" src="assets/img/profiles/avatar-17.jpg">
-</span>
-<div class="media-body">
-<p class="noti-details"><span class="noti-title">John Hendry</span> sent a cancellation request <span class="noti-title">Apple iPhone XR</span></p>
-<p class="noti-time"><span class="notification-time">8 mins ago</span></p>
-</div>
-</div>
-</a>
-</li>
-<li class="notification-message">
-<a href="#">
-<div class="media">
-<span class="avatar avatar-sm">
-<img class="avatar-img rounded-circle" alt="User Image" src="assets/img/profiles/avatar-13.jpg">
-</span>
-<div class="media-body">
-<p class="noti-details"><span class="noti-title">Mercury Software Inc</span> added a new product <span class="noti-title">Apple MacBook Pro</span></p>
-<p class="noti-time"><span class="notification-time">12 mins ago</span></p>
-</div>
-</div>
-</a>
-</li>
-</ul>
-</div>
-<div class="topnav-dropdown-footer">
-<a href="#">View all Notifications</a>
-</div>
-</div>
-</li>
-
-
-<li class="nav-item dropdown has-arrow">
-<a href="#" class="dropdown-toggle nav-link" data-toggle="dropdown">
-<span class="user-img"><img class="rounded-circle" src="assets/img/profiles/avatar-01.jpg" width="31" alt="Ryan Taylor"></span>
-</a>
-<div class="dropdown-menu">
-<div class="user-header">
-<div class="avatar avatar-sm">
-<img src="assets/img/profiles/avatar-01.jpg" alt="User Image" class="avatar-img rounded-circle">
-</div>
-<div class="user-text">
-<h6>Ryan Taylor</h6>
-<p class="text-muted mb-0">Administrator</p>
-</div>
-</div>
-<a class="dropdown-item" href="profile.html">My Profile</a>
-<a class="dropdown-item" href="inbox.html">Inbox</a>
-<a class="dropdown-item" href="login.html">Logout</a>
-</div>
-</li>
-
-</ul>
-
-</div>
-
-
-<div class="sidebar" id="sidebar">
-<div class="sidebar-inner slimscroll">
-<div id="sidebar-menu" class="sidebar-menu">
-<ul>
-<li class="menu-title">
-<span>Main Menu</span>
-</li>
-<li class="submenu">
-<a href="#"><i class="fas fa-user-graduate"></i> <span> Dashboard</span> <span class="menu-arrow"></span></a>
-<ul>
-<li><a href="index.html">Admin Dashboard</a></li>
-<li><a href="teacher-dashboard.html">Teacher Dashboard</a></li>
-<li><a href="student-dashboard.html">Student Dashboard</a></li>
-</ul>
-</li>
-<li class="submenu">
-<a href="#"><i class="fas fa-user-graduate"></i> <span> Students</span> <span class="menu-arrow"></span></a>
-<ul>
-<li><a href="students.html">Student List</a></li>
-<li><a href="student-details.html">Student View</a></li>
-<li><a href="add-student.html">Student Add</a></li>
-<li><a href="edit-student.html">Student Edit</a></li>
-</ul>
-</li>
-<li class="submenu active">
-<a href="#"><i class="fas fa-chalkboard-teacher"></i> <span> Teachers</span> <span class="menu-arrow"></span></a>
-<ul>
-<li><a href="teachers.html">Teacher List</a></li>
-<li><a href="teacher-details.html">Teacher View</a></li>
-<li><a href="add-teacher.html">Teacher Add</a></li>
-<li><a href="edit-teacher.html" class="active">Teacher Edit</a></li>
-</ul>
-</li>
-<li class="submenu">
-<a href="#"><i class="fas fa-building"></i> <span> Departments</span> <span class="menu-arrow"></span></a>
-<ul>
-<li><a href="departments.html">Department List</a></li>
-<li><a href="add-department.html">Department Add</a></li>
-<li><a href="edit-department.html">Department Edit</a></li>
-</ul>
-</li>
-<li class="submenu">
-<a href="#"><i class="fas fa-book-reader"></i> <span> Subjects</span> <span class="menu-arrow"></span></a>
-<ul>
-<li><a href="subjects.html">Subject List</a></li>
-<li><a href="add-subject.html">Subject Add</a></li>
-<li><a href="edit-subject.html">Subject Edit</a></li>
-</ul>
-</li>
-<li class="menu-title">
-<span>Management</span>
-</li>
-<li class="submenu">
-<a href="#"><i class="fas fa-file-invoice-dollar"></i> <span> Accounts</span> <span class="menu-arrow"></span></a>
-<ul>
-<li><a href="fees-collections.html">Fees Collection</a></li>
-<li><a href="expenses.html">Expenses</a></li>
-<li><a href="salary.html">Salary</a></li>
-<li><a href="add-fees-collection.html">Add Fees</a></li>
-<li><a href="add-expenses.html">Add Expenses</a></li>
-<li><a href="add-salary.html">Add Salary</a></li>
-</ul>
-</li>
-<li>
-<a href="holiday.html"><i class="fas fa-holly-berry"></i> <span>Holiday</span></a>
-</li>
-<li>
-<a href="fees.html"><i class="fas fa-comment-dollar"></i> <span>Fees</span></a>
-</li>
-<li>
-<a href="exam.html"><i class="fas fa-clipboard-list"></i> <span>Exam list</span></a>
-</li>
-<li>
-<a href="event.html"><i class="fas fa-calendar-day"></i> <span>Events</span></a>
-</li>
-<li>
-<a href="time-table.html"><i class="fas fa-table"></i> <span>Time Table</span></a>
-</li>
-<li>
-<a href="library.html"><i class="fas fa-book"></i> <span>Library</span></a>
-</li>
-<li class="menu-title">
-<span>Pages</span>
-</li>
-<li class="submenu">
-<a href="#"><i class="fas fa-shield-alt"></i> <span> Authentication </span> <span class="menu-arrow"></span></a>
-<ul>
-<li><a href="login.html">Login</a></li>
-<li><a href="register.html">Register</a></li>
-<li><a href="forgot-password.html">Forgot Password</a></li>
-<li><a href="error-404.html">Error Page</a></li>
-</ul>
-</li>
-<li>
-<a href="blank-page.html"><i class="fas fa-file"></i> <span>Blank Page</span></a>
-</li>
-<li class="menu-title">
-<span>Others</span>
-</li>
-<li>
-<a href="sports.html"><i class="fas fa-baseball-ball"></i> <span>Sports</span></a>
-</li>
-<li>
-<a href="hostel.html"><i class="fas fa-hotel"></i> <span>Hostel</span></a>
-</li>
-<li>
-<a href="transport.html"><i class="fas fa-bus"></i> <span>Transport</span></a>
-</li>
-<li class="menu-title">
-<span>UI Interface</span>
-</li>
-<li>
-<a href="components.html"><i class="fas fa-vector-square"></i> <span>Components</span></a>
-</li>
-<li class="submenu">
-<a href="#"><i class="fas fa-columns"></i> <span> Forms </span> <span class="menu-arrow"></span></a>
-<ul>
-<li><a href="form-basic-inputs.html">Basic Inputs </a></li>
-<li><a href="form-input-groups.html">Input Groups </a></li>
-<li><a href="form-horizontal.html">Horizontal Form </a></li>
-<li><a href="form-vertical.html"> Vertical Form </a></li>
-<li><a href="form-mask.html"> Form Mask </a></li>
-<li><a href="form-validation.html"> Form Validation </a></li>
-</ul>
-</li>
-<li class="submenu">
-<a href="#"><i class="fas fa-table"></i> <span> Tables </span> <span class="menu-arrow"></span></a>
-<ul>
-<li><a href="tables-basic.html">Basic Tables </a></li>
-<li><a href="data-tables.html">Data Table </a></li>
-</ul>
-</li>
-<li class="submenu">
-<a href="javascript:void(0);"><i class="fas fa-code"></i> <span>Multi Level</span> <span class="menu-arrow"></span></a>
-<ul>
-<li class="submenu">
-<a href="javascript:void(0);"> <span>Level 1</span> <span class="menu-arrow"></span></a>
-<ul>
-<li><a href="javascript:void(0);"><span>Level 2</span></a></li>
-<li class="submenu">
-<a href="javascript:void(0);"> <span> Level 2</span> <span class="menu-arrow"></span></a>
-<ul>
-<li><a href="javascript:void(0);">Level 3</a></li>
-<li><a href="javascript:void(0);">Level 3</a></li>
-</ul>
-</li>
-<li><a href="javascript:void(0);"> <span>Level 2</span></a></li>
-</ul>
-</li>
-<li>
-<a href="javascript:void(0);"> <span>Level 1</span></a>
-</li>
-</ul>
-</li>
-</ul>
-</div>
-</div>
-</div>
-
-
+{% block content %}
 <div class="page-wrapper">
-<div class="content container-fluid">
+    <div class="content container-fluid">
+        <!-- Page Header -->
+        <div class="page-header">
+            <div class="row align-items-center">
+                <div class="col">
+                    <h3 class="page-title">Edit Teacher</h3>
+                    <ul class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="{% url 'teacher:list-teachers' %}">Teachers</a></li>
+                        <li class="breadcrumb-item active">Edit Teacher</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <!-- /Page Header -->
 
-<div class="page-header">
-<div class="row align-items-center">
-<div class="col">
-<h3 class="page-title">Edit Teachers</h3>
-<ul class="breadcrumb">
-<li class="breadcrumb-item"><a href="teachers.html">Teachers</a></li>
-<li class="breadcrumb-item active">Edit Teachers</li>
-</ul>
-</div>
-</div>
-</div>
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="card">
+                    <div class="card-body">
+                        <!-- Display Messages -->
+                        {% if messages %}
+                        <div class="messages">
+                            {% for message in messages %}
+                            <div class="alert alert-{% if message.tags %}{{ message.tags }}{% else %}info{% endif %} alert-dismissible fade show" role="alert">
+                                {{ message }}
+                                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            {% endfor %}
+                        </div>
+                        {% endif %}
 
-<div class="row">
-<div class="col-sm-12">
-<div class="card">
-<div class="card-body">
-<form>
-<div class="row">
-<div class="col-12">
-<h5 class="form-title"><span>Basic Details</span></h5>
-</div>
-<div class="col-12 col-sm-6">
-<div class="form-group">
-<label>Teacher ID</label>
-<input type="text" class="form-control" value="PRE1234">
-</div>
-</div>
-<div class="col-12 col-sm-6">
-<div class="form-group">
-<label>Name</label>
-<input type="text" class="form-control" value="Vincent">
-</div>
-</div>
-<div class="col-12 col-sm-6">
-<div class="form-group">
-<label>Gender</label>
-<select class="form-control">
-<option>Male</option>
-<option>Female</option>
-<option>Others</option>
-</select>
-</div>
-</div>
-<div class="col-12 col-sm-6">
-<div class="form-group">
-<label>Date of Birth</label>
-<input type="text" class="form-control" value="23 Jun 1985">
-</div>
-</div>
-<div class="col-12 col-sm-6">
-<div class="form-group">
-<label>Mobile</label>
-<input type="text" class="form-control" value="077 3499 9959">
-</div>
-</div>
-<div class="col-12 col-sm-6">
-<div class="form-group">
-<label>Joining Date</label>
-<input type="text" class="form-control" value="16 Jul 2015">
-</div>
-</div>
-<div class="col-12 col-sm-6">
-<div class="form-group">
-<label>Qualification</label>
-<input class="form-control" type="text" value="Bachelor of Engineering">
-</div>
-</div>
-<div class="col-12 col-sm-6">
-<div class="form-group">
-<label>Experience</label>
-<input class="form-control" type="text" value="5">
-</div>
-</div>
-<div class="col-12">
-<h5 class="form-title"><span>Login Details</span></h5>
-</div>
-<div class="col-12 col-sm-6">
-<div class="form-group">
-<label>Username</label>
-<input type="text" class="form-control" value="Vincent">
-</div>
-</div>
-<div class="col-12 col-sm-6">
-<div class="form-group">
-<label>Email ID</label>
-<input type="email" class="form-control" value="vincent20@gmail.com">
-</div>
-</div>
-<div class="col-12 col-sm-6">
-<div class="form-group">
-<label>Password</label>
-<input type="password" class="form-control" value="vincent">
-</div>
-</div>
-<div class="col-12 col-sm-6">
-<div class="form-group">
-<label>Repeat Password</label>
-<input type="password" class="form-control" value="vincent">
-</div>
-</div>
-<div class="col-12">
-<h5 class="form-title"><span>Address</span></h5>
-</div>
-<div class="col-12">
-<div class="form-group">
-<label>Address</label>
-<input type="text" class="form-control" value="3979 Ashwood Drive">
-</div>
-</div>
-<div class="col-12 col-sm-6">
-<div class="form-group">
-<label>City</label>
-<input type="text" class="form-control" value="Omaha">
-</div>
-</div>
-<div class="col-12 col-sm-6">
-<div class="form-group">
-<label>State</label>
-<input type="text" class="form-control" value="Omaha">
-</div>
-</div>
-<div class="col-12 col-sm-6">
-<div class="form-group">
-<label>Zip Code</label>
-<input type="text" class="form-control" value="3979">
-</div>
-</div>
-<div class="col-12 col-sm-6">
-<div class="form-group">
-<label>Country</label>
-<input type="text" class="form-control" value="USA">
-</div>
-</div>
-<div class="col-12">
-<button type="submit" class="btn btn-primary">Submit</button>
-</div>
-</div>
-</form>
-</div>
-</div>
-</div>
-</div>
-</div>
-</div>
+                        <form method="POST" action="{% url 'teacher:edit-teacher' teacher.id %}" enctype="multipart/form-data">
+                            {% csrf_token %}
+                            
+                            <div class="row">
+                                <!-- Profile Picture -->
+                                <div class="col-12">
+                                    <h5 class="form-title"><span>Profile Picture</span></h5>
+                                </div>
+                                
+                                <div class="col-12 text-center mb-4">
+                                    <div id="profile-picture-container" class="profile-picture-container">
+                                        {% if teacher.user.profile_picture %}
+                                            <img id="profile-picture-preview" class="profile-picture-preview" 
+                                                 src="{{ teacher.user.profile_picture.url }}" alt="Profile preview">
+                                        {% else %}
+                                            <img id="profile-picture-preview" class="profile-picture-preview" 
+                                                 alt="Profile preview" style="display: none;">
+                                            <div id="profile-picture-placeholder" class="profile-picture-placeholder">
+                                                <i class="fas fa-user"></i>
+                                            </div>
+                                        {% endif %}
+                                        <div class="profile-picture-overlay">
+                                            <i class="fas fa-camera"></i>
+                                            <span>Change Image</span>
+                                        </div>
+                                    </div>
 
+                                    <input type="file" id="profile_picture" name="profile_picture" accept="image/*" style="display: none;">
+                                    <div class="mt-3">
+                                        <button type="button" id="remove-image" class="btn btn-sm btn-outline-danger" 
+                                                {% if not teacher.user.profile_picture %}style="display: none;"{% endif %}>
+                                            <i class="fas fa-trash"></i> Remove Image
+                                        </button>
+                                        <button type="button" id="upload-image" class="btn btn-sm btn-primary">
+                                            <i class="fas fa-upload"></i> Select Image
+                                        </button>
+                                    </div>
+                                    <div class="text-muted small mt-2">JPG, PNG or GIF (Max 2MB)</div>
+                                    <div id="file-error" class="text-danger small mt-2" style="display: none;"></div>
+                                    <!-- Debug info (remove in production) -->
+                                    <div id="debug-info" class="text-info small mt-2" style="display: none;"></div>
+                                </div>
+
+                                <!-- Basic Details -->
+                                <div class="col-12">
+                                    <h5 class="form-title"><span>Basic Details</span></h5>
+                                </div>
+                                <div class="col-12 col-sm-6">
+                                    <div class="form-group">
+                                        <label>First Name *</label>
+                                        <input type="text" class="form-control" name="first_name" value="{{ teacher.user.first_name }}" required>
+                                    </div>
+                                </div>
+                                <div class="col-12 col-sm-6">
+                                    <div class="form-group">
+                                        <label>Last Name *</label>
+                                        <input type="text" class="form-control" name="last_name" value="{{ teacher.user.last_name }}" required>
+                                    </div>
+                                </div>
+                                <div class="col-12 col-sm-6">
+                                    <div class="form-group">
+                                        <label>Gender *</label>
+                                        <select class="form-control" name="gender" required>
+                                            <option value="">Select Gender</option>
+                                            <option value="M" {% if teacher.gender == 'M' %}selected{% endif %}>Male</option>
+                                            <option value="F" {% if teacher.gender == 'F' %}selected{% endif %}>Female</option>
+                                            <option value="O" {% if teacher.gender == 'O' %}selected{% endif %}>Other</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-12 col-sm-6">
+                                    <div class="form-group">
+                                        <label>Date of Birth *</label>
+                                        <input type="date" class="form-control" name="date_of_birth" value="{{ teacher.date_of_birth|date:'Y-m-d' }}" required>
+                                    </div>
+                                </div>
+                                <div class="col-12 col-sm-6">
+                                    <div class="form-group">
+                                        <label>Mobile *</label>
+                                        <input type="text" class="form-control" name="mobile" value="{{ teacher.mobile }}" required>
+                                    </div>
+                                </div>
+                                <div class="col-12 col-sm-6">
+                                    <div class="form-group">
+                                        <label>Department *</label>
+                                        <select class="form-control" name="department" required>
+                                            <option value="">Select Department</option>
+                                            {% for department in departments %}
+                                                <option value="{{ department.id }}" {% if teacher.department_id.id == department.id %}selected{% endif %}>{{ department.name }}</option>
+                                            {% endfor %}
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-12 col-sm-6">
+                                    <div class="form-group">
+                                        <label>Joining Date *</label>
+                                        <input type="date" class="form-control" name="joining_date" value="{{ teacher.joining_date|date:'Y-m-d' }}" required>
+                                    </div>
+                                </div>
+                                <div class="col-12 col-sm-6">
+                                    <div class="form-group">
+                                        <label>Qualification *</label>
+                                        <input class="form-control" type="text" name="qualification" value="{{ teacher.qualification }}" required>
+                                    </div>
+                                </div>
+                                <div class="col-12 col-sm-6">
+                                    <div class="form-group">
+                                        <label>Experience (Years) *</label>
+                                        <input class="form-control" type="number" name="experience" value="{{ teacher.experience }}" min="0" step="0.1" required>
+                                    </div>
+                                </div>
+                                
+                                <!-- Login Details -->
+                                <div class="col-12">
+                                    <h5 class="form-title"><span>Login Details</span></h5>
+                                </div>
+                                <div class="col-12 col-sm-6">
+                                    <div class="form-group">
+                                        <label>Email ID *</label>
+                                        <input type="email" class="form-control" name="email" value="{{ teacher.user.email }}" required>
+                                    </div>
+                                </div>
+                                <div class="col-12 col-sm-6">
+                                    <div class="form-group">
+                                        <label>Password (Leave blank to keep current password)</label>
+                                        <input type="password" class="form-control" name="password" placeholder="Enter new password">
+                                    </div>
+                                </div>
+                                <div class="col-12 col-sm-6">
+                                    <div class="form-group">
+                                        <label>Repeat Password</label>
+                                        <input type="password" class="form-control" name="repeat_password" placeholder="Repeat new password">
+                                    </div>
+                                </div>
+                                
+                                <!-- Address -->
+                                <div class="col-12">
+                                    <h5 class="form-title"><span>Address</span></h5>
+                                </div>
+                                <div class="col-12">
+                                    <div class="form-group">
+                                        <label>Address *</label>
+                                        <input type="text" class="form-control" name="address" value="{{ teacher.address }}" required>
+                                    </div>
+                                </div>
+                                <div class="col-12 col-sm-6">
+                                    <div class="form-group">
+                                        <label>City *</label>
+                                        <input type="text" class="form-control" name="city" value="{{ teacher.city }}" required>
+                                    </div>
+                                </div>
+                                <div class="col-12 col-sm-6">
+                                    <div class="form-group">
+                                        <label>Zip Code *</label>
+                                        <input type="text" class="form-control" name="zipcode" value="{{ teacher.zipcode }}" required>
+                                    </div>
+                                </div>
+                                <div class="col-12 col-sm-6">
+                                    <div class="form-group">
+                                        <label>Country *</label>
+                                        <input type="text" class="form-control" name="country" value="{{ teacher.country }}" required>
+                                    </div>
+                                </div>
+                                
+                                <div class="col-12 mt-3">
+                                    <button type="submit" class="btn btn-primary">Update Teacher</button>
+                                    <a href="{% url 'teacher:list-teachers' %}" class="btn btn-secondary">Cancel</a>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
+{% endblock %}
 
+{% block extra_css %}
+<style>
+    .profile-picture-container {
+        position: relative;
+        display: inline-block;
+        width: 150px;
+        height: 150px;
+        cursor: pointer;
+        margin-bottom: 15px;
+    }
+    .profile-picture-preview {
+        width: 150px;
+        height: 150px;
+        border-radius: 50%;
+        object-fit: cover;
+        border: 3px solid #ddd;
+    }
+    .profile-picture-placeholder {
+        width: 150px;
+        height: 150px;
+        border-radius: 50%;
+        background-color: #f8f9fa;
+        border: 2px dashed #dee2e6;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #6c757d;
+    }
+    .profile-picture-placeholder i {
+        font-size: 48px;
+    }
+    .profile-picture-overlay {
+        position: absolute;
+        top: 0; 
+        left: 0;
+        width: 100%; 
+        height: 100%;
+        border-radius: 50%;
+        background: rgba(0, 0, 0, 0.5);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        opacity: 0;
+        transition: opacity 0.3s ease;
+        color: white;
+        font-size: 12px;
+        pointer-events: none; /* Prevent overlay from blocking clicks */
+    }
+    .profile-picture-overlay i {
+        font-size: 24px;
+        margin-bottom: 5px;
+    }
+    .profile-picture-container:hover .profile-picture-overlay {
+        opacity: 1;
+    }
+</style>
+{% endblock %}
 
-<script src="assets/js/jquery-3.6.0.min.js"></script>
+{% block extra_js %}
+<script>
+    $(document).ready(function() {
+        // Debug function (remove in production)
+        function debugLog(message) {
+            console.log('[File Upload Debug]:', message);
+            $('#debug-info').text(message).show();
+            setTimeout(() => $('#debug-info').hide(), 3000);
+        }
 
-<script src="assets/js/popper.min.js"></script>
-<script src="assets/plugins/bootstrap/js/bootstrap.min.js"></script>
+        // Check if jQuery is loaded
+        if (typeof $ === 'undefined') {
+            alert('jQuery is not loaded! Please check your base template.');
+            return;
+        }
 
-<script src="assets/plugins/slimscroll/jquery.slimscroll.min.js"></script>
+        debugLog('jQuery loaded, initializing file upload...');
 
-<script src="assets/js/script.js"></script>
-</body>
+        const preview = $('#profile-picture-preview');
+        const placeholder = $('#profile-picture-placeholder');
+        const fileInput = $('#profile_picture');
+        const removeButton = $('#remove-image');
+        const uploadButton = $('#upload-image');
+        const container = $('#profile-picture-container');
+        const fileError = $('#file-error');
 
-<!-- Mirrored from preschool.dreamguystech.com/html-template/edit-teacher.html by HTTrack Website Copier/3.x [XR&CO'2014], Thu, 28 Oct 2021 11:11:50 GMT -->
-</html>
+        // Check if all elements exist
+        if (fileInput.length === 0) {
+            alert('File input element not found!');
+            return;
+        }
+        if (uploadButton.length === 0) {
+            alert('Upload button not found!');
+            return;
+        }
+
+        debugLog(`Elements found: fileInput(${fileInput.length}), uploadButton(${uploadButton.length})`);
+        
+        // Initialize based on current image
+        function initializePreviewState() {
+            if (preview.attr('src') && preview.attr('src') !== '#' && preview.attr('src') !== '') {
+                preview.show();
+                placeholder.hide();
+                removeButton.show();
+                debugLog('Initialized with existing image');
+            } else {
+                preview.hide();
+                placeholder.show();
+                removeButton.hide();
+                debugLog('Initialized without image');
+            }
+            fileError.hide();
+        }
+        initializePreviewState();
+        
+        // Primary upload button click handler
+        uploadButton.on('click', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            debugLog('Upload button clicked');
+            
+            try {
+                // Multiple attempts to trigger file dialog
+                fileInput[0].click(); // jQuery element to DOM element
+                debugLog('File input clicked successfully');
+            } catch (error) {
+                debugLog('Error clicking file input: ' + error.message);
+                alert('Error opening file dialog: ' + error.message);
+            }
+        });
+
+        // Alternative method using native JavaScript
+        uploadButton[0].addEventListener('click', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            debugLog('Native event listener triggered');
+            
+            setTimeout(() => {
+                try {
+                    document.getElementById('profile_picture').click();
+                    debugLog('Native file input click successful');
+                } catch (error) {
+                    debugLog('Native click failed: ' + error.message);
+                }
+            }, 100);
+        });
+        
+        // Container click (for overlay) - with improved event handling
+        container.on('click', function(e) {
+            // Don't trigger if clicking on buttons
+            if ($(e.target).closest('#remove-image, #upload-image').length > 0) {
+                debugLog('Click on button ignored');
+                return;
+            }
+            
+            debugLog('Container clicked');
+            e.preventDefault();
+            
+            try {
+                fileInput[0].click();
+                debugLog('Container click triggered file input');
+            } catch (error) {
+                debugLog('Container click failed: ' + error.message);
+            }
+        });
+        
+        // Handle file selection
+        fileInput.on('change', function(e) {
+            debugLog('File input change event triggered');
+            
+            if (this.files && this.files[0]) {
+                const file = this.files[0];
+                debugLog(`File selected: ${file.name}, Size: ${(file.size/1024/1024).toFixed(2)}MB, Type: ${file.type}`);
+                
+                // Validate file type
+                const validTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/gif'];
+                if (!validTypes.includes(file.type.toLowerCase())) {
+                    fileError.text('Please select a valid image file (JPG, PNG or GIF)').show();
+                    this.value = '';
+                    debugLog('Invalid file type rejected');
+                    return;
+                }
+                
+                // Validate file size (max 2MB)
+                if (file.size > 2 * 1024 * 1024) {
+                    fileError.text('Image must be less than 2MB').show();
+                    this.value = '';
+                    debugLog('File too large rejected');
+                    return;
+                }
+                
+                // Clear any previous errors
+                fileError.hide();
+                
+                // Preview image
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    preview.attr('src', e.target.result).show();
+                    placeholder.hide();
+                    removeButton.show();
+                    debugLog('Image preview updated successfully');
+                };
+                reader.onerror = function() {
+                    debugLog('FileReader error occurred');
+                    fileError.text('Error reading file').show();
+                };
+                reader.readAsDataURL(file);
+            } else {
+                debugLog('No file selected or files array empty');
+            }
+        });
+        
+        // Remove image
+        removeButton.on('click', function(e) {
+            e.stopPropagation(); // Prevent triggering container click
+            e.preventDefault();
+            
+            fileInput.val('');
+            preview.attr('src', '').hide();
+            placeholder.show();
+            removeButton.hide();
+            fileError.hide();
+            debugLog('Image removed');
+        });
+        
+        // Form validation
+        $('form').on('submit', function(e) {
+            debugLog('Form submission started');
+            
+            // Password validation
+            const password = $('input[name="password"]').val();
+            const repeatPassword = $('input[name="repeat_password"]').val();
+            
+            if (password !== repeatPassword) {
+                e.preventDefault();
+                alert('Passwords do not match!');
+                return false;
+            }
+            
+            if (password && password.length < 6) {
+                e.preventDefault();
+                alert('Password must be at least 6 characters long!');
+                return false;
+            }
+            
+            // File validation
+            if (fileInput[0].files.length > 0) {
+                const file = fileInput[0].files[0];
+                const validTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/gif'];
+                
+                if (!validTypes.includes(file.type.toLowerCase())) {
+                    e.preventDefault();
+                    fileError.text('Please select a valid image file (JPG, PNG or GIF)').show();
+                    return false;
+                }
+                
+                if (file.size > 2 * 1024 * 1024) {
+                    e.preventDefault();
+                    fileError.text('Image must be less than 2MB').show();
+                    return false;
+                }
+                
+                debugLog('File validation passed');
+            }
+            
+            debugLog('Form validation completed successfully');
+        });
+
+        // Additional debugging - check for common issues
+        setTimeout(() => {
+            debugLog('Post-load checks completed');
+            
+            // Test if file input is accessible
+            try {
+                const testAccess = document.getElementById('profile_picture');
+                if (testAccess) {
+                    debugLog('File input accessible via DOM');
+                } else {
+                    debugLog('ERROR: File input not accessible via DOM');
+                }
+            } catch (error) {
+                debugLog('DOM access error: ' + error.message);
+            }
+            
+            // Check for overlapping elements
+            const uploadRect = uploadButton[0].getBoundingClientRect();
+            debugLog(`Upload button position: ${uploadRect.top}, ${uploadRect.left}, ${uploadRect.width}x${uploadRect.height}`);
+            
+        }, 1000);
+    });
+</script>
+{% endblock %}
