@@ -10,6 +10,10 @@ from home_auth.models import CustomUser
 
 def add_teacher(request):
     """Add a new teacher with a linked CustomUser account and profile image."""
+    if not request.user.is_authenticated or not request.user.role != "admin":
+        messages.error(request, "You don't have permission to perform this action")
+        return redirect("teacher:add-teacher")
+    
     departments = Department.objects.all()
 
     if request.method == "POST":
@@ -116,6 +120,10 @@ def add_teacher(request):
 
 
 def list_all_teachers(request):
+    if not request.user.is_authenticated or not request.user.role != "admin":
+        messages.error(request, "You don't have permission to perform this action")
+        return redirect("teacher:list-teachers")
+    
     """List all teachers with related user and department info."""
     teachers = Teacher.objects.select_related("user", "department_id").all()
     return render(request, "teacher/teachers.html", {"teachers": teachers})
@@ -128,6 +136,10 @@ def teacher_detail(request, teacher_id):
 
 
 def edit_teacher(request, teacher_id):
+    if not request.user.is_authenticated or not request.user.role != "teacher" or not request.user.role != "admin":
+        messages.error(request, "You don't have permission to perform this action")
+        return redirect("teacher:teacher-list")
+    
     """Edit teacher, associated user account, and profile image."""
     teacher = get_object_or_404(Teacher, id=teacher_id)
     user = teacher.user
@@ -177,6 +189,10 @@ def edit_teacher(request, teacher_id):
 
 def delete_teacher(request, teacher_id):
     """Delete teacher and linked user account, remove image file if exists."""
+    if not request.user.is_authenticated or not request.user.role != "admin":
+        messages.error(request, "You don't have permission to perform this action")
+        return redirect("teacher:list-teachers")
+    
     teacher = get_object_or_404(Teacher, id=teacher_id)
     user = teacher.user
     teacher_name = f"{user.first_name} {user.last_name}"
@@ -191,3 +207,9 @@ def delete_teacher(request, teacher_id):
 
     messages.success(request, f"Teacher {teacher_name} deleted successfully.")
     return redirect("teacher:list-teachers")
+
+def add_assignment(request):
+    pass
+
+def grade_assignment(request,assignment_id):
+    pas

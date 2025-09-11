@@ -35,17 +35,17 @@ def signup_view(request):
             role=role
         )
 
-        auth_login(request, user)
+        # auth_login(request, user)
         messages.success(request, "Signup successful!")
 
    
-        if role == "admin":
-            return redirect("school:dashboard")
-        elif role == "student":
-            return redirect("school:dashboard")
-        elif role == "teacher":
-            return redirect("school:dashboard")
-        return redirect("school:index")
+        # if role == "admin":
+        #     return redirect("school:dashboard")
+        # elif role == "student":
+        #     return redirect("school:dashboard")
+        # elif role == "teacher":
+        #     return redirect("school:dashboard")
+        # return redirect("school:index")
 
     return render(request, "authentication/register.html")
 
@@ -145,13 +145,9 @@ def logout_view(request):
 
 @login_required
 def change_password(request, user_id):
+    
     user: CustomUser = get_object_or_404(CustomUser, id=user_id)
-
-   
-    if request.user != user and not request.user.is_superuser:
-        messages.error(request, "You are not authorized to perform this action")
-        return redirect("school:dashboard")
-
+    
     if request.method == "POST":
         current_password = request.POST.get("current_password")
         new_password = request.POST.get("new_password")
@@ -178,4 +174,4 @@ def change_password(request, user_id):
         messages.success(request, "You have successfully changed your password")
         return redirect("school:dashboard")
 
-    return render(request, "home_auth/change_password.html", {"user": user})
+    return render(request, "authentication/change-password.html", {"user": user})

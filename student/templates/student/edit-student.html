@@ -53,9 +53,9 @@
                               <label>Gender</label>
                               <select class="form-control" name="gender">
                                  <option value="">Select Gender</option>
-                                 <option value="Male" {% if student.gender == "Male" %}selected{% endif %}>Male</option>
-                                 <option value="Female" {% if student.gender == "Female" %}selected{% endif %}>Female</option>
-                                 <option value="Others" {% if student.gender == "Others" %}selected{% endif %}>Others</option>
+                                 <option value="MALE" {% if student.gender == "MALE" %}selected{% endif %}>Male</option>
+                                 <option value="FEMALE" {% if student.gender == "FEMALE" %}selected{% endif %}>Female</option>
+                                 <option value="OTHER" {% if student.gender == "OTHER" %}selected{% endif %}>Other</option>
                               </select>
                            </div>
                         </div>
@@ -70,7 +70,19 @@
                         <div class="col-12 col-sm-6">
                            <div class="form-group">
                               <label>Class</label>
-                              <input type="text" class="form-control" name="student_class" value="{{ student.student_class }}">
+                              <select class="form-control" name="student_class">
+                                 <option value="">Select Class</option>
+                                 <option value="CRECHE" {% if student.student_class == "CRECHE" %}selected{% endif %}>Creche</option>
+                                 <option value="NURSERY_1" {% if student.student_class == "NURSERY_1" %}selected{% endif %}>Nursery 1</option>
+                                 <option value="NURSERY_2" {% if student.student_class == "NURSERY_2" %}selected{% endif %}>Nursery 2</option>
+                                 <option value="KINDERGARTEN" {% if student.student_class == "KINDERGARTEN" %}selected{% endif %}>Kindergarten</option>
+                                 <option value="UPPER_PRIMARY_4" {% if student.student_class == "UPPER_PRIMARY_4" %}selected{% endif %}>Upper Primary 4</option>
+                                 <option value="UPPER_PRIMARY_5" {% if student.student_class == "UPPER_PRIMARY_5" %}selected{% endif %}>Upper Primary 5</option>
+                                 <option value="UPPER_PRIMARY_6" {% if student.student_class == "UPPER_PRIMARY_6" %}selected{% endif %}>Upper Primary 6</option>
+                                 <option value="JHS_1" {% if student.student_class == "JHS_1" %}selected{% endif %}>JHS 1</option>
+                                 <option value="JHS_2" {% if student.student_class == "JHS_2" %}selected{% endif %}>JHS 2</option>
+                                 <option value="JHS_3" {% if student.student_class == "JHS_3" %}selected{% endif %}>JHS 3</option>
+                              </select>
                            </div>
                         </div>
 
