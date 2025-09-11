@@ -54,11 +54,26 @@ class Subject(models.Model):
 
 
 class Assignment(models.Model):
+    CLASS_CHOICES = [
+        ("CRECHE", "Creche"),
+        ("NURSERY_1", "Nursery 1"),
+        ("NURSERY_2", "Nursery 2"),
+        ("KINDERGARTEN", "Kindergarten"),
+        ("UPPER_PRIMARY_4", "Upper Primary 4"),
+        ("UPPER_PRIMARY_5", "Upper Primary 5"),
+        ("UPPER_PRIMARY_6", "Upper Primary 6"),
+        ("JHS_1", "JHS 1"),
+        ("JHS_2", "JHS 2"),
+        ("JHS_3", "JHS 3"),
+    ]
+
+  
     teacher = models.ForeignKey(Teacher, on_delete=models.SET_NULL, null=True)
     subject = models.ForeignKey(Subject, on_delete=models.SET_NULL, null=True)
-    student = models.ForeignKey(Student,on_delete=models.SET_NULL, null=True)
+    # student = models.ForeignKey(Student,on_delete=models.SET_NULL, null=True)
     assignment = models.FileField(upload_to="assignments/")  
-    max_score = models.DecimalField(max_digits=10, decimal_places=2)
+    assignment_class = models.CharField(max_length=50, choices=CLASS_CHOICES)
+    max_score = models.DecimalField(max_digits=10, decimal_places=2, null=True)
     start_time = models.DateTimeField()
     due_time = models.DateTimeField()
 
@@ -84,23 +99,11 @@ class Grade(models.Model):
     ]
 
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    student_assignment = models.OneToOneField(
-        Assignment, 
-        on_delete=models.CASCADE,
-        related_name='grade'
+    student_assignment = models.OneToOneField(Assignment, on_delete=models.CASCADE,related_name='grade'
     )
-    teacher = models.ForeignKey(
-        Teacher, 
-        on_delete=models.SET_NULL, 
-        null=True,
-        related_name='grades_given'
-    )
+    teacher = models.ForeignKey(Teacher, on_delete=models.SET_NULL, null=True,related_name='grades_given')
     letter_grade = models.CharField(choices=GRADE_CHOICES, max_length=2)
-    numerical_score = models.DecimalField(
-        max_digits=5, 
-        decimal_places=2,
-        validators=[MinValueValidator(0), MaxValueValidator(100)]
-    )
+    numerical_score = models.DecimalField(max_digits=5, decimal_places=2,validators=[MinValueValidator(0), MaxValueValidator(100)])
     remarks = models.TextField(max_length=1000, blank=True)  
     graded_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
@@ -113,7 +116,7 @@ class Grade(models.Model):
         return f"{self.letter_grade} - {self.student_assignment}"
 
     def save(self, *args, **kwargs):
-        # Auto-calculate letter grade based on numerical score
+
         if self.numerical_score is not None:
             if self.numerical_score >= 90:
                 self.letter_grade = "A+"

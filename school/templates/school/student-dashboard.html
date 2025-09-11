@@ -32,12 +32,21 @@
       --border-radius: 8px;
       --box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
       --transition: all 0.3s ease;
+      --sidebar-width: 250px;
+      --header-height: 60px;
+    }
+    
+    * {
+      box-sizing: border-box;
     }
     
     body {
       font-family: 'Poppins', sans-serif;
       background-color: #f5f7fb;
       color: #333;
+      margin: 0;
+      padding: 0;
+      overflow-x: hidden;
     }
     
     .card {
@@ -75,6 +84,8 @@
       border-radius: 20px;
       font-size: 12px;
       font-weight: 500;
+      margin: 2px;
+      display: inline-block;
     }
     
     .info-item {
@@ -125,78 +136,539 @@
       margin-bottom: 0;
     }
     
-    @media (max-width: 768px) {
-      .student-profile-img {
-        width: 120px;
-        height: 120px;
-      }
-    }
-    
     /* Header styles */
     .header {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 1050;
       box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
       background: #fff;
-      height: 60px;
-      padding: 0 20px;
+      height: var(--header-height);
+      padding: 0 15px;
       display: flex;
       align-items: center;
       justify-content: space-between;
     }
     
+    .header-left {
+      display: flex;
+      align-items: center;
+    }
+    
+    .logo img {
+      height: 40px;
+      width: auto;
+    }
+    
+    #toggle_btn {
+      display: none;
+      background: none;
+      border: none;
+      font-size: 18px;
+      color: var(--dark-color);
+      cursor: pointer;
+      padding: 8px;
+      margin-right: 15px;
+    }
+    
+    .user-menu {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      align-items: center;
+    }
+    
+    .user-menu .dropdown {
+      position: relative;
+    }
+    
+    .user-menu .dropdown-toggle {
+      display: flex;
+      align-items: center;
+      padding: 5px;
+      text-decoration: none;
+      color: inherit;
+    }
+    
+    .user-menu .dropdown-menu {
+      position: absolute;
+      top: 100%;
+      right: 0;
+      background: white;
+      box-shadow: var(--box-shadow);
+      border-radius: var(--border-radius);
+      min-width: 200px;
+      display: none;
+      z-index: 1060;
+    }
+    
+    .user-menu .dropdown.show .dropdown-menu {
+      display: block;
+    }
+    
+    .user-header {
+      padding: 15px;
+      border-bottom: 1px solid rgba(0,0,0,0.05);
+      display: flex;
+      align-items: center;
+    }
+    
+    .avatar {
+      margin-right: 10px;
+    }
+    
+    .avatar img {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      object-fit: cover;
+    }
+    
+    .dropdown-item {
+      padding: 10px 15px;
+      text-decoration: none;
+      color: inherit;
+      display: block;
+    }
+    
+    .dropdown-item:hover {
+      background-color: var(--light-color);
+    }
+    
+    /* Sidebar styles */
     .sidebar {
-      width: 250px;
-      background: #fff;
-      box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
       position: fixed;
       left: 0;
-      top: 60px;
-      height: calc(100% - 60px);
+      top: var(--header-height);
+      width: var(--sidebar-width);
+      height: calc(100vh - var(--header-height));
+      background: #fff;
+      box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
       overflow-y: auto;
-      z-index: 1001;
-      transition: all 0.3s ease;
+      z-index: 1040;
+      transition: var(--transition);
+      transform: translateX(0);
     }
     
+    .sidebar-inner {
+      padding: 0;
+    }
+    
+    .sidebar-menu ul {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+    
+    .sidebar-menu .menu-title {
+      padding: 15px 20px 10px;
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--secondary-color);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    
+    .sidebar-menu li a {
+      padding: 12px 20px;
+      display: flex;
+      align-items: center;
+      text-decoration: none;
+      color: var(--dark-color);
+      transition: var(--transition);
+      position: relative;
+    }
+    
+    .sidebar-menu li a:hover,
+    .sidebar-menu li a.active {
+      background-color: rgba(74, 108, 247, 0.1);
+      color: var(--primary-color);
+    }
+    
+    .sidebar-menu li a i {
+      margin-right: 10px;
+      width: 16px;
+      text-align: center;
+    }
+    
+    .sidebar-menu .submenu ul {
+      display: none;
+      background-color: rgba(0,0,0,0.02);
+    }
+    
+    .sidebar-menu .submenu.active ul {
+      display: block;
+    }
+    
+    .sidebar-menu .submenu ul li a {
+      padding-left: 45px;
+      font-size: 13px;
+    }
+    
+    .menu-arrow {
+      margin-left: auto;
+      transition: var(--transition);
+    }
+    
+    .submenu.active .menu-arrow {
+      transform: rotate(90deg);
+    }
+    
+    /* Page wrapper */
     .page-wrapper {
-      margin-left: 250px;
-      padding-top: 60px;
-      transition: all 0.3s ease;
+      margin-left: var(--sidebar-width);
+      padding-top: var(--header-height);
+      min-height: 100vh;
+      transition: var(--transition);
     }
     
+    .content {
+      padding: 20px;
+    }
+    
+    /* Page header */
+    .page-header {
+      margin-bottom: 30px;
+      padding-bottom: 15px;
+      border-bottom: 1px solid rgba(0,0,0,0.05);
+    }
+    
+    .page-title {
+      margin-bottom: 5px;
+      font-size: 24px;
+      font-weight: 600;
+    }
+    
+    .breadcrumb {
+      background: none;
+      margin-bottom: 0;
+      padding: 0;
+      font-size: 14px;
+    }
+    
+    .breadcrumb-item a {
+      color: var(--primary-color);
+      text-decoration: none;
+    }
+    
+    .breadcrumb-item.active {
+      color: var(--secondary-color);
+    }
+    
+    /* Overlay for mobile */
+    .sidebar-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0, 0, 0, 0.5);
+      z-index: 1030;
+      display: none;
+    }
+    
+    /* Desktop styles (1200px and up) */
+    @media (min-width: 1200px) {
+      .content {
+        padding: 30px;
+      }
+    }
+    
+    /* Tablet styles (768px to 1199px) */
+    @media (max-width: 1199px) {
+      .stats-box h3 {
+        font-size: 24px;
+      }
+      
+      .student-profile-img {
+        width: 130px;
+        height: 130px;
+      }
+      
+      .info-badge {
+        font-size: 11px;
+        padding: 4px 8px;
+      }
+    }
+    
+    /* Mobile and tablet styles (992px and below) */
     @media (max-width: 992px) {
+      #toggle_btn {
+        display: block;
+      }
+      
       .sidebar {
-        width: 0;
-        transform: translateX(-250px);
+        transform: translateX(-100%);
+      }
+      
+      .sidebar.active {
+        transform: translateX(0);
+      }
+      
+      .sidebar-overlay.active {
+        display: block;
       }
       
       .page-wrapper {
         margin-left: 0;
       }
       
-      .sidebar.active {
-        width: 250px;
-        transform: translateX(0);
+      .header {
+        padding: 0 15px;
       }
+      
+      .content {
+        padding: 15px;
+      }
+      
+      .page-title {
+        font-size: 20px;
+      }
+    }
+    
+    /* Small tablet styles (768px and below) */
+    @media (max-width: 768px) {
+      .student-profile-img {
+        width: 120px;
+        height: 120px;
+      }
+      
+      .stats-box {
+        padding: 15px;
+      }
+      
+      .stats-box h3 {
+        font-size: 20px;
+      }
+      
+      .stats-box i {
+        font-size: 20px;
+        margin-bottom: 10px;
+      }
+      
+      .card-header {
+        padding: 12px 15px;
+      }
+      
+      .card-body {
+        padding: 15px;
+      }
+      
+      .info-item {
+        margin-bottom: 10px;
+        flex-direction: row;
+        align-items: flex-start;
+      }
+      
+      .info-item i {
+        margin-top: 2px;
+      }
+      
+      .info-badge {
+        margin: 1px;
+        font-size: 10px;
+        padding: 3px 6px;
+      }
+    }
+    
+    /* Extra small mobile styles (576px and below) */
+    @media (max-width: 576px) {
+      .header {
+        padding: 0 10px;
+      }
+      
+      .content {
+        padding: 10px;
+      }
+      
+      .page-title {
+        font-size: 18px;
+      }
+      
+      .student-profile-img {
+        width: 100px;
+        height: 100px;
+      }
+      
+      .stats-box {
+        padding: 12px;
+      }
+      
+      .stats-box h3 {
+        font-size: 18px;
+      }
+      
+      .stats-box p {
+        font-size: 13px;
+      }
+      
+      .info-item {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+      
+      .info-item i {
+        margin-bottom: 5px;
+        margin-right: 5px;
+      }
+      
+      .info-badge {
+        display: block;
+        text-align: center;
+        margin: 2px 0;
+        font-size: 10px;
+      }
+      
+      .card-header h5 {
+        font-size: 14px;
+      }
+      
+      .sidebar {
+        width: 280px;
+      }
+      
+      .sidebar-menu li a {
+        padding: 10px 15px;
+        font-size: 14px;
+      }
+      
+      .sidebar-menu .submenu ul li a {
+        padding-left: 35px;
+        font-size: 12px;
+      }
+    }
+    
+    /* Ultra small mobile styles (480px and below) */
+    @media (max-width: 480px) {
+      .logo img {
+        height: 35px;
+      }
+      
+      .student-profile-img {
+        width: 90px;
+        height: 90px;
+      }
+      
+      .stats-box h3 {
+        font-size: 16px;
+      }
+      
+      .page-header {
+        margin-bottom: 20px;
+      }
+      
+      .card {
+        margin-bottom: 15px;
+      }
+      
+      .info-badge {
+        font-size: 9px;
+        padding: 2px 5px;
+      }
+    }
+    
+    /* Landscape mobile styles */
+    @media (max-height: 600px) and (orientation: landscape) {
+      .sidebar {
+        height: calc(100vh - var(--header-height));
+        overflow-y: auto;
+      }
+      
+      .student-profile-img {
+        width: 80px;
+        height: 80px;
+      }
+      
+      .stats-box {
+        padding: 10px;
+      }
+      
+      .stats-box h3 {
+        font-size: 16px;
+      }
+      
+      .stats-box i {
+        font-size: 16px;
+        margin-bottom: 5px;
+      }
+    }
+    
+    /* Print styles */
+    @media print {
+      .header,
+      .sidebar,
+      .sidebar-overlay {
+        display: none !important;
+      }
+      
+      .page-wrapper {
+        margin-left: 0 !important;
+        padding-top: 0 !important;
+      }
+      
+      .card {
+        box-shadow: none !important;
+        border: 1px solid #ddd !important;
+      }
+    }
+    
+    /* High DPI screens */
+    @media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
+      .student-profile-img {
+        image-rendering: -webkit-optimize-contrast;
+      }
+    }
+    
+    /* Focus states for accessibility */
+    #toggle_btn:focus,
+    .sidebar-menu li a:focus,
+    .dropdown-toggle:focus {
+      outline: 2px solid var(--primary-color);
+      outline-offset: 2px;
+    }
+    
+    /* Smooth scrolling */
+    html {
+      scroll-behavior: smooth;
+    }
+    
+    /* Loading animation */
+    .loading {
+      opacity: 0.5;
+      pointer-events: none;
+    }
+    
+    /* Animation for sidebar toggle */
+    .sidebar,
+    .page-wrapper {
+      transition: transform 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
     }
   </style>
 </head>
 <body>
 <div class="main-wrapper">
+  <!-- Sidebar Overlay for Mobile -->
+  <div class="sidebar-overlay" id="sidebar-overlay"></div>
 
   <!-- Header -->
   <div class="header">
     <div class="header-left">
+      <button type="button" id="toggle_btn" aria-label="Toggle Navigation">
+        <i class="fas fa-bars"></i>
+      </button>
       <a href="{% url 'school:dashboard' %}" class="logo">
-        <img src="{% static 'assets/img/logo.png' %}" alt="Logo" height="40">
+        <img src="{% static 'assets/img/logo.png' %}" alt="Logo">
       </a>
     </div>
-
-    <a href="javascript:void(0);" id="toggle_btn"><i class="fas fa-align-left"></i></a>
 
     <!-- User Menu -->
     <ul class="nav user-menu">
       <!-- Profile Dropdown -->
-      <li class="nav-item dropdown has-arrow">
-        <a href="#" class="dropdown-toggle nav-link" data-toggle="dropdown">
+      <li class="nav-item dropdown" id="user-dropdown">
+        <a href="#" class="dropdown-toggle nav-link" role="button" aria-expanded="false">
           <span class="user-img">
             {% if student.student_image %}
               <img class="rounded-circle" src="{{ student.student_image.url }}" width="31" alt="Student">
@@ -207,7 +679,7 @@
         </a>
         <div class="dropdown-menu">
           <div class="user-header">
-            <div class="avatar avatar-sm">
+            <div class="avatar">
               {% if student.student_image %}
                 <img src="{{ student.student_image.url }}" class="avatar-img rounded-circle" alt="Student">
               {% else %}
@@ -228,35 +700,35 @@
 
   <!-- Sidebar -->
   <div class="sidebar" id="sidebar">
-    <div class="sidebar-inner slimscroll">
+    <div class="sidebar-inner">
       <div id="sidebar-menu" class="sidebar-menu">
         <ul>
           <li class="menu-title"><span>Main Menu</span></li>
           <li class="submenu active">
-            <a href="#"><i class="fas fa-user-graduate"></i> <span> Dashboard</span> <span class="menu-arrow"></span></a>
+            <a href="#" data-toggle="submenu"><i class="fas fa-user-graduate"></i> <span>Dashboard</span> <span class="menu-arrow">▶</span></a>
             <ul>
               <li><a href="{% url 'school:dashboard' %}" class="active">Student Dashboard</a></li>
             </ul>
           </li>
           <li class="submenu">
-            <a href="#"><i class="fas fa-book"></i> <span> Courses</span> <span class="menu-arrow"></span></a>
+            <a href="#" data-toggle="submenu"><i class="fas fa-book"></i> <span>Courses</span> <span class="menu-arrow">▶</span></a>
             <ul>
               <li><a href="#">My Courses</a></li>
               <li><a href="#">Assignments</a></li>
             </ul>
           </li>
           <li class="submenu">
-            <a href="#"><i class="fas fa-chart-bar"></i> <span> Results</span> <span class="menu-arrow"></span></a>
+            <a href="#" data-toggle="submenu"><i class="fas fa-chart-bar"></i> <span>Results</span> <span class="menu-arrow">▶</span></a>
             <ul>
               <li><a href="#">Exam Results</a></li>
               <li><a href="#">Progress Report</a></li>
             </ul>
           </li>
           <li>
-            <a href="#"><i class="fas fa-calendar-alt"></i> <span> Schedule</span></a>
+            <a href="#"><i class="fas fa-calendar-alt"></i> <span>Schedule</span></a>
           </li>
           <li>
-            <a href="{% url 'home_auth:change-password' user.id %}"><i class="fas fa-cog"></i> <span>Change-Password</span></a>
+            <a href="{% url 'home_auth:change-password' user.id %}"><i class="fas fa-cog"></i> <span>Change Password</span></a>
           </li>
         </ul>
       </div>
@@ -324,7 +796,7 @@
 
       <!-- Student Profile Section -->
       <div class="row">
-        <div class="col-md-4">
+        <div class="col-md-4 col-12">
           <div class="card">
             <div class="card-body text-center">
               <div class="mt-3 mb-4">
@@ -338,23 +810,23 @@
               <h3 class="mb-1">{{ student.first_name }} {{ student.last_name }}</h3>
               <p class="text-muted mb-3">{{ student.student_class }} - {{ student.section }}</p>
               
-              <div class="d-flex justify-content-center mb-3">
-                <span class="info-badge me-2">{{ student.student_id }}</span>
-                <span class="info-badge me-2">{{ student.gender }}</span>
+              <div class="d-flex justify-content-center mb-3 flex-wrap">
+                <span class="info-badge">{{ student.student_id }}</span>
+                <span class="info-badge">{{ student.gender }}</span>
                 <span class="info-badge">{{ student.religion }}</span>
               </div>
             </div>
           </div>
         </div>
         
-        <div class="col-md-8">
+        <div class="col-md-8 col-12">
           <div class="card">
             <div class="card-header">
               <h5 class="card-title">Personal Information</h5>
             </div>
             <div class="card-body">
               <div class="row">
-                <div class="col-md-6">
+                <div class="col-md-6 col-12">
                   <div class="info-item">
                     <i class="fas fa-id-card"></i>
                     <div>
@@ -384,7 +856,7 @@
                   </div>
                 </div>
                 
-                <div class="col-md-6">
+                <div class="col-md-6 col-12">
                   <div class="info-item">
                     <i class="fas fa-tag"></i>
                     <div>
@@ -419,7 +891,7 @@
           
           <!-- Parent Information -->
           <div class="row mt-4">
-            <div class="col-md-6">
+            <div class="col-md-6 col-12">
               <div class="card">
                 <div class="card-header">
                   <h5 class="card-title">Father's Information</h5>
@@ -453,7 +925,7 @@
               </div>
             </div>
             
-            <div class="col-md-6">
+            <div class="col-md-6 col-12">
               <div class="card">
                 <div class="card-header">
                   <h5 class="card-title">Mother's Information</h5>
@@ -490,7 +962,7 @@
           
           <!-- Address Information -->
           <div class="row mt-4">
-            <div class="col-md-6">
+            <div class="col-md-6 col-12">
               <div class="card">
                 <div class="card-header">
                   <h5 class="card-title">Present Address</h5>
@@ -504,7 +976,7 @@
               </div>
             </div>
             
-            <div class="col-md-6">
+            <div class="col-md-6 col-12">
               <div class="card">
                 <div class="card-header">
                   <h5 class="card-title">Permanent Address</h5>
@@ -540,10 +1012,301 @@
 <script src="{% static 'assets/js/script.js' %}"></script>
 
 <script>
-  // Toggle sidebar
-  $('#toggle_btn').click(function() {
-    $('#sidebar').toggleClass('active');
+document.addEventListener('DOMContentLoaded', function() {
+  // Toggle sidebar functionality
+  const toggleBtn = document.getElementById('toggle_btn');
+  const sidebar = document.getElementById('sidebar');
+  const sidebarOverlay = document.getElementById('sidebar-overlay');
+  const body = document.body;
+
+  // Toggle sidebar on hamburger click
+  toggleBtn?.addEventListener('click', function(e) {
+    e.preventDefault();
+    e.stopPropagation();
+    toggleSidebar();
   });
+
+  // Close sidebar when clicking overlay
+  sidebarOverlay?.addEventListener('click', function() {
+    closeSidebar();
+  });
+
+  // Close sidebar when clicking outside on mobile
+  document.addEventListener('click', function(e) {
+    if (window.innerWidth <= 992) {
+      const isClickInsideSidebar = sidebar?.contains(e.target);
+      const isClickOnToggleBtn = toggleBtn?.contains(e.target);
+      
+      if (!isClickInsideSidebar && !isClickOnToggleBtn && sidebar?.classList.contains('active')) {
+        closeSidebar();
+      }
+    }
+  });
+
+  // Handle window resize
+  window.addEventListener('resize', function() {
+    if (window.innerWidth > 992) {
+      closeSidebar();
+    }
+  });
+
+  // Submenu toggle functionality
+  const submenuToggles = document.querySelectorAll('[data-toggle="submenu"]');
+  submenuToggles.forEach(function(toggle) {
+    toggle.addEventListener('click', function(e) {
+      e.preventDefault();
+      const submenu = this.parentElement;
+      const isActive = submenu.classList.contains('active');
+      
+      // Close all other submenus
+      document.querySelectorAll('.submenu.active').forEach(function(activeSubmenu) {
+        if (activeSubmenu !== submenu) {
+          activeSubmenu.classList.remove('active');
+        }
+      });
+      
+      // Toggle current submenu
+      submenu.classList.toggle('active', !isActive);
+    });
+  });
+
+  // User dropdown functionality
+  const userDropdown = document.getElementById('user-dropdown');
+  const userDropdownToggle = userDropdown?.querySelector('.dropdown-toggle');
+  
+  userDropdownToggle?.addEventListener('click', function(e) {
+    e.preventDefault();
+    e.stopPropagation();
+    userDropdown.classList.toggle('show');
+  });
+
+  // Close user dropdown when clicking outside
+  document.addEventListener('click', function(e) {
+    if (!userDropdown?.contains(e.target)) {
+      userDropdown?.classList.remove('show');
+    }
+  });
+
+  // Prevent dropdown from closing when clicking inside
+  userDropdown?.addEventListener('click', function(e) {
+    e.stopPropagation();
+  });
+
+  // Functions
+  function toggleSidebar() {
+    const isActive = sidebar?.classList.contains('active');
+    
+    if (isActive) {
+      closeSidebar();
+    } else {
+      openSidebar();
+    }
+  }
+
+  function openSidebar() {
+    sidebar?.classList.add('active');
+    sidebarOverlay?.classList.add('active');
+    body.style.overflow = 'hidden';
+    
+    // Update toggle button icon
+    const icon = toggleBtn?.querySelector('i');
+    if (icon) {
+      icon.className = 'fas fa-times';
+    }
+  }
+
+  function closeSidebar() {
+    sidebar?.classList.remove('active');
+    sidebarOverlay?.classList.remove('active');
+    body.style.overflow = '';
+    
+    // Update toggle button icon
+    const icon = toggleBtn?.querySelector('i');
+    if (icon) {
+      icon.className = 'fas fa-bars';
+    }
+  }
+
+  // Smooth scrolling for anchor links
+  document.querySelectorAll('a[href^="#"]').forEach(function(anchor) {
+    anchor.addEventListener('click', function(e) {
+      const target = document.querySelector(this.getAttribute('href'));
+      if (target) {
+        e.preventDefault();
+        target.scrollIntoView({
+          behavior: 'smooth',
+          block: 'start'
+        });
+      }
+    });
+  });
+
+  // Add loading state to buttons
+  document.querySelectorAll('button[type="submit"], .btn').forEach(function(btn) {
+    btn.addEventListener('click', function() {
+      const originalText = this.innerHTML;
+      const isSubmitButton = this.type === 'submit';
+      
+      if (isSubmitButton) {
+        this.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Loading...';
+        this.disabled = true;
+        
+        // Re-enable after 3 seconds (fallback)
+        setTimeout(() => {
+          this.innerHTML = originalText;
+          this.disabled = false;
+        }, 3000);
+      }
+    });
+  });
+
+  // Keyboard navigation support
+  document.addEventListener('keydown', function(e) {
+    // ESC key closes sidebar and dropdowns
+    if (e.key === 'Escape') {
+      closeSidebar();
+      userDropdown?.classList.remove('show');
+    }
+    
+    // Alt + M opens/closes sidebar (accessibility)
+    if (e.altKey && e.key === 'm') {
+      e.preventDefault();
+      toggleSidebar();
+    }
+  });
+
+  // Touch events for mobile swipe gestures
+  let touchStartX = 0;
+  let touchEndX = 0;
+  let touchStartY = 0;
+  let touchEndY = 0;
+
+  document.addEventListener('touchstart', function(e) {
+    touchStartX = e.changedTouches[0].screenX;
+    touchStartY = e.changedTouches[0].screenY;
+  }, { passive: true });
+
+  document.addEventListener('touchend', function(e) {
+    touchEndX = e.changedTouches[0].screenX;
+    touchEndY = e.changedTouches[0].screenY;
+    
+    const deltaX = touchEndX - touchStartX;
+    const deltaY = touchEndY - touchStartY;
+    
+    // Only handle horizontal swipes (ignore vertical scrolling)
+    if (Math.abs(deltaX) > Math.abs(deltaY) && Math.abs(deltaX) > 50) {
+      if (window.innerWidth <= 992) {
+        // Swipe right to open sidebar
+        if (deltaX > 0 && touchStartX < 50 && !sidebar?.classList.contains('active')) {
+          openSidebar();
+        }
+        // Swipe left to close sidebar
+        else if (deltaX < 0 && sidebar?.classList.contains('active')) {
+          closeSidebar();
+        }
+      }
+    }
+  }, { passive: true });
+
+  // Add focus trap for sidebar on mobile
+  function trapFocus(element) {
+    const focusableElements = element.querySelectorAll(
+      'a[href], button, textarea, input[type="text"], input[type="radio"], input[type="checkbox"], select'
+    );
+    const firstFocusableElement = focusableElements[0];
+    const lastFocusableElement = focusableElements[focusableElements.length - 1];
+
+    element.addEventListener('keydown', function(e) {
+      if (e.key === 'Tab') {
+        if (e.shiftKey) {
+          if (document.activeElement === firstFocusableElement) {
+            lastFocusableElement.focus();
+            e.preventDefault();
+          }
+        } else {
+          if (document.activeElement === lastFocusableElement) {
+            firstFocusableElement.focus();
+            e.preventDefault();
+          }
+        }
+      }
+    });
+  }
+
+  // Apply focus trap to sidebar
+  if (sidebar) {
+    trapFocus(sidebar);
+  }
+
+  // Lazy loading for images
+  if ('IntersectionObserver' in window) {
+    const imageObserver = new IntersectionObserver(function(entries, observer) {
+      entries.forEach(function(entry) {
+        if (entry.isIntersecting) {
+          const img = entry.target;
+          img.src = img.dataset.src;
+          img.classList.remove('loading');
+          imageObserver.unobserve(img);
+        }
+      });
+    });
+
+    document.querySelectorAll('img[data-src]').forEach(function(img) {
+      img.classList.add('loading');
+      imageObserver.observe(img);
+    });
+  }
+
+  // Add animation classes on scroll
+  function animateOnScroll() {
+    const elements = document.querySelectorAll('.card');
+    elements.forEach(function(element) {
+      const elementTop = element.getBoundingClientRect().top;
+      const elementVisible = 150;
+      
+      if (elementTop < window.innerHeight - elementVisible) {
+        element.classList.add('animate-in');
+      }
+    });
+  }
+
+  // Throttle scroll events
+  let scrollTimeout;
+  window.addEventListener('scroll', function() {
+    if (scrollTimeout) {
+      clearTimeout(scrollTimeout);
+    }
+    scrollTimeout = setTimeout(animateOnScroll, 10);
+  });
+
+  // Initial call
+  animateOnScroll();
+});
+
+// Add CSS animation classes
+const style = document.createElement('style');
+style.textContent = `
+  @keyframes slideInUp {
+    from {
+      opacity: 0;
+      transform: translateY(30px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  
+  .animate-in {
+    animation: slideInUp 0.6s ease-out;
+  }
+  
+  .loading {
+    opacity: 0.5;
+    transition: opacity 0.3s ease;
+  }
+`;
+document.head.appendChild(style);
 </script>
 </body>
 </html>

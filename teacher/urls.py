@@ -9,4 +9,10 @@ urlpatterns = [
     path('detail/<int:teacher_id>/', views.teacher_detail, name='teacher-detail'),
     path('edit/<int:teacher_id>/', views.edit_teacher, name='edit-teacher'),
     path('delete/<int:teacher_id>/', views.delete_teacher, name='delete-teacher'),
+    path("add-assignment/", views.add_assignment, name="add-assignment"),
+    #Assigments urls
+    path("edit-assignment/<int:assignment_id>/", views.edit_assignment, name="edit-assignment"),
+    path("delete-assignment/<int:assignment_id>/", views.delete_assignment, name="delete-assignment"),
+    path("list-assignments/<int:teacher_id>/", views.list_assignments, name="list-assignments"),
+    path("assignment-detail/<int:assignment_id>/", views.assignment_detail, name="assignment-detail"),
 ]

@@ -72,6 +72,12 @@ def admin_dashboard(request):
 @login_required(login_url='home_auth:login')
 def teacher_dashboard(request):
     """Teacher dashboard"""
+    # Get the teacher object for the current user
+    try:
+        teacher = Teacher.objects.get(user=request.user)
+    except Teacher.DoesNotExist:
+        teacher = None
+    
     student_count = Student.objects.count()
     teacher_count = Teacher.objects.count()
     
@@ -88,6 +94,7 @@ def teacher_dashboard(request):
         'teacher_count': teacher_count,
         'recent_students': recent_students,
         'recent_teachers': recent_teachers,
+        'teacher': teacher,
     }
     
     return render(request, 'school/teacher-dashboard.html', context)

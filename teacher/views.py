@@ -1,12 +1,15 @@
 from django.shortcuts import get_object_or_404, redirect, render
+from django.urls import reverse
 from django.contrib import messages
 from django.core.mail import send_mail
 from django.conf import settings
+from django.urls import reverse
 import os
-
-from .models import Teacher, Department
+from .forms import AssignmentForm
+from .models import Assignment, Subject, Teacher, Department
 from home_auth.models import CustomUser
-
+from teacher.models import Assignment, Subject
+from django.utils import timezone
 
 def add_teacher(request):
     """Add a new teacher with a linked CustomUser account and profile image."""
@@ -209,7 +212,102 @@ def delete_teacher(request, teacher_id):
     return redirect("teacher:list-teachers")
 
 def add_assignment(request):
-    pass
+    if not request.user.is_authenticated:
+        messages.error(request, "You must be logged in to access this page.")
+        return redirect("home_auth:login")
+    
+    try:
+        teacher = Teacher.objects.get(user=request.user)
+    except Teacher.DoesNotExist:
+        messages.error(request, "You are not a registered teacher")
+        return redirect("school:dashboard")
 
-def grade_assignment(request,assignment_id):
-    pas
+    # Optional: Check if teacher has subjects
+    if not teacher.subject_set.exists():
+        messages.error(request, "You have no subjects assigned. Please contact administration.")
+        return redirect("school:dashboard")
+
+    if request.method == "POST":
+        form = AssignmentForm(request.POST, request.FILES)
+        form.fields["subject"].queryset = teacher.subject_set.all() 
+
+        if form.is_valid():
+            assignment = form.save(commit=False)
+            assignment.teacher = teacher 
+            assignment.save()  
+
+            messages.success(request, "Assignment added successfully.")
+            return redirect("teacher:list-assignments", args=[str(teacher.id)])
+        else:
+            messages.error(request, "Please correct the errors below.")
+            print(form.errors)  
+    else:
+        form = AssignmentForm()
+        form.fields["subject"].queryset = teacher.subject_set.all()
+
+    return render(request, "teacher/add-assignment.html", {"form": form, "teacher": teacher})
+
+def edit_assignment(request, assignment_id):
+    assignment = get_object_or_404(Assignment, id=assignment_id)
+    
+    try:
+        current_teacher = Teacher.objects.get(user=request.user)
+    except Teacher.DoesNotExist:
+        messages.error(request, "You are not a teacher.")
+        return redirect(reverse("home_auth:login"))
+
+    if assignment.teacher != current_teacher:
+        messages.error(request, "You do not have permission to edit this assignment.")
+        return redirect(reverse("teacher:list-assignments", args=[current_teacher.id]))
+
+    if request.method == "POST":
+        form = AssignmentForm(request.POST, request.FILES, instance=assignment)
+        if form.is_valid():
+            assignment = form.save()
+            messages.success(request, "Assignment successfully updated.")
+            return redirect(reverse("teacher:assignment-detail", args=[assignment.id]))
+    else:
+        form = AssignmentForm(instance=assignment)
+
+    # ✅ Make sure to pass 'teacher' to context so template can use {% url 'teacher:list-assignments' teacher.id %}
+    return render(request, "teacher/edit-assignment.html", {
+        "form": form,
+        "assignment": assignment,
+        "teacher": current_teacher  
+    })
+
+def delete_assignment(request, assignment_id):
+    assignment = get_object_or_404(Assignment, id=assignment_id)
+    
+  
+    if not assignment.teacher:
+        messages.error(request, "This assignment is not linked to a valid teacher.")
+        return redirect("school:dashboard")
+    
+    teacher = assignment.teacher
+    assignment.delete()
+    messages.success(request, "Assignment successfully deleted")
+    
+    return redirect("teacher:list-assignments", teacher_id=teacher.id)
+
+
+def list_assignments(request, teacher_id):
+    teacher = get_object_or_404(Teacher, id=teacher_id)
+    assignments = Assignment.objects.filter(teacher=teacher)
+    subjects = Subject.objects.all()
+    
+
+    now = timezone.now()
+    context = {
+        'assignments': assignments,
+        'teacher': teacher,
+        'subjects': subjects,
+        'active_assignments_count': assignments.filter(start_time__lte=now, due_time__gte=now).count(),
+        'upcoming_assignments_count': assignments.filter(start_time__gt=now).count(),
+        'overdue_assignments_count': assignments.filter(due_time__lt=now).count(),
+    }
+    return render(request, 'teacher/list-assignments.html', context)
+
+def assignment_detail(request,assignment_id):
+    assignment = get_object_or_404(Assignment,id=assignment_id)
+    return render(request,"teacher/assignment-detail.html",{"assignment":assignment})
