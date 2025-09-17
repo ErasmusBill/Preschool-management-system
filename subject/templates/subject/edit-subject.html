@@ -12,7 +12,7 @@
                 <div class="col">
                     <h3 class="page-title">Edit Subject</h3>
                     <ul class="breadcrumb">
-                        <li class="breadcrumb-item"><a href="{% url 'subject:subject-list' %}">Subjects</a></li>
+                        <li class="breadcrumb-item"><a href="{% url 'subject:list-subject' %}">Subjects</a></li>
                         <li class="breadcrumb-item active">Edit Subject</li>
                     </ul>
                 </div>
@@ -48,7 +48,7 @@
                                     <div class="form-group">
                                         <label>Class (Grade)</label>
                                         <input type="number" name="grade" class="form-control" 
-                                               value="{{ subject.grade }}" required>
+                                               value="{{ subject.grade_level }}" required>
                                     </div>
                                 </div>
 

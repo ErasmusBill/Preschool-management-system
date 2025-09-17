@@ -2,9 +2,10 @@ from django.http import HttpResponseForbidden, JsonResponse
 from django.shortcuts import render, redirect,get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
+from home_auth.models import CustomUser
 from .models import Notification
 from student.models import Student
-from teacher.models import Teacher
+from teacher.models import Teacher,Subject ,Enrollment
 
 @login_required(login_url='home_auth:login') 
 def index(request):
@@ -49,6 +50,14 @@ def dashboard(request, student_id=None):
 @login_required(login_url='home_auth:login')
 def admin_dashboard(request):
     """Admin dashboard with student selection"""
+    
+    try:
+        admin = CustomUser.objects.get(user=request.user)
+    except Exception as e:
+        messages.error(request,"User Not Found")
+        return redirect("home_auth:login")
+    
+    
     student_count = Student.objects.count()
     teacher_count = Teacher.objects.count()
     
@@ -65,11 +74,12 @@ def admin_dashboard(request):
         'teacher_count': teacher_count,
         'recent_students': recent_students,
         'recent_teachers': recent_teachers,
+        'admin':admin
     }
     
     return render(request, 'school/index.html', context)
 
-@login_required(login_url='home_auth:login')
+@login_required()
 def teacher_dashboard(request):
     """Teacher dashboard"""
     # Get the teacher object for the current user
@@ -79,7 +89,7 @@ def teacher_dashboard(request):
         teacher = None
     
     student_count = Student.objects.count()
-    teacher_count = Teacher.objects.count()
+    # teacher_count = Teacher.objects.count()
     
     recent_students = Student.objects.all().order_by('-joining_date')[:5]
     recent_teachers = Teacher.objects.all().order_by('-joining_date')[:5]
@@ -91,7 +101,7 @@ def teacher_dashboard(request):
         'unread_notifications': unread_notifications,
         'unread_notifications_count': unread_notifications_count,
         'student_count': student_count,
-        'teacher_count': teacher_count,
+        # 'teacher_count': teacher_count,
         'recent_students': recent_students,
         'recent_teachers': recent_teachers,
         'teacher': teacher,
@@ -108,8 +118,10 @@ def student_dashboard(request):
         messages.error(request, "Student profile not found.")
         return redirect("home_auth:login")
     
-    student_count = Student.objects.count()
-    teacher_count = Teacher.objects.count()
+    # student_count = Student.objects.count()
+    # teacher_count = Teacher.objects.count()
+    student_count = Enrollment.objects.filter(student=student).count()
+    enrolled_subjects = Enrollment.objects.filter(student=student).select_related('subject')
     
     unread_notifications = Notification.objects.filter(user=request.user, is_read=False)
     unread_notifications_count = unread_notifications.count()
@@ -118,8 +130,8 @@ def student_dashboard(request):
         'unread_notifications': unread_notifications,
         'unread_notifications_count': unread_notifications_count,
         'student_count': student_count,
-        'teacher_count': teacher_count,
-        'student': student,
+        'enrolled_subjects':enrolled_subjects,
+        'student':student
     }
     
     return render(request, 'school/student-dashboard.html', context)

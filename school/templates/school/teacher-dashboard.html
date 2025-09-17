@@ -236,7 +236,12 @@
                   <li><a href="#" class="text-muted" title="You are not a registered teacher">List All Assignments</a></li>
               {% endif %}
               <li><a href="#">My Assignments</a></li>
-              <li><a href="#">Grading</a></li>
+              {% if subject %}
+                <li><a href="{% url 'teacher:enter-result' subject.id %}">Grading</a></li>
+              {% else %}
+                  <li><a href="#" class="text-muted" title="No subject assigned">Grading</a></li>
+              {% endif %}
+
             </ul>
           </li>
           <!-- Teacher Management Submenu -->

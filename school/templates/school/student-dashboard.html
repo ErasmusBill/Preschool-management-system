@@ -136,6 +136,17 @@
       margin-bottom: 0;
     }
     
+    .subject-card {
+      background: #f8f9fa;
+      border-radius: 8px;
+      transition: var(--transition);
+    }
+    
+    .subject-card:hover {
+      background: #e9ecef;
+      transform: translateY(-2px);
+    }
+    
     /* Header styles */
     .header {
       position: fixed;
@@ -370,31 +381,7 @@
       display: none;
     }
     
-    /* Desktop styles (1200px and up) */
-    @media (min-width: 1200px) {
-      .content {
-        padding: 30px;
-      }
-    }
-    
-    /* Tablet styles (768px to 1199px) */
-    @media (max-width: 1199px) {
-      .stats-box h3 {
-        font-size: 24px;
-      }
-      
-      .student-profile-img {
-        width: 130px;
-        height: 130px;
-      }
-      
-      .info-badge {
-        font-size: 11px;
-        padding: 4px 8px;
-      }
-    }
-    
-    /* Mobile and tablet styles (992px and below) */
+    /* Responsive styles */
     @media (max-width: 992px) {
       #toggle_btn {
         display: block;
@@ -415,21 +402,8 @@
       .page-wrapper {
         margin-left: 0;
       }
-      
-      .header {
-        padding: 0 15px;
-      }
-      
-      .content {
-        padding: 15px;
-      }
-      
-      .page-title {
-        font-size: 20px;
-      }
     }
     
-    /* Small tablet styles (768px and below) */
     @media (max-width: 768px) {
       .student-profile-img {
         width: 120px;
@@ -443,208 +417,17 @@
       .stats-box h3 {
         font-size: 20px;
       }
-      
-      .stats-box i {
-        font-size: 20px;
-        margin-bottom: 10px;
-      }
-      
-      .card-header {
-        padding: 12px 15px;
-      }
-      
-      .card-body {
-        padding: 15px;
-      }
-      
-      .info-item {
-        margin-bottom: 10px;
-        flex-direction: row;
-        align-items: flex-start;
-      }
-      
-      .info-item i {
-        margin-top: 2px;
-      }
-      
-      .info-badge {
-        margin: 1px;
-        font-size: 10px;
-        padding: 3px 6px;
-      }
     }
     
-    /* Extra small mobile styles (576px and below) */
     @media (max-width: 576px) {
-      .header {
-        padding: 0 10px;
-      }
-      
-      .content {
-        padding: 10px;
-      }
-      
-      .page-title {
-        font-size: 18px;
-      }
-      
       .student-profile-img {
         width: 100px;
         height: 100px;
       }
       
-      .stats-box {
-        padding: 12px;
-      }
-      
       .stats-box h3 {
         font-size: 18px;
       }
-      
-      .stats-box p {
-        font-size: 13px;
-      }
-      
-      .info-item {
-        flex-direction: column;
-        align-items: flex-start;
-      }
-      
-      .info-item i {
-        margin-bottom: 5px;
-        margin-right: 5px;
-      }
-      
-      .info-badge {
-        display: block;
-        text-align: center;
-        margin: 2px 0;
-        font-size: 10px;
-      }
-      
-      .card-header h5 {
-        font-size: 14px;
-      }
-      
-      .sidebar {
-        width: 280px;
-      }
-      
-      .sidebar-menu li a {
-        padding: 10px 15px;
-        font-size: 14px;
-      }
-      
-      .sidebar-menu .submenu ul li a {
-        padding-left: 35px;
-        font-size: 12px;
-      }
-    }
-    
-    /* Ultra small mobile styles (480px and below) */
-    @media (max-width: 480px) {
-      .logo img {
-        height: 35px;
-      }
-      
-      .student-profile-img {
-        width: 90px;
-        height: 90px;
-      }
-      
-      .stats-box h3 {
-        font-size: 16px;
-      }
-      
-      .page-header {
-        margin-bottom: 20px;
-      }
-      
-      .card {
-        margin-bottom: 15px;
-      }
-      
-      .info-badge {
-        font-size: 9px;
-        padding: 2px 5px;
-      }
-    }
-    
-    /* Landscape mobile styles */
-    @media (max-height: 600px) and (orientation: landscape) {
-      .sidebar {
-        height: calc(100vh - var(--header-height));
-        overflow-y: auto;
-      }
-      
-      .student-profile-img {
-        width: 80px;
-        height: 80px;
-      }
-      
-      .stats-box {
-        padding: 10px;
-      }
-      
-      .stats-box h3 {
-        font-size: 16px;
-      }
-      
-      .stats-box i {
-        font-size: 16px;
-        margin-bottom: 5px;
-      }
-    }
-    
-    /* Print styles */
-    @media print {
-      .header,
-      .sidebar,
-      .sidebar-overlay {
-        display: none !important;
-      }
-      
-      .page-wrapper {
-        margin-left: 0 !important;
-        padding-top: 0 !important;
-      }
-      
-      .card {
-        box-shadow: none !important;
-        border: 1px solid #ddd !important;
-      }
-    }
-    
-    /* High DPI screens */
-    @media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
-      .student-profile-img {
-        image-rendering: -webkit-optimize-contrast;
-      }
-    }
-    
-    /* Focus states for accessibility */
-    #toggle_btn:focus,
-    .sidebar-menu li a:focus,
-    .dropdown-toggle:focus {
-      outline: 2px solid var(--primary-color);
-      outline-offset: 2px;
-    }
-    
-    /* Smooth scrolling */
-    html {
-      scroll-behavior: smooth;
-    }
-    
-    /* Loading animation */
-    .loading {
-      opacity: 0.5;
-      pointer-events: none;
-    }
-    
-    /* Animation for sidebar toggle */
-    .sidebar,
-    .page-wrapper {
-      transition: transform 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
     }
   </style>
 </head>
@@ -760,7 +543,7 @@
           <div class="card">
             <div class="card-body stats-box">
               <i class="fas fa-book"></i>
-              <h3>5</h3>
+              <h3>{{ student_count }}</h3>
               <p>My Courses</p>
             </div>
           </div>
@@ -793,6 +576,41 @@
           </div>
         </div>
       </div>
+
+      <!-- Enrolled Subjects Section -->
+      {% if enrolled_subjects %}
+      <div class="row">
+        <div class="col-12">
+          <div class="card">
+            <div class="card-header">
+              <h5 class="card-title">My Enrolled Subjects ({{ student_count }})</h5>
+            </div>
+            <div class="card-body">
+              <div class="row">
+                {% for enrollment in enrolled_subjects %}
+                <div class="col-md-4 col-sm-6 mb-3">
+                  <div class="subject-card p-3 border rounded">
+                    <h6 class="mb-2">{{ enrollment.subject.name }}</h6>
+                    <p class="mb-1 small text-muted">
+                      <i class="fas fa-code"></i> Code: {{ enrollment.subject.code }}
+                    </p>
+                    {% if enrollment.subject.teacher %}
+                    <p class="mb-1 small">
+                      <i class="fas fa-chalkboard-teacher"></i> Teacher: {{ enrollment.subject.teacher.user.get_full_name }}
+                    </p>
+                    {% endif %}
+                    <p class="mb-0 small text-muted">
+                      <i class="fas fa-calendar"></i> Enrolled: {{ enrollment.enrollment_date|date:"M d, Y" }}
+                    </p>
+                  </div>
+                </div>
+                {% endfor %}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      {% endif %}
 
       <!-- Student Profile Section -->
       <div class="row">
@@ -1126,187 +944,7 @@ document.addEventListener('DOMContentLoaded', function() {
       icon.className = 'fas fa-bars';
     }
   }
-
-  // Smooth scrolling for anchor links
-  document.querySelectorAll('a[href^="#"]').forEach(function(anchor) {
-    anchor.addEventListener('click', function(e) {
-      const target = document.querySelector(this.getAttribute('href'));
-      if (target) {
-        e.preventDefault();
-        target.scrollIntoView({
-          behavior: 'smooth',
-          block: 'start'
-        });
-      }
-    });
-  });
-
-  // Add loading state to buttons
-  document.querySelectorAll('button[type="submit"], .btn').forEach(function(btn) {
-    btn.addEventListener('click', function() {
-      const originalText = this.innerHTML;
-      const isSubmitButton = this.type === 'submit';
-      
-      if (isSubmitButton) {
-        this.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Loading...';
-        this.disabled = true;
-        
-        // Re-enable after 3 seconds (fallback)
-        setTimeout(() => {
-          this.innerHTML = originalText;
-          this.disabled = false;
-        }, 3000);
-      }
-    });
-  });
-
-  // Keyboard navigation support
-  document.addEventListener('keydown', function(e) {
-    // ESC key closes sidebar and dropdowns
-    if (e.key === 'Escape') {
-      closeSidebar();
-      userDropdown?.classList.remove('show');
-    }
-    
-    // Alt + M opens/closes sidebar (accessibility)
-    if (e.altKey && e.key === 'm') {
-      e.preventDefault();
-      toggleSidebar();
-    }
-  });
-
-  // Touch events for mobile swipe gestures
-  let touchStartX = 0;
-  let touchEndX = 0;
-  let touchStartY = 0;
-  let touchEndY = 0;
-
-  document.addEventListener('touchstart', function(e) {
-    touchStartX = e.changedTouches[0].screenX;
-    touchStartY = e.changedTouches[0].screenY;
-  }, { passive: true });
-
-  document.addEventListener('touchend', function(e) {
-    touchEndX = e.changedTouches[0].screenX;
-    touchEndY = e.changedTouches[0].screenY;
-    
-    const deltaX = touchEndX - touchStartX;
-    const deltaY = touchEndY - touchStartY;
-    
-    // Only handle horizontal swipes (ignore vertical scrolling)
-    if (Math.abs(deltaX) > Math.abs(deltaY) && Math.abs(deltaX) > 50) {
-      if (window.innerWidth <= 992) {
-        // Swipe right to open sidebar
-        if (deltaX > 0 && touchStartX < 50 && !sidebar?.classList.contains('active')) {
-          openSidebar();
-        }
-        // Swipe left to close sidebar
-        else if (deltaX < 0 && sidebar?.classList.contains('active')) {
-          closeSidebar();
-        }
-      }
-    }
-  }, { passive: true });
-
-  // Add focus trap for sidebar on mobile
-  function trapFocus(element) {
-    const focusableElements = element.querySelectorAll(
-      'a[href], button, textarea, input[type="text"], input[type="radio"], input[type="checkbox"], select'
-    );
-    const firstFocusableElement = focusableElements[0];
-    const lastFocusableElement = focusableElements[focusableElements.length - 1];
-
-    element.addEventListener('keydown', function(e) {
-      if (e.key === 'Tab') {
-        if (e.shiftKey) {
-          if (document.activeElement === firstFocusableElement) {
-            lastFocusableElement.focus();
-            e.preventDefault();
-          }
-        } else {
-          if (document.activeElement === lastFocusableElement) {
-            firstFocusableElement.focus();
-            e.preventDefault();
-          }
-        }
-      }
-    });
-  }
-
-  // Apply focus trap to sidebar
-  if (sidebar) {
-    trapFocus(sidebar);
-  }
-
-  // Lazy loading for images
-  if ('IntersectionObserver' in window) {
-    const imageObserver = new IntersectionObserver(function(entries, observer) {
-      entries.forEach(function(entry) {
-        if (entry.isIntersecting) {
-          const img = entry.target;
-          img.src = img.dataset.src;
-          img.classList.remove('loading');
-          imageObserver.unobserve(img);
-        }
-      });
-    });
-
-    document.querySelectorAll('img[data-src]').forEach(function(img) {
-      img.classList.add('loading');
-      imageObserver.observe(img);
-    });
-  }
-
-  // Add animation classes on scroll
-  function animateOnScroll() {
-    const elements = document.querySelectorAll('.card');
-    elements.forEach(function(element) {
-      const elementTop = element.getBoundingClientRect().top;
-      const elementVisible = 150;
-      
-      if (elementTop < window.innerHeight - elementVisible) {
-        element.classList.add('animate-in');
-      }
-    });
-  }
-
-  // Throttle scroll events
-  let scrollTimeout;
-  window.addEventListener('scroll', function() {
-    if (scrollTimeout) {
-      clearTimeout(scrollTimeout);
-    }
-    scrollTimeout = setTimeout(animateOnScroll, 10);
-  });
-
-  // Initial call
-  animateOnScroll();
 });
-
-// Add CSS animation classes
-const style = document.createElement('style');
-style.textContent = `
-  @keyframes slideInUp {
-    from {
-      opacity: 0;
-      transform: translateY(30px);
-    }
-    to {
-      opacity: 1;
-      transform: translateY(0);
-    }
-  }
-  
-  .animate-in {
-    animation: slideInUp 0.6s ease-out;
-  }
-  
-  .loading {
-    opacity: 0.5;
-    transition: opacity 0.3s ease;
-  }
-`;
-document.head.appendChild(style);
 </script>
 </body>
 </html>

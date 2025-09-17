@@ -133,7 +133,7 @@
       <li class="nav-item dropdown has-arrow">
         <a href="#" class="dropdown-toggle nav-link" data-toggle="dropdown">
           <span class="user-img">
-            <img class="rounded-circle" src="{% static 'assets/img/profiles/avatar-01.jpg' %}" width="31" alt="{{ user.first_name }}">
+            <img class="rounded-circle" src="{% static 'assets/img/profiles/avatar-01.jpg' %}" width="31" alt="{{ admin.first_name }}">
           </span>
         </a>
         <div class="dropdown-menu">
@@ -142,7 +142,7 @@
               <img src="{% static 'assets/img/profiles/avatar-01.jpg' %}" class="avatar-img rounded-circle" alt="User">
             </div>
             <div class="user-text">
-              <h6>{{ user.first_name }} {{ user.last_name }}</h6>
+              <h6>{{ admin.first_name }} {{ admin.last_name }}</h6>
               <p class="text-muted mb-0">Administrator</p>
             </div>
           </div>
@@ -199,7 +199,7 @@
       <div class="page-header">
         <div class="row">
           <div class="col-sm-12">
-            <h3 class="page-title">Welcome Administrator!</h3>
+            <h3 class="page-title">Welcome {{ admin.first_name }}</h3>
             <ul class="breadcrumb">
               <li class="breadcrumb-item"><a href="{% url 'school:dashboard' %}">Dashboard</a></li>
               <li class="breadcrumb-item active">Admin Dashboard</li>

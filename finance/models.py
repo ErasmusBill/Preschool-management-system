@@ -15,6 +15,7 @@ class Fees(models.Model):
     student = models.ForeignKey('student.Student',on_delete=models.SET_NULL,null=True,blank=True, related_name='fee_records')
     amount = models.DecimalField(max_digits=10, decimal_places=2)
     exams_type = models.CharField(max_length=50, choices=FEES_CHOICES)
+    date = models.DateField(blank=True,null=True)
     
     
     def __str__(self) -> str:

@@ -69,13 +69,13 @@ def login_view(request):
 
   
             if user.role == "admin":
-                return redirect("school:dashboard")
+                return redirect("school:index")
             elif user.role == "student":
                 return redirect("school:dashboard")
             elif user.role == "teacher":
                 return redirect("school:dashboard")
             else:
-                return redirect("school:index")
+                return redirect("school:login")
         else:
             messages.error(request, "Invalid credentials")
             return redirect("home_auth:login")

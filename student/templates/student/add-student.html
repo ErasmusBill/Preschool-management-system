@@ -3,233 +3,258 @@
 {% block title %}Students - School Management System{% endblock %}
 {% block content %}
            
-         {% if messages %}
-            {% for message in messages %}
-               <div class="alert alert-{{ message.tags }}">
-                  {{ message }}
-               </div>
-            {% endfor %}
-         {% endif %}
+<!-- Improved Error Message Display -->
+{% if messages %}
+<div class="alert-container" style="margin: 20px;">
+    {% for message in messages %}
+    <div class="alert alert-{% if message.tags == 'error' %}danger{% else %}{{ message.tags }}{% endif %} alert-dismissible fade show" role="alert">
+        <strong>{% if message.tags == 'error' %}Error!{% elif message.tags == 'success' %}Success!{% elif message.tags == 'warning' %}Warning!{% endif %}</strong> 
+        {{ message }}
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    {% endfor %}
+</div>
+{% endif %}
 
-               
-         <div class="page-wrapper">
-            <div class="content container-fluid">
-               <div class="page-header">
-                  <div class="row align-items-center">
-                     <div class="col">
-                        <h3 class="page-title">Add Students</h3>
-                        <ul class="breadcrumb">
-                           <li class="breadcrumb-item"><a href="{% url 'student:student-list' %}">Students</a></li>
-                           <li class="breadcrumb-item active">Add Students</li>
-                        </ul>
-                     </div>
-                  </div>
-               </div>
-               <div class="row">
-                  <div class="col-sm-12">
-                     <div class="card">
-                        <div class="card-body">
-                           <form action="{% url 'student:add-student' %}" method="POST" enctype="multipart/form-data">
-                              {% csrf_token %}
-                              <div class="row">
-                                 <div class="col-12">
-                                     <h5 class="form-title"><span>Student Account Information</span></h5>
-                                  </div>
-                                  <div class="col-12 col-sm-6">
-                                     <div class="form-group">
-                                        <label>Email</label>
-                                        <input type="email" class="form-control" name="email" required>
-                                     </div>
-                                  </div>
-                                  <div class="col-12 col-sm-6">
-                                     <div class="form-group">
-                                        <label>Password</label>
-                                        <input type="password" class="form-control" name="password" required>
-                                     </div>
-                                  </div>
-                                  <div class="col-12 col-sm-6">
-                                     <div class="form-group">
-                                        <label>Confirm Password</label>
-                                        <input type="password" class="form-control" name="repeat_password" required>
-                                     </div>
-                                  </div>
-                                  <div class="col-12">
-                                     <h5 class="form-title"><span>Student Personal Information</span></h5>
-                                  </div>
-                                  <div class="col-12 col-sm-6">
-                                     <div class="form-group">
-                                        <label>First Name</label>
-                                        <input type="text" class="form-control"name="first_name" required>
-                                     </div>
-                                  </div>
-                                 <div class="col-12 col-sm-6">
-                                    <div class="form-group">
-                                       <label>Last Name</label>
-                                       <input type="text" class="form-control" name="last_name" required>
-                                    </div>
-                                 </div>
-                                 <div class="col-12 col-sm-6">
-                                    <div class="form-group">
-                                       <label>Student Id</label>
-                                       <input type="text" class="form-control" name="student_id" required>
-                                    </div>
-                                 </div>
-                                 <div class="col-12 col-sm-6">
-                                    <div class="form-group">
-                                       <label>Gender</label>
-                                       <select class="form-control" name="gender" required>
-                                          <option value="">Select Gender</option>
-                                          <option value="MALE">Male</option>
-                                          <option value="FEMALE">Female</option>
-                                          <option value="OTHER">Other</option>
-                                       </select>
-                                    </div>
-                                 </div>
-                                 <div class="col-12 col-sm-6">
-                                    <div class="form-group">
-                                       <label>Date of Birth</label>
-                                       <div>
-                                          <input type="date" class="form-control" name="date_of_birth" required>
-                                       </div>
-                                    </div>
-                                 </div>
-                                 <div class="col-12 col-sm-6">
-                                    <div class="form-group">
-                                       <label>Class</label>
-                                       <select class="form-control" name="student_class" required>
-                                          <option value="">Select Class</option>
-                                          <option value="CRECHE">Creche</option>
-                                          <option value="NURSERY_1">Nursery 1</option>
-                                          <option value="NURSERY_2">Nursery 2</option>
-                                          <option value="KINDERGARTEN">Kindergarten</option>
-                                          <option value="UPPER_PRIMARY_4">Upper Primary 4</option>
-                                          <option value="UPPER_PRIMARY_5">Upper Primary 5</option>
-                                          <option value="UPPER_PRIMARY_6">Upper Primary 6</option>
-                                          <option value="JHS_1">JHS 1</option>
-                                          <option value="JHS_2">JHS 2</option>
-                                          <option value="JHS_3">JHS 3</option>
-                                       </select>
-                                    </div>
-                                 </div>
-                                 <div class="col-12 col-sm-6">
-                                    <div class="form-group">
-                                       <label>Religion</label>
-                                       <input type="text" class="form-control" name="religion">
-                                    </div>
-                                 </div>
-                                 <div class="col-12 col-sm-6">
-                                    <div class="form-group">
-                                       <label>Joining Date</label>
-                                       <div>
-                                          <input type="date" class="form-control" name="joining_date" required>
-                                       </div>
-                                    </div>
-                                 </div>
-                                 <div class="col-12 col-sm-6">
-                                    <div class="form-group">
-                                       <label>Mobile Number</label>
-                                       <input type="text" class="form-control" name="mobile_number">
-                                    </div>
-                                 </div>
-                                 <div class="col-12 col-sm-6">
-                                    <div class="form-group">
-                                       <label>Admission Number</label>
-                                       <input type="text" class="form-control" name="admission_number" required>
-                                    </div>
-                                 </div>
-                                 <div class="col-12 col-sm-6">
-                                    <div class="form-group">
-                                       <label>Section</label>
-                                       <input type="text" class="form-control" name="section" required>
-                                    </div>
-                                 </div>
-                                 <div class="col-12 col-sm-6">
-                                    <div class="form-group">
-                                       <label>Student Image</label>
-                                       <input type="file" class="form-control" name="student_image">
-                                    </div>
-                                 </div>
-                                 <div class="col-12">
-                                    <h5 class="form-title"><span>Parent Information</span></h5>
-                                 </div>
-                                 <div class="col-12 col-sm-6">
-                                    <div class="form-group">
-                                       <label>Father's Name</label>
-                                       <input type="text" class="form-control" name="father_name" required>
-                                    </div>
-                                 </div>
-                                 <div class="col-12 col-sm-6">
-                                    <div class="form-group">
-                                       <label>Father's Occupation</label>
-                                       <input type="text" class="form-control" name="father_occupation" required>
-                                    </div>
-                                 </div>
-                                 <div class="col-12 col-sm-6">
-                                    <div class="form-group">
-                                       <label>Father's Mobile</label>
-                                       <input type="text" class="form-control" name="father_phone" required>
-                                    </div>
-                                 </div>
-                                 <div class="col-12 col-sm-6">
-                                    <div class="form-group">
-                                       <label>Father's Email</label>
-                                       <input type="email" class="form-control" name="father_email" required>
-                                    </div>
-                                 </div>
-                                 <div class="col-12 col-sm-6">
-                                    <div class="form-group">
-                                       <label>Mother's Name</label>
-                                       <input type="text" class="form-control" name="mother_name" required>
-                                    </div>
-                                 </div>
-                                 <div class="col-12 col-sm-6">
-                                    <div class="form-group">
-                                       <label>Mother's Occupation</label>
-                                       <input type="text" class="form-control" name="mother_occupation" required>
-                                    </div>
-                                 </div>
-                                 <div class="col-12 col-sm-6">
-                                    <div class="form-group">
-                                       <label>Mother's Mobile</label>
-                                       <input type="text" class="form-control" name="mother_phone" required>
-                                    </div>
-                                 </div>
-                                 <div class="col-12 col-sm-6">
-                                    <div class="form-group">
-                                       <label>Mother's Email</label>
-                                       <input type="email" class="form-control" name="mother_email" required>
-                                    </div>
-                                 </div>
-                                 <div class="col-12 col-sm-6">
-                                    <div class="form-group">
-                                       <label>Present Address</label>
-                                       <textarea class="form-control" name="present_address" required></textarea>
-                                    </div>
-                                 </div>
-                                 <div class="col-12 col-sm-6">
-                                    <div class="form-group">
-                                       <label>Permanent Address</label>
-                                       <textarea class="form-control" name="permanent_address" required></textarea>
-                                    </div>
-                                 </div>
-                                 <div class="col-12">
-                                    <button type="submit" class="btn btn-primary">Submit</button>
-                                 </div>
-                              </div>
-                           </form>
-                        </div>
-                     </div>
-                  </div>
-               </div>
+<div class="page-wrapper">
+    <div class="content container-fluid">
+        <div class="page-header">
+            <div class="row align-items-center">
+                <div class="col">
+                    <h3 class="page-title">Add Students</h3>
+                    <ul class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="{% url 'student:student-list' %}">Students</a></li>
+                        <li class="breadcrumb-item active">Add Students</li>
+                    </ul>
+                </div>
             </div>
-         </div>
-      </div>
-      {% endblock %}
-      <script src="{% static 'assets/js/jquery-3.6.0.min.js' %}"></script>
-      <script src="{% static 'assets/js/popper.min.js' %}"></script>
-      <script src="{% static 'assets/plugins/bootstrap/js/bootstrap.min.js' %}"></script>
-      <script src="{% static 'assets/plugins/slimscroll/jquery.slimscroll.min.js' %}"></script>
-      <script src="{% static 'assets/js/script.js' %}"></script>
-   </body>
-   
-</html>
+        </div>
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="card">
+                    <div class="card-body">
+                        <form action="{% url 'student:add-student' %}" method="POST" enctype="multipart/form-data">
+                            {% csrf_token %}
+                            <div class="row">
+                                <div class="col-12">
+                                    <h5 class="form-title"><span>Student Account Information</span></h5>
+                                </div>
+                                <div class="col-12 col-sm-6">
+                                    <div class="form-group">
+                                        <label>Email</label>
+                                        <input type="email" class="form-control" name="email" value="{{ form_data.email|default:'' }}" required>
+                                    </div>
+                                </div>
+                                <div class="col-12 col-sm-6">
+                                    <div class="form-group">
+                                        <label>Password</label>
+                                        <input type="password" class="form-control" name="password" value="{{ form_data.password|default:'' }}" required>
+                                    </div>
+                                </div>
+                                <div class="col-12 col-sm-6">
+                                    <div class="form-group">
+                                        <label>Confirm Password</label>
+                                        <input type="password" class="form-control" name="repeat_password" value="{{ form_data.repeat_password|default:'' }}" required>
+                                    </div>
+                                </div>
+                                <div class="col-12">
+                                    <h5 class="form-title"><span>Student Personal Information</span></h5>
+                                </div>
+                                <div class="col-12 col-sm-6">
+                                    <div class="form-group">
+                                        <label>First Name</label>
+                                        <input type="text" class="form-control" name="first_name" value="{{ form_data.first_name|default:'' }}" required>
+                                    </div>
+                                </div>
+                                <div class="col-12 col-sm-6">
+                                    <div class="form-group">
+                                        <label>Last Name</label>
+                                        <input type="text" class="form-control" name="last_name" value="{{ form_data.last_name|default:'' }}" required>
+                                    </div>
+                                </div>
+                                <div class="col-12 col-sm-6">
+                                    <div class="form-group">
+                                        <label>Student Id</label>
+                                        <input type="text" class="form-control" name="student_id" value="{{ form_data.student_id|default:'' }}" required>
+                                    </div>
+                                </div>
+                                <div class="col-12 col-sm-6">
+                                    <div class="form-group">
+                                        <label>Gender</label>
+                                        <select class="form-control" name="gender" required>
+                                            <option value="">Select Gender</option>
+                                            <option value="MALE" {% if form_data.gender == 'MALE' %}selected{% endif %}>Male</option>
+                                            <option value="FEMALE" {% if form_data.gender == 'FEMALE' %}selected{% endif %}>Female</option>
+                                            <option value="OTHER" {% if form_data.gender == 'OTHER' %}selected{% endif %}>Other</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-12 col-sm-6">
+                                    <div class="form-group">
+                                        <label>Date of Birth</label>
+                                        <div>
+                                            <input type="date" class="form-control" name="date_of_birth" value="{{ form_data.date_of_birth|default:'' }}" required>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-12 col-sm-6">
+                                    <div class="form-group">
+                                        <label>Class</label>
+                                        <select class="form-control" name="student_class" required>
+                                            <option value="">Select Class</option>
+                                            <option value="CRECHE" {% if form_data.student_class == 'CRECHE' %}selected{% endif %}>Creche</option>
+                                            <option value="NURSERY_1" {% if form_data.student_class == 'NURSERY_1' %}selected{% endif %}>Nursery 1</option>
+                                            <option value="NURSERY_2" {% if form_data.student_class == 'NURSERY_2' %}selected{% endif %}>Nursery 2</option>
+                                            <option value="KINDERGARTEN" {% if form_data.student_class == 'KINDERGARTEN' %}selected{% endif %}>Kindergarten</option>
+                                            <option value="UPPER_PRIMARY_4" {% if form_data.student_class == 'UPPER_PRIMARY_4' %}selected{% endif %}>Upper Primary 4</option>
+                                            <option value="UPPER_PRIMARY_5" {% if form_data.student_class == 'UPPER_PRIMARY_5' %}selected{% endif %}>Upper Primary 5</option>
+                                            <option value="UPPER_PRIMARY_6" {% if form_data.student_class == 'UPPER_PRIMARY_6' %}selected{% endif %}>Upper Primary 6</option>
+                                            <option value="JHS_1" {% if form_data.student_class == 'JHS_1' %}selected{% endif %}>JHS 1</option>
+                                            <option value="JHS_2" {% if form_data.student_class == 'JHS_2' %}selected{% endif %}>JHS 2</option>
+                                            <option value="JHS_3" {% if form_data.student_class == 'JHS_3' %}selected{% endif %}>JHS 3</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-12 col-sm-6">
+                                    <div class="form-group">
+                                        <label>Religion</label>
+                                        <input type="text" class="form-control" name="religion" value="{{ form_data.religion|default:'' }}">
+                                    </div>
+                                </div>
+                                <div class="col-12 col-sm-6">
+                                    <div class="form-group">
+                                        <label>Joining Date</label>
+                                        <div>
+                                            <input type="date" class="form-control" name="joining_date" value="{{ form_data.joining_date|default:'' }}" required>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-12 col-sm-6">
+                                    <div class="form-group">
+                                        <label>Mobile Number</label>
+                                        <input type="text" class="form-control" name="mobile_number" value="{{ form_data.mobile_number|default:'' }}">
+                                    </div>
+                                </div>
+                                <div class="col-12 col-sm-6">
+                                    <div class="form-group">
+                                        <label>Admission Number</label>
+                                        <input type="text" class="form-control" name="admission_number" value="{{ form_data.admission_number|default:'' }}" required>
+                                    </div>
+                                </div>
+                                <div class="col-12 col-sm-6">
+                                    <div class="form-group">
+                                        <label>Section</label>
+                                        <input type="text" class="form-control" name="section" value="{{ form_data.section|default:'' }}" required>
+                                    </div>
+                                </div>
+                                <div class="col-12 col-sm-6">
+                                    <div class="form-group">
+                                        <label>Student Image</label>
+                                        <input type="file" class="form-control" name="student_image">
+                                        {% if form_data.student_image %}
+                                            <small class="text-muted">Previously selected: {{ form_data.student_image.name }}</small>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                                <div class="col-12">
+                                    <h5 class="form-title"><span>Parent Information</span></h5>
+                                </div>
+                                <div class="col-12 col-sm-6">
+                                    <div class="form-group">
+                                        <label>Father's Name</label>
+                                        <input type="text" class="form-control" name="father_name" value="{{ form_data.father_name|default:'' }}" required>
+                                    </div>
+                                </div>
+                                <div class="col-12 col-sm-6">
+                                    <div class="form-group">
+                                        <label>Father's Occupation</label>
+                                        <input type="text" class="form-control" name="father_occupation" value="{{ form_data.father_occupation|default:'' }}" required>
+                                    </div>
+                                </div>
+                                <div class="col-12 col-sm-6">
+                                    <div class="form-group">
+                                        <label>Father's Mobile</label>
+                                        <input type="text" class="form-control" name="father_phone" value="{{ form_data.father_phone|default:'' }}" required>
+                                    </div>
+                                </div>
+                                <div class="col-12 col-sm-6">
+                                    <div class="form-group">
+                                        <label>Father's Email</label>
+                                        <input type="email" class="form-control" name="father_email" value="{{ form_data.father_email|default:'' }}" required>
+                                    </div>
+                                </div>
+                                <div class="col-12 col-sm-6">
+                                    <div class="form-group">
+                                        <label>Mother's Name</label>
+                                        <input type="text" class="form-control" name="mother_name" value="{{ form_data.mother_name|default:'' }}" required>
+                                    </div>
+                                </div>
+                                <div class="col-12 col-sm-6">
+                                    <div class="form-group">
+                                        <label>Mother's Occupation</label>
+                                        <input type="text" class="form-control" name="mother_occupation" value="{{ form_data.mother_occupation|default:'' }}" required>
+                                    </div>
+                                </div>
+                                <div class="col-12 col-sm-6">
+                                    <div class="form-group">
+                                        <label>Mother's Mobile</label>
+                                        <input type="text" class="form-control" name="mother_phone" value="{{ form_data.mother_phone|default:'' }}" required>
+                                    </div>
+                                </div>
+                                <div class="col-12 col-sm-6">
+                                    <div class="form-group">
+                                        <label>Mother's Email</label>
+                                        <input type="email" class="form-control" name="mother_email" value="{{ form_data.mother_email|default:'' }}" required>
+                                    </div>
+                                </div>
+                                <div class="col-12 col-sm-6">
+                                    <div class="form-group">
+                                        <label>Present Address</label>
+                                        <textarea class="form-control" name="present_address" required>{{ form_data.present_address|default:'' }}</textarea>
+                                    </div>
+                                </div>
+                                <div class="col-12 col-sm-6">
+                                    <div class="form-group">
+                                        <label>Permanent Address</label>
+                                        <textarea class="form-control" name="permanent_address" required>{{ form_data.permanent_address|default:'' }}</textarea>
+                                    </div>
+                                </div>
+                                <div class="col-12">
+                                    <button type="submit" class="btn btn-primary">Submit</button>
+                                    <a href="{% url 'student:student-list' %}" class="btn btn-secondary">Cancel</a>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Add JavaScript for better alert handling -->
+<script>
+// Auto-dismiss alerts after 5 seconds
+document.addEventListener('DOMContentLoaded', function() {
+    const alerts = document.querySelectorAll('.alert');
+    alerts.forEach(function(alert) {
+        setTimeout(function() {
+            const bsAlert = new bootstrap.Alert(alert);
+            bsAlert.close();
+        }, 5000);
+    });
+    
+    // Focus on first field with error
+    const errorAlert = document.querySelector('.alert-danger');
+    if (errorAlert) {
+        const firstErrorField = document.querySelector('input:invalid, select:invalid, textarea:invalid');
+        if (firstErrorField) {
+            firstErrorField.focus();
+        }
+    }
+});
+</script>
+
+{% endblock %}

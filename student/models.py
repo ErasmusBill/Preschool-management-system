@@ -1,10 +1,9 @@
-# student/models.py
-
 from django.db import models
 from django.core.exceptions import ValidationError
 from django.utils import timezone
 from django.utils.text import slugify
 from django.conf import settings
+import uuid
 
 class Parent(models.Model):
     father_name = models.CharField(max_length=100)
@@ -23,14 +22,12 @@ class Parent(models.Model):
 
 
 class Student(models.Model):
-
     GENDER_CHOICES = (
         ('MALE', 'Male'),
         ('FEMALE', 'Female'),
         ('OTHER', 'Other'),
     )
 
-    # Updated CLASS_CHOICES to include specific levels
     CLASS_CHOICES = [
         ("CRECHE", "Creche"),
         ("NURSERY_1", "Nursery 1"),
@@ -41,30 +38,39 @@ class Student(models.Model):
         ("UPPER_PRIMARY_6", "Upper Primary 6"),
         ("JHS_1", "JHS 1"),
         ("JHS_2", "JHS 2"),
-        ("JHS_3", "JHS 3"),
+        ("JHS_3", "JHS 3")
     ]
 
-    # Core User Link
-    user = models.OneToOneField(settings.AUTH_USER_MODEL,on_delete=models.CASCADE,related_name='student_profile',help_text="The user account associated with this student.")
+    user = models.OneToOneField(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE,
+        related_name='student_profile',
+        help_text="The user account associated with this student.",
+        null=True,  # Allow null temporarily during creation
+        blank=True
+    )
 
     # Personal Information
     first_name = models.CharField(max_length=100)
     last_name = models.CharField(max_length=100)
     student_id = models.CharField(max_length=20, unique=True)
     student_class = models.CharField(max_length=100, choices=CLASS_CHOICES)
-    religion = models.CharField(max_length=50)
-    parent = models.OneToOneField(Parent, on_delete=models.CASCADE)
-    slug = models.SlugField(unique=True, blank=True, null=True)
+    religion = models.CharField(max_length=50, blank=True)  # Make optional
+    parent = models.ForeignKey(  # Changed to ForeignKey
+        Parent, 
+        on_delete=models.CASCADE,
+        related_name='students'
+    )
+    slug = models.SlugField(unique=True, max_length=100)
     date_of_birth = models.DateField()
     gender = models.CharField(max_length=10, choices=GENDER_CHOICES)
 
     # School Administration
     admission_number = models.CharField(max_length=20, unique=True)
     section = models.CharField(max_length=50)
-    joining_date = models.DateField(auto_now_add=True)
+    joining_date = models.DateField()  # Removed auto_now_add
 
     # Financial & Contact
-    fees = models.ForeignKey('finance.Fees',on_delete=models.SET_NULL,blank=True,null=True,related_name='students_with_fees')
     mobile_number = models.CharField(max_length=15)
     student_image = models.ImageField(upload_to='student_images/', null=True, blank=True)
 
@@ -76,18 +82,28 @@ class Student(models.Model):
     def clean(self):
         """Model-level validation."""
         super().clean()
-        if self.date_of_birth > timezone.now().date():
+        if self.date_of_birth and self.date_of_birth > timezone.now().date():
             raise ValidationError({'date_of_birth': "Date of birth cannot be in the future."})
+        
+        if self.joining_date and self.joining_date > timezone.now().date():
+            raise ValidationError({'joining_date': "Joining date cannot be in the future."})
 
     def save(self, *args, **kwargs):
+        # Generate unique slug
         if not self.slug:
-            base_slug = slugify(f"{self.first_name} {self.last_name} {self.student_id}")
-            self.slug = base_slug[:50]
+            base_slug = slugify(f"{self.first_name}-{self.last_name}-{self.student_id}")
+            unique_slug = base_slug
+            counter = 1
+            while Student.objects.filter(slug=unique_slug).exists():
+                unique_slug = f"{base_slug}-{counter}"
+                counter += 1
+            self.slug = unique_slug[:100]
+        
         self.full_clean()
         super().save(*args, **kwargs)
 
     def __str__(self) -> str:
-        return f"{self.first_name} {self.last_name}"
+        return f"{self.first_name} {self.last_name} ({self.student_id})"
 
     @property
     def full_name(self):

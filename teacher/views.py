@@ -1,3 +1,4 @@
+from email import message
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse
 from django.contrib import messages
@@ -5,15 +6,17 @@ from django.core.mail import send_mail
 from django.conf import settings
 from django.urls import reverse
 import os
-from .forms import AssignmentForm
-from .models import Assignment, Subject, Teacher, Department
+from .forms import AssignmentForm,ResultForm
+from .models import Assignment, Subject, Teacher, Department,Enrollment
 from home_auth.models import CustomUser
-from teacher.models import Assignment, Subject
+from teacher.models import Assignment, Subject,Grade
 from django.utils import timezone
+from student.models import Student
+from django.forms import modelformset_factory
 
 def add_teacher(request):
     """Add a new teacher with a linked CustomUser account and profile image."""
-    if not request.user.is_authenticated or not request.user.role != "admin":
+    if not request.user.is_authenticated or  request.user.role != "admin":
         messages.error(request, "You don't have permission to perform this action")
         return redirect("teacher:add-teacher")
     
@@ -123,7 +126,7 @@ def add_teacher(request):
 
 
 def list_all_teachers(request):
-    if not request.user.is_authenticated or not request.user.role != "admin":
+    if not request.user.is_authenticated or  request.user.role != "admin":
         messages.error(request, "You don't have permission to perform this action")
         return redirect("teacher:list-teachers")
     
@@ -237,7 +240,7 @@ def add_assignment(request):
             assignment.save()  
 
             messages.success(request, "Assignment added successfully.")
-            return redirect("teacher:list-assignments", args=[str(teacher.id)])
+            return redirect("teacher:list-assignments", teacher_id=teacher.id)
         else:
             messages.error(request, "Please correct the errors below.")
             print(form.errors)  
@@ -311,3 +314,46 @@ def list_assignments(request, teacher_id):
 def assignment_detail(request,assignment_id):
     assignment = get_object_or_404(Assignment,id=assignment_id)
     return render(request,"teacher/assignment-detail.html",{"assignment":assignment})
+
+def list_classes(request, teacher_id):
+    teacher = get_object_or_404(Teacher, id=teacher_id)
+
+    # all unique classes the teacher has assignments for
+    classes_taught = (Assignment.objects.filter(teacher=teacher).values_list('assignment_class', flat=True).distinct())
+
+    return render(request, "teacher/classes_list.html", {
+        "teacher": teacher,
+        "classes": classes_taught,
+    })
+
+def enter_results(request, subject_id):
+    if not request.user.is_authenticated or request.user.role != "teacher":
+        messages.error(request, "Not authorized.")
+        return redirect("teacher:dashboard")
+
+    subject = get_object_or_404(Subject, id=subject_id)
+
+    enrollments = Enrollment.objects.filter(subject=subject).select_related("student")
+
+  
+    for e in enrollments:
+        Grade.objects.get_or_create(enrollment=e,defaults={"teacher": subject.teacher_id,  "subject": subject,"student": e.student,})
+
+    GradeFormSet = modelformset_factory(Grade, form=ResultForm, extra=0)
+    queryset = Grade.objects.filter(enrollment__subject=subject)
+
+    if request.method == "POST":
+        formset = GradeFormSet(request.POST, queryset=queryset)
+        if formset.is_valid():
+            formset.save()
+            messages.success(request, "Results saved for all students.")
+            return redirect("teacher:view-result", subject_id=subject.id)
+    else:
+        formset = GradeFormSet(queryset=queryset)
+
+    return render(request, "teacher/enter-results.html", {"subject": subject,"formset": formset,})
+
+def view_result(request, subject_id):
+    subject = get_object_or_404(Subject, id=subject_id)
+    grades = Grade.objects.filter(enrollment__subject=subject)
+    return render(request, "teacher/view-result.html", {"subject": subject, "grades": grades})

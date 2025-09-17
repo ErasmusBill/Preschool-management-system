@@ -1,0 +1,164 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0">
+<title>Preskool - Add Grade</title>
+
+<link rel="shortcut icon" href="{% static 'assets/img/favicon.png' %}">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,500;0,600;0,700;1,400&amp;display=swap">
+<link rel="stylesheet" href="{% static 'assets/plugins/bootstrap/css/bootstrap.min.css' %}">
+<link rel="stylesheet" href="{% static 'assets/plugins/fontawesome/css/fontawesome.min.css' %}">
+<link rel="stylesheet" href="{% static 'assets/plugins/fontawesome/css/all.min.css' %}">
+<link rel="stylesheet" href="{% static 'assets/css/style.css' %}">
+</head>
+<body>
+
+<div class="main-wrapper">
+    <!-- Header -->
+    <div class="header">
+        <div class="header-left">
+            <a href="{% url 'teacher:list-teachers' %}" class="logo">
+                <img src="{% static 'assets/img/logo.png' %}" alt="Logo">
+            </a>
+            <a href="{% url 'teacher:list-teachers' %}" class="logo logo-small">
+                <img src="{% static 'assets/img/logo-small.png' %}" alt="Logo" width="30" height="30">
+            </a>
+        </div>
+
+        <a href="javascript:void(0);" id="toggle_btn">
+            <i class="fas fa-align-left"></i>
+        </a>
+
+        <ul class="nav user-menu">
+            <li class="nav-item dropdown has-arrow">
+                <a href="#" class="dropdown-toggle nav-link" data-toggle="dropdown">
+                    <span class="user-img">
+                        <img class="rounded-circle" src="{% static 'assets/img/profiles/avatar-01.jpg' %}" width="31" alt="{{ request.user.get_full_name }}">
+                    </span>
+                </a>
+                <div class="dropdown-menu">
+                    <div class="user-header">
+                        <div class="avatar avatar-sm">
+                            <img src="{% static 'assets/img/profiles/avatar-01.jpg' %}" alt="User Image" class="avatar-img rounded-circle">
+                        </div>
+                        <div class="user-text">
+                            <h6>{{ request.user.get_full_name }}</h6>
+                            <p class="text-muted mb-0">{{ request.user.get_role_display }}</p>
+                        </div>
+                    </div>
+                    <a class="dropdown-item" href="{% url 'home_auth:logout' %}">Logout</a>
+                </div>
+            </li>
+        </ul>
+    </div>
+    <!-- /Header -->
+
+    <!-- Sidebar -->
+    <div class="sidebar" id="sidebar">
+        <div class="sidebar-inner slimscroll">
+            <div id="sidebar-menu" class="sidebar-menu">
+                <ul>
+                    <li class="menu-title"><span>Main Menu</span></li>
+                    <li class="submenu active">
+                        <a href="#"><i class="fas fa-chalkboard-teacher"></i> <span> Grades</span> <span class="menu-arrow"></span></a>
+                        <ul>
+                            <li><a href="{% url 'teacher:list-teachers' %}" class="active">Add Grade</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <!-- /Sidebar -->
+
+    <!-- Page Wrapper -->
+    <div class="page-wrapper">
+        <div class="content container-fluid">
+            <!-- Page Header -->
+            <div class="page-header">
+                <div class="row align-items-center">
+                    <div class="col">
+                        <h3 class="page-title">Add Grade</h3>
+                        <ul class="breadcrumb">
+                            <li class="breadcrumb-item">
+                                <a href="{% url 'teacher:list-teachers' %}">Teachers</a>
+                            </li>
+                            <li class="breadcrumb-item active">Add Grade</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <!-- /Page Header -->
+
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="card">
+                        <div class="card-body">
+                            <form method="POST" action="">
+                                {% csrf_token %}
+
+                                {% if form.errors %}
+                                <div class="alert alert-danger">
+                                    <strong>Please correct the errors below:</strong>
+                                    <ul>
+                                        {% for field, errors in form.errors.items %}
+                                            {% for error in errors %}
+                                                <li>{{ field|title }}: {{ error }}</li>
+                                            {% endfor %}
+                                        {% endfor %}
+                                    </ul>
+                                </div>
+                                {% endif %}
+
+                                <div class="row">
+                                    <div class="col-12 col-sm-6">
+                                        <div class="form-group">
+                                            <label>Letter Grade *</label>
+                                            {{ form.letter_grade|add_class:"form-control" }}
+                                        </div>
+                                    </div>
+
+                                    <div class="col-12 col-sm-6">
+                                        <div class="form-group">
+                                            <label>Numerical Score *</label>
+                                            {{ form.numerical_score|add_class:"form-control" }}
+                                        </div>
+                                    </div>
+
+                                    <div class="col-12">
+                                        <div class="form-group">
+                                            <label>Remarks</label>
+                                            {{ form.remarks|add_class:"form-control" }}
+                                        </div>
+                                    </div>
+
+                                    <div class="col-12 mt-3">
+                                        <button type="submit" class="btn btn-primary">Save Grade</button>
+                                        <a href="{% url 'teacher:list-teachers' %}" class="btn btn-secondary">Cancel</a>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <!-- /Page Wrapper -->
+
+    <footer>
+        <p>Copyright © 2025 Dreamguys.</p>
+    </footer>
+</div>
+
+<!-- Scripts -->
+<script src="{% static 'assets/js/jquery-3.6.0.min.js' %}"></script>
+<script src="{% static 'assets/js/popper.min.js' %}"></script>
+<script src="{% static 'assets/plugins/bootstrap/js/bootstrap.min.js' %}"></script>
+<script src="{% static 'assets/plugins/slimscroll/jquery.slimscroll.min.js' %}"></script>
+<script src="{% static 'assets/js/script.js' %}"></script>
+</body>
+</html>
